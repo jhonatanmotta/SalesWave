@@ -11,6 +11,7 @@ public class Login extends javax.swing.JFrame {
         this.setTitle("Login - SalesWave");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+//        Ctrl_login controladorLogin = new Ctrl_login(this);
 //        this.setSize(700, 500);
     }
 
@@ -143,6 +144,11 @@ public class Login extends javax.swing.JFrame {
         Login log = new Login();
         Ctrl_login controladorLogin = new Ctrl_login(log);
         log.setVisible(true);
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Login().setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
