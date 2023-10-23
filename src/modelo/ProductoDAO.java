@@ -149,7 +149,62 @@ public class ProductoDAO {
         }
         return proveedor;
     }
+    
+    public List listarComboProducto() {
+        List<Producto> producto = new ArrayList<>();
+        String sql = "SELECT * FROM producto WHERE estado = ? ORDER BY nombre";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, 1);
+            retorno = ps.executeQuery();
+            while (retorno.next()) {
+                Producto prod = new Producto();
+                prod.setIdProducto(retorno.getInt("idProducto"));
+                prod.setNombre(retorno.getString("nombre"));
+                prod.setDescripcion(retorno.getString("descripcion"));
+                prod.setCantidad(retorno.getInt("cantidad"));
+                prod.setPrecioCompra(retorno.getDouble("precioCompra"));
+                prod.setPrecioVenta(retorno.getDouble("precioVenta"));
+                prod.setIva(retorno.getInt("iva"));
+                prod.setEstado(retorno.getInt("estado"));
+                producto.add(prod);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return producto;
+    }
 
+    public int cantidadProductos(int idProducto) {
+        String sql = "SELECT cantidad FROM producto WHERE idProducto = ?";
+        int cantidad = 0;
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idProducto);
+            retorno = ps.executeQuery();
+            while (retorno.next()) {
+                cantidad = (retorno.getInt("cantidad"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return cantidad;
+    }
+    
+    public boolean actualizarCantidad (int cant, int id) {
+        String sql = "UPDATE producto SET cantidad = ? WHERE idProducto = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, cant);
+            ps.setInt(2, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+    }
+    
     public Producto buscarProducto(int idProducto) {
         String sql = "SELECT prod.*, cat.idCategoria, cat.nombre as categoria, prov.idProveedor, prov.nombre "
                 + "as proveedor FROM producto prod INNER JOIN categoria cat ON prod.idCategoria_fk = cat.idCategoria "

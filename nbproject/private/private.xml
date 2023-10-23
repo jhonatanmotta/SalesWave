@@ -5,7 +5,11 @@
         <group>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/controlador/Ctrl_inicio.java</file>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/vista/Login.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/controlador/Ctrl_producto.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/Producto.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/metodos/ComboBox.java</file>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/metodos/BotonesMenu.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/ProductoDAO.java</file>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/vista/Menu.java</file>
         </group>
     </open-files>

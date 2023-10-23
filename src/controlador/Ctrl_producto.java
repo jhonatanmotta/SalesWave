@@ -40,12 +40,16 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         this.menu.jMenuHabilitarProd.addActionListener(this);
         this.menu.tableProducto.addMouseListener(this);
         this.menu.btnProducto.addMouseListener(this);
+        this.menu.btn_actualizarStock.addMouseListener(this);
         this.menu.textBuscarProd.addKeyListener(this);
+        this.menu.comboBoxProductos.addActionListener(this);
+        this.menu.btn_Stock.addActionListener(this);
         styleProducto();
     }
 
     public void styleProducto() {
         this.menu.textIdProd.setVisible(false);
+        this.menu.textStockAct.setEnabled(false);
         menu.textBuscarProd.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar producto");
     }
 
@@ -266,6 +270,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     public void llenarComboBox() {
         List<Categoria> listaCategoria = prodDao.listarComboCategoria();
         List<Proveedor> listaProveedor = prodDao.listarComboProveedor();
+        List<Producto> listaProductos = prodDao.listarComboProducto();
         for (int i = 0; i < listaCategoria.size(); i++) {
             int idCat = listaCategoria.get(i).getIdCategoria();
             String nombreCat = listaCategoria.get(i).getNombre();
@@ -276,11 +281,49 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             String nombreProv = listaProveedor.get(i).getNombre();
             menu.comboBoxProveedorProd.addItem(new ComboBox(idProv, nombreProv));
         }
+        for (int i = 0; i < listaProductos.size(); i++) {
+            int idProd = listaProductos.get(i).getIdProducto();
+            String nombreProd = listaProductos.get(i).getNombre();
+            menu.comboBoxProductos.addItem(new ComboBox(idProd, nombreProd));
+        }
     }
-    
+
     public void eliminarItemsCombox() {
         menu.comboBoxCategoriaProd.removeAllItems();
         menu.comboBoxProveedorProd.removeAllItems();
+        menu.comboBoxProductos.removeAllItems();
+    }
+
+    public void llenarCantProd() {
+        ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
+        if (productoSeleccionado != null) {
+            int id = productoSeleccionado.getId();
+            int cantidad = prodDao.cantidadProductos(id);
+            menu.textStockAct.setText(String.valueOf(cantidad));
+        }
+    }
+
+    public void actualizarStock() {
+        int stockActual = Integer.parseInt(menu.textStockAct.getText());
+        String cantidad = menu.textStockNew.getText();
+        if (cantidad.equals("")) {
+            JOptionPane.showMessageDialog(null, "Debes agregar una cantidad para actualizar el stock", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (Integer.parseInt(cantidad) <= 0) {
+                JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa o igual a cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
+                ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
+                int id = productoSeleccionado.getId();
+                int stockNuevo = Integer.parseInt(cantidad) + stockActual;
+                if (prodDao.actualizarCantidad(stockNuevo, id)) {
+                    menu.textStockAct.setText(String.valueOf(stockNuevo));
+                    menu.textStockNew.setText("");
+                    JOptionPane.showMessageDialog(null, "El stock disponible de " + String.valueOf(productoSeleccionado.getNombre()) + " ha sido actualizado");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo actualizar el stock de " + String.valueOf(productoSeleccionado.getNombre()));
+                }
+            }
+        }
     }
 
     @Override
@@ -295,6 +338,10 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             habilitarProducto();
         } else if (e.getSource() == menu.btn_limpiarProd) {
             limpiarContenidoInput();
+        } else if (e.getSource() == menu.comboBoxProductos) {
+            llenarCantProd();
+        } else if (e.getSource() == menu.btn_Stock) {
+            actualizarStock();
         }
     }
 
@@ -310,6 +357,12 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             botones.cambiarTitulo("Registro de Productos");
             limpiarTabla();
             listarProducto();
+            eliminarItemsCombox();
+            llenarComboBox();
+        } else if (e.getSource() == menu.btn_actualizarStock) {
+            BotonesMenu botones = new BotonesMenu(menu);
+            botones.cambiarPanel(8);
+            botones.cambiarTitulo("Stock de Productos");
             eliminarItemsCombox();
             llenarComboBox();
         }

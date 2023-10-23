@@ -7,7 +7,6 @@ import controlador.Ctrl_inicio;
 import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
 import controlador.Ctrl_usuario;
-import metodos.BotonesMenu;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
 import modelo.Cliente;
@@ -174,7 +173,15 @@ public class Menu extends javax.swing.JFrame {
         panelReporte = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         panelActualizarStock = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        labelComboProd = new javax.swing.JLabel();
+        comboBoxProductos = new javax.swing.JComboBox<>();
+        jScrollProducto1 = new javax.swing.JScrollPane();
+        tableProducto1 = new javax.swing.JTable();
+        labelCantidadNew = new javax.swing.JLabel();
+        textStockAct = new javax.swing.JTextField();
+        textStockNew = new javax.swing.JTextField();
+        labelCantidadAct = new javax.swing.JLabel();
+        btn_Stock = new javax.swing.JButton();
         panelPassword = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         panelMenu = new javax.swing.JPanel();
@@ -294,7 +301,6 @@ public class Menu extends javax.swing.JFrame {
         jPopupProveedor.add(jMenuHabilitarProv);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1094, 737));
         setSize(new java.awt.Dimension(1080, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -428,7 +434,7 @@ public class Menu extends javax.swing.JFrame {
         textIdUsuario.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textIdUsuario.setForeground(new java.awt.Color(51, 51, 51));
         textIdUsuario.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelUsuario.add(textIdUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 50, -1));
+        panelUsuario.add(textIdUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 50, -1));
 
         btn_modificarUsuario.setBackground(new java.awt.Color(255, 255, 255));
         btn_modificarUsuario.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -746,7 +752,7 @@ public class Menu extends javax.swing.JFrame {
         textIdCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textIdCliente.setForeground(new java.awt.Color(51, 51, 51));
         textIdCliente.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelCliente.add(textIdCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 50, -1));
+        panelCliente.add(textIdCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 50, -1));
 
         textBuscarCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textBuscarCliente.setForeground(new java.awt.Color(51, 51, 51));
@@ -776,7 +782,7 @@ public class Menu extends javax.swing.JFrame {
         textIdCategoria.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textIdCategoria.setForeground(new java.awt.Color(51, 51, 51));
         textIdCategoria.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelCategoria.add(textIdCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 60, -1));
+        panelCategoria.add(textIdCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 60, -1));
 
         btn_registrarCategoria.setBackground(new java.awt.Color(232, 158, 67));
         btn_registrarCategoria.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -937,7 +943,7 @@ public class Menu extends javax.swing.JFrame {
         textIdProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textIdProv.setForeground(new java.awt.Color(51, 51, 51));
         textIdProv.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelProveedor.add(textIdProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 40, -1));
+        panelProveedor.add(textIdProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, 40, -1));
 
         btn_modificarProv.setBackground(new java.awt.Color(255, 255, 255));
         btn_modificarProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -991,24 +997,70 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPanel.addTab("reporte", panelReporte);
 
-        jLabel1.setText("stock");
+        panelActualizarStock.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout panelActualizarStockLayout = new javax.swing.GroupLayout(panelActualizarStock);
-        panelActualizarStock.setLayout(panelActualizarStockLayout);
-        panelActualizarStockLayout.setHorizontalGroup(
-            panelActualizarStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelActualizarStockLayout.createSequentialGroup()
-                .addGap(346, 346, 346)
-                .addComponent(jLabel1)
-                .addContainerGap(506, Short.MAX_VALUE))
-        );
-        panelActualizarStockLayout.setVerticalGroup(
-            panelActualizarStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelActualizarStockLayout.createSequentialGroup()
-                .addGap(157, 157, 157)
-                .addComponent(jLabel1)
-                .addContainerGap(496, Short.MAX_VALUE))
-        );
+        labelComboProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelComboProd.setForeground(new java.awt.Color(51, 51, 51));
+        labelComboProd.setText("Productos");
+        panelActualizarStock.add(labelComboProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 38, -1, 30));
+
+        comboBoxProductos.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        comboBoxProductos.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelActualizarStock.add(comboBoxProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 39, 200, -1));
+
+        tableProducto1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        tableProducto1.setForeground(new java.awt.Color(51, 51, 51));
+        tableProducto1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Nombre", "Descripcion", "Cantidad", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableProducto1.setComponentPopupMenu(jPopupProducto);
+        tableProducto1.setRowHeight(30);
+        tableProducto1.setSelectionBackground(new java.awt.Color(191, 232, 241));
+        tableProducto1.getTableHeader().setResizingAllowed(false);
+        tableProducto1.getTableHeader().setReorderingAllowed(false);
+        jScrollProducto1.setViewportView(tableProducto1);
+
+        panelActualizarStock.add(jScrollProducto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 278, 840, 353));
+
+        labelCantidadNew.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelCantidadNew.setForeground(new java.awt.Color(51, 51, 51));
+        labelCantidadNew.setText("Cantidad Nueva");
+        panelActualizarStock.add(labelCantidadNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, -1, 30));
+
+        textStockAct.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textStockAct.setForeground(new java.awt.Color(51, 51, 51));
+        textStockAct.setPreferredSize(new java.awt.Dimension(120, 30));
+        panelActualizarStock.add(textStockAct, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 110, 90, -1));
+
+        textStockNew.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textStockNew.setForeground(new java.awt.Color(51, 51, 51));
+        textStockNew.setPreferredSize(new java.awt.Dimension(120, 30));
+        panelActualizarStock.add(textStockNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 180, 90, -1));
+
+        labelCantidadAct.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelCantidadAct.setForeground(new java.awt.Color(51, 51, 51));
+        labelCantidadAct.setText("Cantidad");
+        panelActualizarStock.add(labelCantidadAct, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, 30));
+
+        btn_Stock.setBackground(new java.awt.Color(232, 158, 67));
+        btn_Stock.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_Stock.setForeground(new java.awt.Color(255, 255, 255));
+        btn_Stock.setText("Actualizar Stock");
+        btn_Stock.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelActualizarStock.add(btn_Stock, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 100, 170, -1));
 
         jTabbedPanel.addTab("stock", panelActualizarStock);
 
@@ -1266,6 +1318,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btnReporte;
     public javax.swing.JButton btnUsuario;
     public javax.swing.JButton btnVenta;
+    public javax.swing.JButton btn_Stock;
     public javax.swing.JButton btn_actualizarStock;
     public javax.swing.JButton btn_limpiarCategoria;
     public javax.swing.JButton btn_limpiarCliente;
@@ -1284,8 +1337,8 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btn_registrarUsuario;
     public javax.swing.JComboBox<Object> comboBoxCategoriaProd;
     public javax.swing.JComboBox<String> comboBoxIvaProd;
+    public javax.swing.JComboBox<Object> comboBoxProductos;
     public javax.swing.JComboBox<Object> comboBoxProveedorProd;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1308,6 +1361,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollCategoria;
     private javax.swing.JScrollPane jScrollCliente;
     private javax.swing.JScrollPane jScrollProducto;
+    private javax.swing.JScrollPane jScrollProducto1;
     private javax.swing.JScrollPane jScrollProveedor;
     private javax.swing.JScrollPane jScrollUsuario;
     public javax.swing.JTabbedPane jTabbedPanel;
@@ -1319,9 +1373,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelBuscarProd;
     private javax.swing.JLabel labelBuscarProv;
     private javax.swing.JLabel labelBuscarUsuario;
+    public javax.swing.JLabel labelCantidadAct;
+    public javax.swing.JLabel labelCantidadNew;
     public javax.swing.JLabel labelCantidadProd;
     private javax.swing.JLabel labelCategoriaProd;
     private javax.swing.JLabel labelCedulaCliente;
+    private javax.swing.JLabel labelComboProd;
     private javax.swing.JLabel labelDescripcionProd;
     private javax.swing.JLabel labelDireccionProv;
     public javax.swing.JLabel labelIvaProd;
@@ -1356,6 +1413,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTable tableCategoria;
     public javax.swing.JTable tableCliente;
     public javax.swing.JTable tableProducto;
+    public javax.swing.JTable tableProducto1;
     public javax.swing.JTable tableProveedor;
     public javax.swing.JTable tableUsuarios;
     public javax.swing.JTextField textApellido;
@@ -1383,6 +1441,8 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textNombreProv;
     public javax.swing.JTextField textPrecioCProd;
     public javax.swing.JTextField textPrecioVProd;
+    public javax.swing.JTextField textStockAct;
+    public javax.swing.JTextField textStockNew;
     public javax.swing.JTextField textTelefono;
     public javax.swing.JTextField textTelefonoCliente;
     public javax.swing.JTextField textTelefonoProv;
