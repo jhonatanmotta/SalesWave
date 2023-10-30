@@ -54,7 +54,7 @@ public class BotonesMenu{
         menu.btnCategoria.setBackground(colorDefault);
         menu.btnProveedor.setBackground(colorDefault);
         menu.btnVenta.setBackground(colorDefault);
-        menu.btnReporte.setBackground(colorDefault);
+        menu.btnEmpresa.setBackground(colorDefault);
     }
     
     public void cambiarColor (JButton boton) {

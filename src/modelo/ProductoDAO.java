@@ -232,4 +232,22 @@ public class ProductoDAO {
         }
         return prod;
     }
+    
+    public Producto buscarCantidadProd(int idProducto) {
+        Producto prod = new Producto();
+        String sql = "SELECT idProducto, nombre, cantidad FROM producto WHERE idProducto = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, idProducto);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                prod.setIdProducto(retorno.getInt("idProducto"));
+                prod.setNombre(retorno.getString("nombre"));
+                prod.setCantidad(retorno.getInt("cantidad"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return prod;
+    }
 }

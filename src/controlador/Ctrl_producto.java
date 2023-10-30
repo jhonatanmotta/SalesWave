@@ -16,7 +16,6 @@ import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
 import modelo.Categoria;
 import metodos.ComboBox;
-import metodos.PlaceholderTextfield;
 import modelo.Producto;
 import modelo.ProductoDAO;
 import modelo.Proveedor;
@@ -39,16 +38,19 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         this.menu.jMenuEliminarProd.addActionListener(this);
         this.menu.jMenuHabilitarProd.addActionListener(this);
         this.menu.tableProducto.addMouseListener(this);
+        this.menu.tableStock.addMouseListener(this);
         this.menu.btnProducto.addMouseListener(this);
-        this.menu.btn_actualizarStock.addMouseListener(this);
+        this.menu.btn_irStock.addMouseListener(this);
+        this.menu.btn_volverProd.addMouseListener(this);
         this.menu.textBuscarProd.addKeyListener(this);
         this.menu.comboBoxProductos.addActionListener(this);
-        this.menu.btn_Stock.addActionListener(this);
+        this.menu.btn_actualizarStock.addActionListener(this);
         styleProducto();
     }
 
     public void styleProducto() {
         this.menu.textIdProd.setVisible(false);
+        this.menu.textIdProdStock.setVisible(false);
         this.menu.textStockAct.setEnabled(false);
         menu.textBuscarProd.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar producto");
     }
@@ -200,14 +202,20 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             modeloTabla.addRow(ob);
         }
         menu.tableProducto.setModel(modeloTabla);
-        JTableHeader header = menu.tableProducto.getTableHeader();
+        menu.tableStock.setModel(modeloTabla);
+        JTableHeader headerProd = menu.tableProducto.getTableHeader();
+        JTableHeader headerStock = menu.tableStock.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;
         Font headerFont = new Font("Tahoma", Font.PLAIN, 14);
-        header.setOpaque(false);
-        header.setBackground(headerColor);
-        header.setFont(headerFont);
-        header.setForeground(textColor);
+        headerProd.setOpaque(false);
+        headerStock.setOpaque(false);
+        headerProd.setBackground(headerColor);
+        headerStock.setBackground(headerColor);
+        headerProd.setFont(headerFont);
+        headerStock.setFont(headerFont);
+        headerProd.setForeground(textColor);
+        headerStock.setForeground(textColor);
     }
 
     public void limpiarTabla() {
@@ -226,7 +234,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             menu.jMenuHabilitarProd.setVisible(true);
             menu.jMenuEliminarProd.setVisible(false);
         }
-        menu.btn_modificarProd.setEnabled(true);
+//        menu.btn_modificarProd.setEnabled(true);
         menu.textCantidadProd.setEnabled(false);
         menu.btn_registrarProd.setEnabled(false);
         menu.textIdProd.setText(menu.tableProducto.getValueAt(fila, 0).toString());
@@ -253,6 +261,18 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         menu.textCantidadProd.setText(String.valueOf(producto.getCantidad()));
         menu.comboBoxCategoriaProd.setSelectedItem(new ComboBox(producto.getIdCategoria_fk(), producto.getCategoria()));
         menu.comboBoxProveedorProd.setSelectedItem(new ComboBox(producto.getIdProveedor_fk(), producto.getProveedor()));
+    }
+    
+    public void agregarContenidoStock(int fila) {
+        menu.textIdProdStock.setText(menu.tableStock.getValueAt(fila, 0).toString());
+        int idProducto = Integer.parseInt(menu.textIdProdStock.getText());
+        Producto producto = prodDao.buscarCantidadProd(idProducto);
+        menu.textStockAct.setText(String.valueOf(producto.getCantidad()));
+        int idProd = producto.getIdProducto();
+        String nombreProd = producto.getNombre();
+//        System.out.println("Nombre: "+ nombreProd + " Id: " + idProd);
+//        menu.comboBoxProductos.setSelectedItem(new ComboBox(producto.getIdProducto(), producto.getNombre()));
+        menu.comboBoxProductos.setSelectedItem(new ComboBox(idProd, nombreProd));
     }
 
     public void limpiarContenidoInput() {
@@ -284,6 +304,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         for (int i = 0; i < listaProductos.size(); i++) {
             int idProd = listaProductos.get(i).getIdProducto();
             String nombreProd = listaProductos.get(i).getNombre();
+            System.out.println("Nombre: "+ nombreProd + " Id: " + idProd);
             menu.comboBoxProductos.addItem(new ComboBox(idProd, nombreProd));
         }
     }
@@ -340,8 +361,10 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             limpiarContenidoInput();
         } else if (e.getSource() == menu.comboBoxProductos) {
             llenarCantProd();
-        } else if (e.getSource() == menu.btn_Stock) {
+        } else if (e.getSource() == menu.btn_actualizarStock) {
             actualizarStock();
+            limpiarTabla();
+            listarProducto();
         }
     }
 
@@ -359,12 +382,23 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             listarProducto();
             eliminarItemsCombox();
             llenarComboBox();
-        } else if (e.getSource() == menu.btn_actualizarStock) {
+        } else if (e.getSource() == menu.btn_irStock) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(8);
             botones.cambiarTitulo("Stock de Productos");
+            limpiarTabla();
+            listarProducto();
             eliminarItemsCombox();
             llenarComboBox();
+        } else if (e.getSource() == menu.btn_volverProd) {
+            BotonesMenu botones = new BotonesMenu(menu);
+            botones.cambiarPanel(2);
+            botones.cambiarTitulo("Registro de Productos");
+            limpiarTabla();
+            listarProducto();
+        } else if (e.getSource() == menu.tableStock) {
+            int fila = menu.tableStock.rowAtPoint(e.getPoint());
+            agregarContenidoStock(fila);
         }
     }
 
