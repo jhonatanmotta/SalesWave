@@ -143,6 +143,10 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             modeloTablaCliente.addRow(ob);
         }
         menu.tableCliente.setModel(modeloTablaCliente);
+        
+        menu.tableCliente.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableCliente.getColumnModel().getColumn(0).setMaxWidth(0); 
+        
         JTableHeader header = menu.tableCliente.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;

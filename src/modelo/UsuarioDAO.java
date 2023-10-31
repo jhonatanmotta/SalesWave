@@ -19,11 +19,12 @@ public class UsuarioDAO {
     //metodo para validar la existencia de los usuarios en la bd, se solucita el usuario y la contraseña
     public static boolean LoginAutenticacion(String usuario, String password) {
         //consulta a la base de datos
-        String sql = "SELECT usuario, password FROM usuario WHERE usuario = ? AND password = ? ";
+        String sql = "SELECT usuario, password FROM usuario WHERE usuario = ? AND password = ? AND estado = ?";
         try {
             ps = conexion.prepareStatement(sql);
             ps.setString(1, usuario);
             ps.setString(2, password);
+            ps.setInt(3, 1);
             retorno = ps.executeQuery();
             while (retorno.next()) {
                 return true;

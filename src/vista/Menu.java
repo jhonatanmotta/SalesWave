@@ -3,6 +3,7 @@ package vista;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import controlador.Ctrl_categoria;
 import controlador.Ctrl_cliente;
+import controlador.Ctrl_empresa;
 import controlador.Ctrl_inicio;
 import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
@@ -11,6 +12,8 @@ import modelo.Categoria;
 import modelo.CategoriaDAO;
 import modelo.Cliente;
 import modelo.ClienteDAO;
+import modelo.Empresa;
+import modelo.EmpresaDAO;
 import modelo.Producto;
 import modelo.ProductoDAO;
 import modelo.Proveedor;
@@ -30,6 +33,8 @@ public class Menu extends javax.swing.JFrame {
     ProveedorDAO provDao = new ProveedorDAO();
     Producto prod = new Producto();
     ProductoDAO prodDao = new ProductoDAO();
+    Empresa emp = new Empresa();
+    EmpresaDAO empDao = new EmpresaDAO();
 
     public Menu() {
         initComponents();
@@ -43,6 +48,7 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_categoria controladorCategoria = new Ctrl_categoria(cat, catDao, this);
         Ctrl_proveedor controladorProveedor = new Ctrl_proveedor(prov, provDao, this);
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
+        Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp,empDao, this);
     }
 
     /**
@@ -69,6 +75,8 @@ public class Menu extends javax.swing.JFrame {
         jPopupProveedor = new javax.swing.JPopupMenu();
         jMenuEliminarProv = new javax.swing.JMenuItem();
         jMenuHabilitarProv = new javax.swing.JMenuItem();
+        panelHeader = new javax.swing.JPanel();
+        tituloPanel = new javax.swing.JLabel();
         jTabbedPanel = new javax.swing.JTabbedPane();
         panelBienvenida = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -187,6 +195,13 @@ public class Menu extends javax.swing.JFrame {
         panelEmpresa = new javax.swing.JPanel();
         labelEmpresaNombre = new javax.swing.JLabel();
         labelEmpresaNit = new javax.swing.JLabel();
+        textNitEmp = new javax.swing.JTextField();
+        labelEmpresaTelefono = new javax.swing.JLabel();
+        labelEmpresaDireccion = new javax.swing.JLabel();
+        textDireccionEmp = new javax.swing.JTextField();
+        textNombreEmp = new javax.swing.JTextField();
+        textTelefonoEmp = new javax.swing.JTextField();
+        btn_modificarEmp = new javax.swing.JButton();
         panelMenu = new javax.swing.JPanel();
         btnUsuario = new javax.swing.JButton();
         btnProducto = new javax.swing.JButton();
@@ -198,8 +213,6 @@ public class Menu extends javax.swing.JFrame {
         btnCategoria = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
-        panelHeader = new javax.swing.JPanel();
-        tituloPanel = new javax.swing.JLabel();
 
         jMenuEliminarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
         jMenuEliminarUsuario.setText("Eliminar");
@@ -309,6 +322,31 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
+        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
+
+        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
+        tituloPanel.setText("Titulo de Panel");
+
+        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
+        panelHeader.setLayout(panelHeaderLayout);
+        panelHeaderLayout.setHorizontalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addComponent(tituloPanel)
+                .addGap(0, 769, Short.MAX_VALUE))
+        );
+        panelHeaderLayout.setVerticalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         jTabbedPanel.setMinimumSize(new java.awt.Dimension(880, 700));
         jTabbedPanel.setPreferredSize(new java.awt.Dimension(880, 700));
@@ -1080,34 +1118,55 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPanel.addTab("password", panelPassword);
 
+        panelEmpresa.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         labelEmpresaNombre.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaNombre.setForeground(new java.awt.Color(51, 51, 51));
         labelEmpresaNombre.setText("Nombre");
+        panelEmpresa.add(labelEmpresaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, 30));
 
         labelEmpresaNit.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaNit.setForeground(new java.awt.Color(51, 51, 51));
-        labelEmpresaNit.setText("Nombre");
+        labelEmpresaNit.setText("NIT");
+        panelEmpresa.add(labelEmpresaNit, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, 30));
 
-        javax.swing.GroupLayout panelEmpresaLayout = new javax.swing.GroupLayout(panelEmpresa);
-        panelEmpresa.setLayout(panelEmpresaLayout);
-        panelEmpresaLayout.setHorizontalGroup(
-            panelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEmpresaLayout.createSequentialGroup()
-                .addGap(167, 167, 167)
-                .addGroup(panelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelEmpresaNit)
-                    .addComponent(labelEmpresaNombre))
-                .addContainerGap(661, Short.MAX_VALUE))
-        );
-        panelEmpresaLayout.setVerticalGroup(
-            panelEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEmpresaLayout.createSequentialGroup()
-                .addGap(164, 164, 164)
-                .addComponent(labelEmpresaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(labelEmpresaNit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(407, Short.MAX_VALUE))
-        );
+        textNitEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textNitEmp.setForeground(new java.awt.Color(51, 51, 51));
+        textNitEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelEmpresa.add(textNitEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 240, -1));
+
+        labelEmpresaTelefono.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelEmpresaTelefono.setForeground(new java.awt.Color(51, 51, 51));
+        labelEmpresaTelefono.setText("Telefono");
+        panelEmpresa.add(labelEmpresaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, -1, 30));
+
+        labelEmpresaDireccion.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelEmpresaDireccion.setForeground(new java.awt.Color(51, 51, 51));
+        labelEmpresaDireccion.setText("Direccion");
+        panelEmpresa.add(labelEmpresaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, 30));
+
+        textDireccionEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textDireccionEmp.setForeground(new java.awt.Color(51, 51, 51));
+        textDireccionEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelEmpresa.add(textDireccionEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 240, -1));
+
+        textNombreEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textNombreEmp.setForeground(new java.awt.Color(51, 51, 51));
+        textNombreEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelEmpresa.add(textNombreEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 240, -1));
+
+        textTelefonoEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textTelefonoEmp.setForeground(new java.awt.Color(51, 51, 51));
+        textTelefonoEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelEmpresa.add(textTelefonoEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 160, 240, -1));
+
+        btn_modificarEmp.setBackground(new java.awt.Color(255, 255, 255));
+        btn_modificarEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_modificarEmp.setForeground(new java.awt.Color(51, 51, 51));
+        btn_modificarEmp.setText("Modificar");
+        btn_modificarEmp.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(232, 158, 67), 2));
+        btn_modificarEmp.setPreferredSize(new java.awt.Dimension(90, 30));
+        panelEmpresa.add(btn_modificarEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 100, -1));
 
         jTabbedPanel.addTab("empresa", panelEmpresa);
 
@@ -1201,7 +1260,7 @@ public class Menu extends javax.swing.JFrame {
         btnEmpresa.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         btnEmpresa.setForeground(new java.awt.Color(255, 255, 255));
         btnEmpresa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/company.png"))); // NOI18N
-        btnEmpresa.setText("Empresa");
+        btnEmpresa.setText("Configuracion");
         btnEmpresa.setBorderPainted(false);
         btnEmpresa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEmpresa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -1268,31 +1327,6 @@ public class Menu extends javax.swing.JFrame {
         panelMenu.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 435, -1, -1));
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
-        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
-
-        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
-        tituloPanel.setText("Titulo de Panel");
-
-        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
-        panelHeader.setLayout(panelHeaderLayout);
-        panelHeaderLayout.setHorizontalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addComponent(tituloPanel)
-                .addGap(0, 769, Short.MAX_VALUE))
-        );
-        panelHeaderLayout.setVerticalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1399,6 +1433,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btn_limpiarUsuario;
     public javax.swing.JButton btn_modificarCategoria;
     public javax.swing.JButton btn_modificarCliente;
+    public javax.swing.JButton btn_modificarEmp;
     public javax.swing.JButton btn_modificarProd;
     public javax.swing.JButton btn_modificarProv;
     public javax.swing.JButton btn_modificarUsuario;
@@ -1454,8 +1489,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelComboProd;
     private javax.swing.JLabel labelDescripcionProd;
     private javax.swing.JLabel labelDireccionProv;
+    private javax.swing.JLabel labelEmpresaDireccion;
     private javax.swing.JLabel labelEmpresaNit;
     private javax.swing.JLabel labelEmpresaNombre;
+    private javax.swing.JLabel labelEmpresaTelefono;
     public javax.swing.JLabel labelIvaProd;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelNombreCategoria;
@@ -1504,6 +1541,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textCedulaCliente;
     public javax.swing.JTextField textCorreo;
     public javax.swing.JTextField textDescripcionProd;
+    public javax.swing.JTextField textDireccionEmp;
     public javax.swing.JTextField textDireccionProv;
     public javax.swing.JTextField textIdCategoria;
     public javax.swing.JTextField textIdCliente;
@@ -1511,9 +1549,11 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textIdProdStock;
     public javax.swing.JTextField textIdProv;
     public javax.swing.JTextField textIdUsuario;
+    public javax.swing.JTextField textNitEmp;
     public javax.swing.JTextField textNombre;
     public javax.swing.JTextField textNombreCategoria;
     public javax.swing.JTextField textNombreCliente;
+    public javax.swing.JTextField textNombreEmp;
     public javax.swing.JTextField textNombreProd;
     public javax.swing.JTextField textNombreProv;
     public javax.swing.JTextField textPrecioCProd;
@@ -1522,6 +1562,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textStockNew;
     public javax.swing.JTextField textTelefono;
     public javax.swing.JTextField textTelefonoCliente;
+    public javax.swing.JTextField textTelefonoEmp;
     public javax.swing.JTextField textTelefonoProv;
     public javax.swing.JTextField textUsuario;
     public javax.swing.JLabel tituloPanel;

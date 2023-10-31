@@ -203,6 +203,13 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         }
         menu.tableProducto.setModel(modeloTabla);
         menu.tableStock.setModel(modeloTabla);
+        
+        menu.tableProducto.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableProducto.getColumnModel().getColumn(0).setMaxWidth(0);
+        
+        menu.tableStock.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableStock.getColumnModel().getColumn(0).setMaxWidth(0);
+        
         JTableHeader headerProd = menu.tableProducto.getTableHeader();
         JTableHeader headerStock = menu.tableStock.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
@@ -270,8 +277,6 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         menu.textStockAct.setText(String.valueOf(producto.getCantidad()));
         int idProd = producto.getIdProducto();
         String nombreProd = producto.getNombre();
-//        System.out.println("Nombre: "+ nombreProd + " Id: " + idProd);
-//        menu.comboBoxProductos.setSelectedItem(new ComboBox(producto.getIdProducto(), producto.getNombre()));
         menu.comboBoxProductos.setSelectedItem(new ComboBox(idProd, nombreProd));
     }
 
@@ -304,7 +309,6 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         for (int i = 0; i < listaProductos.size(); i++) {
             int idProd = listaProductos.get(i).getIdProducto();
             String nombreProd = listaProductos.get(i).getNombre();
-            System.out.println("Nombre: "+ nombreProd + " Id: " + idProd);
             menu.comboBoxProductos.addItem(new ComboBox(idProd, nombreProd));
         }
     }

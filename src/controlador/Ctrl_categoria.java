@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
@@ -19,38 +21,50 @@ import modelo.CategoriaDAO;
 import vista.Menu;
 
 public class Ctrl_categoria implements ActionListener, MouseListener, KeyListener  {
-
-    private Categoria cat;
-    private CategoriaDAO catDao;
-    private Menu menu;
+    // atributos del controlador categoria
+    private Categoria cat; // atributo de tipo Categoria para asignar una instancia de este
+    private CategoriaDAO catDao; // atributo de tipo CategoriaDAO para asignar una instancia de este
+    private Menu menu;// atributo de tipo Menu para asignar una instancia de este
+    // instancia de DefaultTableModel para modificar el contenido de la tabla y darle estilos
     DefaultTableModel modeloTablaCategoria = new DefaultTableModel();
-
+    // instancia de DefaultTableCellRenderer se utiliza para personalizar la apariencia de las celdas en una tabla
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        
+    // metodo constructor de la clase pide 3 parametos que son instancias de Categoria, CategoriaDAO y de Menu(formulario)
     public Ctrl_categoria(Categoria cat, CategoriaDAO catDao, Menu menu) {
-        this.cat = cat;
-        this.catDao = catDao;
-        this.menu = menu;
-        this.menu.btn_registrarCategoria.addActionListener(this);
-        this.menu.btn_modificarCategoria.addActionListener(this);
-        this.menu.btn_limpiarCategoria.addActionListener(this);
-        this.menu.jMenuEliminarCategoria.addActionListener(this);
-        this.menu.jMenuHabilitarCategoria.addActionListener(this);
-        this.menu.textBuscarCategoria.addKeyListener(this);
-        this.menu.tableCategoria.addMouseListener(this);
-        this.menu.btnCategoria.addMouseListener(this);
-        styleCategoria();
+        this.cat = cat; // Se le asigna al atributo this.cat la instancia que llega por parametro
+        this.catDao = catDao; // Se le asigna al atributo this.catDao la instancia que llega por parametro
+        this.menu = menu; // Se le asigna al atributo this.menu la instancia que llega por parametro
+        this.menu.btn_registrarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_registrarCategoria
+        this.menu.btn_modificarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_modificarCategoria
+        this.menu.btn_limpiarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_limpiarCategoria
+        this.menu.jMenuEliminarCategoria.addActionListener(this); // se le añade el ActionListener al pop-up jMenuEliminarCategoria
+        this.menu.jMenuHabilitarCategoria.addActionListener(this); // se le añade el ActionListener al pop-up jMenuHabilitarCategoria
+        this.menu.textBuscarCategoria.addKeyListener(this); // se le añade el KeyListener al textField textBuscarCategoria
+        this.menu.tableCategoria.addMouseListener(this);  // se le añade el MouseListener a la tabla tableCategoria
+        this.menu.btnCategoria.addMouseListener(this);  // se le añade el MouseListener al boton btnCategoria
+        styleCategoria(); // metodo para inicializar los estilos del JPanel
     }
 
+    // metedo de estilos
     public void styleCategoria(){
-        this.menu.textIdCategoria.setVisible(false);
+        this.menu.textIdCategoria.setVisible(false); // el textField de id estara oculto
+        // se le asigna un placeholder al textField textBuscarCategoria
         menu.textBuscarCategoria.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Buscar categoria");
     }
     
+    // metodo para registrar categorias en la base de datos
     public void registrarCategoria() {
+        // se obtiene el nombre de la categoria del tgextField
         String nombre = menu.textNombreCategoria.getText();
+        // valida si esta vacio
         if (nombre.isEmpty()) {
+            // mensaje de error por campo vacio
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
         } else {
+            // se llama al objeto cat y el setter se le asigna su nombre
             cat.setNombre(nombre);
+            // metodo de insercion de datos en el modelo car
             if (catDao.registroCategoria(cat)) {
                 limpiarTabla();
                 listarCategoria();
@@ -128,6 +142,15 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
             modeloTablaCategoria.addRow(ob);
         }
         menu.tableCategoria.setModel(modeloTablaCategoria);
+        
+        menu.tableCategoria.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableCategoria.getColumnModel().getColumn(0).setMaxWidth(0);
+        
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        menu.tableCategoria.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        menu.tableCategoria.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        
         JTableHeader header = menu.tableCategoria.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;
@@ -165,18 +188,6 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
         menu.textIdCategoria.setText("");
         menu.btn_registrarCategoria.setEnabled(true);
     }
-    
-//    public void llenarComboBox(){
-//        List<Categoria> lista = catDao.listaCategorias(menu.textBuscarCategoria.getText());
-////        menu.comboBoxCategoriaProd.addItem("Seleccione categoria");
-//        for (int i = 0; i < lista.size(); i++) {
-//            int id = lista.get(i).getIdCategoria();
-//            String nombre = lista.get(i).getNombre();
-//            menu.comboBoxCategoriaProd.addItem(new ComboBox(id, nombre));
-//        }
-//    }
-    
-
     
     @Override
     public void actionPerformed(ActionEvent e) {

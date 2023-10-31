@@ -152,6 +152,10 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             modeloTabla.addRow(ob);
         }
         menu.tableUsuarios.setModel(modeloTabla);
+        
+        menu.tableUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
+        
         JTableHeader header = menu.tableUsuarios.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;

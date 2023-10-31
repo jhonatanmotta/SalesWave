@@ -142,6 +142,10 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             modeloTablaProv.addRow(ob);
         }
         menu.tableProveedor.setModel(modeloTablaProv);
+        
+        menu.tableProveedor.getColumnModel().getColumn(0).setMinWidth(0);
+        menu.tableProveedor.getColumnModel().getColumn(0).setMaxWidth(0);
+        
         JTableHeader header = menu.tableProveedor.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;

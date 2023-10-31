@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
+import metodos.Credenciales;
 import modelo.UsuarioDAO;
 import vista.Menu;
 import vista.Login;
@@ -41,8 +42,15 @@ public class Ctrl_login implements ActionListener, KeyListener {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             if (UsuarioDAO.LoginAutenticacion(usuario, password)) {
+                // Hago invisible el formulario del Login
                 log.setVisible(false);
+                // Hago visible el formulario del Menu
                 menu.setVisible(true);
+                // Obtener la instancia de Credenciales
+                Credenciales credenciales = Credenciales.getInstancia();
+                // Establecer usuario y contraseña
+                credenciales.setUsuario(usuario);
+                credenciales.setContrasena(password);
             } else {
                 // Mensaje de usuario y contreseña incorrectos
                 JOptionPane.showMessageDialog(null, "El usuario o la contraseña son incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
@@ -57,7 +65,6 @@ public class Ctrl_login implements ActionListener, KeyListener {
 //            System.exit(0);
 //        }
 //    }
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == log.btn_IniciarSesion) {
