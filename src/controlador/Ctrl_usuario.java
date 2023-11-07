@@ -47,11 +47,11 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void registrarUsuario() {
-        String nombre = menu.textNombre.getText();
-        String apellido = menu.textApellido.getText();
-        String correo = menu.textCorreo.getText();
-        String usuario = menu.textUsuario.getText();
-        String telefono = menu.textTelefono.getText();
+        String nombre = menu.textNombre.getText().trim();
+        String apellido = menu.textApellido.getText().trim();
+        String correo = menu.textCorreo.getText().trim();
+        String usuario = menu.textUsuario.getText().trim();
+        String telefono = menu.textTelefono.getText().trim();
         String password = String.valueOf(menu.txtPassword.getPassword());
         if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || usuario.isEmpty() || telefono.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -78,11 +78,11 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             int id = Integer.parseInt(menu.textIdUsuario.getText());
-            String nombre = menu.textNombre.getText();
-            String apellido = menu.textApellido.getText();
-            String correo = menu.textCorreo.getText();
-            String usuario = menu.textUsuario.getText();
-            String telefono = menu.textTelefono.getText();
+            String nombre = menu.textNombre.getText().trim();
+            String apellido = menu.textApellido.getText().trim();
+            String correo = menu.textCorreo.getText().trim();
+            String usuario = menu.textUsuario.getText().trim();
+            String telefono = menu.textTelefono.getText().trim();
             if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || usuario.isEmpty() || telefono.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
             } else {
@@ -137,7 +137,7 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void listarUsuario() {
-        List<Usuario> lista = userDao.listaUsuarios(menu.textBuscarUsuario.getText());
+        List<Usuario> lista = userDao.listaUsuarios(menu.textBuscarUsuario.getText().trim());
         modeloTabla = (DefaultTableModel) menu.tableUsuarios.getModel();
 //        Object[] ob = new Object[7];
         Object[] ob = new Object[6];
@@ -146,9 +146,12 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             ob[1] = lista.get(i).getNombre();
             ob[2] = lista.get(i).getApellido();
             ob[3] = lista.get(i).getUsuario();
-//            ob[4] = lista.get(i).getPassword();
             ob[4] = lista.get(i).getTelefono();
-            ob[5] = lista.get(i).getEstado();
+            if (lista.get(i).getEstado() == 1) {
+                ob[5] = "Habilitado";
+            } else {
+                ob[5] = "Deshabilitado";
+            }
             modeloTabla.addRow(ob);
         }
         menu.tableUsuarios.setModel(modeloTabla);
@@ -174,8 +177,8 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void agregarContenidoInput(int fila) {
-        int estado = Integer.parseInt(menu.tableUsuarios.getValueAt(fila, 5).toString());
-        if (estado == 1) {
+        String estado = menu.tableUsuarios.getValueAt(fila, 5).toString();
+        if (estado == "Habilitado") {
             menu.jMenuEliminarUsuario.setVisible(true);
             menu.jMenuHabilitarUsuario.setVisible(false);
         } else {

@@ -46,10 +46,10 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
     }
 
     public void registrarCliente() {
-        String nombre = menu.textNombreCliente.getText();
-        String apellido = menu.textApellidoCliente.getText();
-        String cedula = menu.textCedulaCliente.getText();
-        String telefono = menu.textTelefonoCliente.getText();
+        String nombre = menu.textNombreCliente.getText().trim();
+        String apellido = menu.textApellidoCliente.getText().trim();
+        String cedula = menu.textCedulaCliente.getText().trim();
+        String telefono = menu.textTelefonoCliente.getText().trim();
         if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || telefono.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
@@ -73,10 +73,10 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
         } else {
             int id = Integer.parseInt(menu.textIdCliente.getText());
-            String nombre = menu.textNombreCliente.getText();
-            String apellido = menu.textApellidoCliente.getText();
-            String cedula = menu.textCedulaCliente.getText();
-            String telefono = menu.textTelefonoCliente.getText();
+            String nombre = menu.textNombreCliente.getText().trim();
+            String apellido = menu.textApellidoCliente.getText().trim();
+            String cedula = menu.textCedulaCliente.getText().trim();
+            String telefono = menu.textTelefonoCliente.getText().trim();
             if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || telefono.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
@@ -130,7 +130,7 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
     }
 
     public void listarCliente() {
-        List<Cliente> lista = clientDao.listaClientes(menu.textBuscarCliente.getText());
+        List<Cliente> lista = clientDao.listaClientes(menu.textBuscarCliente.getText().trim());
         modeloTablaCliente = (DefaultTableModel) menu.tableCliente.getModel();
         Object[] ob = new Object[6];
         for (int i = 0; i < lista.size(); i++) {
@@ -139,7 +139,11 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             ob[2] = lista.get(i).getApellido();
             ob[3] = lista.get(i).getCedula();
             ob[4] = lista.get(i).getTelefono();
-            ob[5] = lista.get(i).getEstado();
+            if (lista.get(i).getEstado() == 1) {
+                ob[5] = "Habilitado";
+            } else {
+                ob[5] = "Deshabilitado";
+            }
             modeloTablaCliente.addRow(ob);
         }
         menu.tableCliente.setModel(modeloTablaCliente);
@@ -165,8 +169,8 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
     }
 
     public void agregarContenidoInput(int fila) {
-        int estado = Integer.parseInt(menu.tableCliente.getValueAt(fila, 5).toString());
-        if (estado == 1) {
+        String estado = menu.tableCliente.getValueAt(fila, 5).toString();
+        if (estado == "Habilitado") {
             menu.jMenuEliminarCliente.setVisible(true);
             menu.jMenuHabilitarCliente.setVisible(false);
         } else {

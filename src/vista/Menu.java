@@ -8,6 +8,7 @@ import controlador.Ctrl_inicio;
 import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
 import controlador.Ctrl_usuario;
+import controlador.Ctrl_venta;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
 import modelo.Cliente;
@@ -49,6 +50,7 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_proveedor controladorProveedor = new Ctrl_proveedor(prov, provDao, this);
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
         Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp,empDao, this);
+        Ctrl_venta controladorVenta = new Ctrl_venta(prodDao,this);
     }
 
     /**
@@ -75,8 +77,8 @@ public class Menu extends javax.swing.JFrame {
         jPopupProveedor = new javax.swing.JPopupMenu();
         jMenuEliminarProv = new javax.swing.JMenuItem();
         jMenuHabilitarProv = new javax.swing.JMenuItem();
-        panelHeader = new javax.swing.JPanel();
-        tituloPanel = new javax.swing.JLabel();
+        jPopupVenta = new javax.swing.JPopupMenu();
+        jMenuEliminarVentaProd = new javax.swing.JMenuItem();
         jTabbedPanel = new javax.swing.JTabbedPane();
         panelBienvenida = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -175,7 +177,27 @@ public class Menu extends javax.swing.JFrame {
         textIdProv = new javax.swing.JTextField();
         btn_modificarProv = new javax.swing.JButton();
         panelVenta = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        comboBoxClientesVenta = new javax.swing.JComboBox<>();
+        labelCantidadProdVenta = new javax.swing.JLabel();
+        labelNombreProdVenta = new javax.swing.JLabel();
+        comboBoxProductosVenta = new javax.swing.JComboBox<>();
+        labelIvaVenta = new javax.swing.JLabel();
+        textCantidadProdVenta = new javax.swing.JTextField();
+        jScrollProductosVenta = new javax.swing.JScrollPane();
+        tableProductosVenta = new javax.swing.JTable();
+        generarVenta = new javax.swing.JButton();
+        labelClienteProd = new javax.swing.JLabel();
+        labelCambioVenta = new javax.swing.JLabel();
+        labelTotalPagoVenta = new javax.swing.JLabel();
+        labelDineroVenta = new javax.swing.JLabel();
+        valorTotalPago = new javax.swing.JLabel();
+        labelSubtotalVenta4 = new javax.swing.JLabel();
+        cambioVenta = new javax.swing.JLabel();
+        valorIva = new javax.swing.JLabel();
+        aniadirProdVenta = new javax.swing.JButton();
+        textEfectivoVenta = new javax.swing.JTextField();
+        valorSubtotal = new javax.swing.JLabel();
+        pagarVenta = new javax.swing.JButton();
         panelReporte = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         panelActualizarStock = new javax.swing.JPanel();
@@ -213,6 +235,8 @@ public class Menu extends javax.swing.JFrame {
         btnCategoria = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
+        panelHeader = new javax.swing.JPanel();
+        tituloPanel = new javax.swing.JLabel();
 
         jMenuEliminarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
         jMenuEliminarUsuario.setText("Eliminar");
@@ -319,34 +343,14 @@ public class Menu extends javax.swing.JFrame {
         jMenuHabilitarProv.setPreferredSize(new java.awt.Dimension(85, 23));
         jPopupProveedor.add(jMenuHabilitarProv);
 
+        jMenuEliminarVentaProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
+        jMenuEliminarVentaProd.setText("Eliminar");
+        jMenuEliminarVentaProd.setPreferredSize(new java.awt.Dimension(85, 23));
+        jPopupVenta.add(jMenuEliminarVentaProd);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
-        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
-
-        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
-        tituloPanel.setText("Titulo de Panel");
-
-        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
-        panelHeader.setLayout(panelHeaderLayout);
-        panelHeaderLayout.setHorizontalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addComponent(tituloPanel)
-                .addGap(0, 769, Short.MAX_VALUE))
-        );
-        panelHeaderLayout.setVerticalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         jTabbedPanel.setMinimumSize(new java.awt.Dimension(880, 700));
         jTabbedPanel.setPreferredSize(new java.awt.Dimension(880, 700));
@@ -974,24 +978,141 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPanel.addTab("proveedor", panelProveedor);
 
-        jLabel3.setText("venta");
+        panelVenta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout panelVentaLayout = new javax.swing.GroupLayout(panelVenta);
-        panelVenta.setLayout(panelVentaLayout);
-        panelVentaLayout.setHorizontalGroup(
-            panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelVentaLayout.createSequentialGroup()
-                .addGap(268, 268, 268)
-                .addComponent(jLabel3)
-                .addContainerGap(583, Short.MAX_VALUE))
-        );
-        panelVentaLayout.setVerticalGroup(
-            panelVentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelVentaLayout.createSequentialGroup()
-                .addGap(282, 282, 282)
-                .addComponent(jLabel3)
-                .addContainerGap(371, Short.MAX_VALUE))
-        );
+        comboBoxClientesVenta.setEditable(true);
+        comboBoxClientesVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        comboBoxClientesVenta.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelVenta.add(comboBoxClientesVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 560, 200, -1));
+
+        labelCantidadProdVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelCantidadProdVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelCantidadProdVenta.setText("Cantidad");
+        panelVenta.add(labelCantidadProdVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, -1, 30));
+
+        labelNombreProdVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelNombreProdVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelNombreProdVenta.setText("Producto");
+        panelVenta.add(labelNombreProdVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, -1, 30));
+
+        comboBoxProductosVenta.setEditable(true);
+        comboBoxProductosVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        comboBoxProductosVenta.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelVenta.add(comboBoxProductosVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 200, -1));
+
+        labelIvaVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelIvaVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelIvaVenta.setText("Iva:");
+        panelVenta.add(labelIvaVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, -1, 30));
+
+        textCantidadProdVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textCantidadProdVenta.setForeground(new java.awt.Color(51, 51, 51));
+        textCantidadProdVenta.setPreferredSize(new java.awt.Dimension(120, 30));
+        panelVenta.add(textCantidadProdVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 90, -1));
+
+        tableProductosVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        tableProductosVenta.setForeground(new java.awt.Color(51, 51, 51));
+        tableProductosVenta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "No", "Nombre", "Cantidad", "Valor Unitario", "Subtotal", "Iva", "Total"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableProductosVenta.setComponentPopupMenu(jPopupVenta);
+        tableProductosVenta.setRowHeight(30);
+        tableProductosVenta.setSelectionBackground(new java.awt.Color(191, 232, 241));
+        tableProductosVenta.getTableHeader().setResizingAllowed(false);
+        tableProductosVenta.getTableHeader().setReorderingAllowed(false);
+        jScrollProductosVenta.setViewportView(tableProductosVenta);
+        if (tableProductosVenta.getColumnModel().getColumnCount() > 0) {
+            tableProductosVenta.getColumnModel().getColumn(0).setPreferredWidth(3);
+        }
+
+        panelVenta.add(jScrollProductosVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 840, 353));
+
+        generarVenta.setBackground(new java.awt.Color(232, 158, 67));
+        generarVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        generarVenta.setForeground(new java.awt.Color(255, 255, 255));
+        generarVenta.setText("Registrar");
+        generarVenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        generarVenta.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelVenta.add(generarVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 630, 170, -1));
+
+        labelClienteProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelClienteProd.setForeground(new java.awt.Color(51, 51, 51));
+        labelClienteProd.setText("Cliente");
+        panelVenta.add(labelClienteProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, -1, 30));
+
+        labelCambioVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelCambioVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelCambioVenta.setText("Cambio");
+        panelVenta.add(labelCambioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 560, -1, 30));
+
+        labelTotalPagoVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelTotalPagoVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelTotalPagoVenta.setText("Total a pagar:");
+        panelVenta.add(labelTotalPagoVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, -1, 30));
+
+        labelDineroVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelDineroVenta.setForeground(new java.awt.Color(51, 51, 51));
+        labelDineroVenta.setText("Efectivo");
+        panelVenta.add(labelDineroVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 560, -1, 30));
+
+        valorTotalPago.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        valorTotalPago.setForeground(new java.awt.Color(51, 51, 51));
+        valorTotalPago.setText("00000");
+        panelVenta.add(valorTotalPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, 30));
+
+        labelSubtotalVenta4.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelSubtotalVenta4.setForeground(new java.awt.Color(51, 51, 51));
+        labelSubtotalVenta4.setText("Subtotal:");
+        panelVenta.add(labelSubtotalVenta4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, -1, 30));
+
+        cambioVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        cambioVenta.setForeground(new java.awt.Color(51, 51, 51));
+        cambioVenta.setText("0000");
+        panelVenta.add(cambioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 560, -1, 30));
+
+        valorIva.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        valorIva.setForeground(new java.awt.Color(51, 51, 51));
+        valorIva.setText("000");
+        panelVenta.add(valorIva, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, 30));
+
+        aniadirProdVenta.setBackground(new java.awt.Color(232, 158, 67));
+        aniadirProdVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        aniadirProdVenta.setForeground(new java.awt.Color(255, 255, 255));
+        aniadirProdVenta.setText("Agregar");
+        aniadirProdVenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        aniadirProdVenta.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelVenta.add(aniadirProdVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 30, 170, -1));
+
+        textEfectivoVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textEfectivoVenta.setForeground(new java.awt.Color(51, 51, 51));
+        textEfectivoVenta.setPreferredSize(new java.awt.Dimension(120, 30));
+        panelVenta.add(textEfectivoVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 560, 140, -1));
+
+        valorSubtotal.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        valorSubtotal.setForeground(new java.awt.Color(51, 51, 51));
+        valorSubtotal.setText("0000");
+        panelVenta.add(valorSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, -1, 30));
+
+        pagarVenta.setBackground(new java.awt.Color(232, 158, 67));
+        pagarVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        pagarVenta.setForeground(new java.awt.Color(255, 255, 255));
+        pagarVenta.setText("Pagar");
+        pagarVenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        pagarVenta.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelVenta.add(pagarVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 610, 170, -1));
 
         jTabbedPanel.addTab("venta", panelVenta);
 
@@ -1328,6 +1449,31 @@ public class Menu extends javax.swing.JFrame {
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
+        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
+
+        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
+        tituloPanel.setText("Titulo de Panel");
+
+        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
+        panelHeader.setLayout(panelHeaderLayout);
+        panelHeaderLayout.setHorizontalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addComponent(tituloPanel)
+                .addGap(0, 769, Short.MAX_VALUE))
+        );
+        panelHeaderLayout.setVerticalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1414,6 +1560,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton aniadirProdVenta;
     public javax.swing.JButton btnCategoria;
     public javax.swing.JButton btnCerrarSesion;
     public javax.swing.JButton btnCliente;
@@ -1443,12 +1590,15 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btn_registrarProv;
     public javax.swing.JButton btn_registrarUsuario;
     public javax.swing.JButton btn_volverProd;
+    private javax.swing.JLabel cambioVenta;
     public javax.swing.JComboBox<Object> comboBoxCategoriaProd;
+    public javax.swing.JComboBox<Object> comboBoxClientesVenta;
     public javax.swing.JComboBox<String> comboBoxIvaProd;
     public javax.swing.JComboBox<Object> comboBoxProductos;
+    public javax.swing.JComboBox<Object> comboBoxProductosVenta;
     public javax.swing.JComboBox<Object> comboBoxProveedorProd;
+    public javax.swing.JButton generarVenta;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     public javax.swing.JMenuItem jMenuEliminarCategoria;
@@ -1456,6 +1606,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuEliminarProd;
     public javax.swing.JMenuItem jMenuEliminarProv;
     public javax.swing.JMenuItem jMenuEliminarUsuario;
+    private javax.swing.JMenuItem jMenuEliminarVentaProd;
     public javax.swing.JMenuItem jMenuHabilitarCategoria;
     public javax.swing.JMenuItem jMenuHabilitarCliente;
     public javax.swing.JMenuItem jMenuHabilitarProd;
@@ -1466,9 +1617,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupProducto;
     public javax.swing.JPopupMenu jPopupProveedor;
     public javax.swing.JPopupMenu jPopupUsuarios;
+    private javax.swing.JPopupMenu jPopupVenta;
     private javax.swing.JScrollPane jScrollCategoria;
     private javax.swing.JScrollPane jScrollCliente;
     private javax.swing.JScrollPane jScrollProducto;
+    private javax.swing.JScrollPane jScrollProductosVenta;
     private javax.swing.JScrollPane jScrollProveedor;
     private javax.swing.JScrollPane jScrollStock;
     private javax.swing.JScrollPane jScrollUsuario;
@@ -1481,23 +1634,29 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelBuscarProd;
     private javax.swing.JLabel labelBuscarProv;
     private javax.swing.JLabel labelBuscarUsuario;
+    private javax.swing.JLabel labelCambioVenta;
     public javax.swing.JLabel labelCantidadAct;
     public javax.swing.JLabel labelCantidadNew;
     public javax.swing.JLabel labelCantidadProd;
+    private javax.swing.JLabel labelCantidadProdVenta;
     private javax.swing.JLabel labelCategoriaProd;
     private javax.swing.JLabel labelCedulaCliente;
+    private javax.swing.JLabel labelClienteProd;
     private javax.swing.JLabel labelComboProd;
     private javax.swing.JLabel labelDescripcionProd;
+    private javax.swing.JLabel labelDineroVenta;
     private javax.swing.JLabel labelDireccionProv;
     private javax.swing.JLabel labelEmpresaDireccion;
     private javax.swing.JLabel labelEmpresaNit;
     private javax.swing.JLabel labelEmpresaNombre;
     private javax.swing.JLabel labelEmpresaTelefono;
     public javax.swing.JLabel labelIvaProd;
+    private javax.swing.JLabel labelIvaVenta;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelNombreCategoria;
     private javax.swing.JLabel labelNombreCliente;
     private javax.swing.JLabel labelNombreProd;
+    private javax.swing.JLabel labelNombreProdVenta;
     private javax.swing.JLabel labelNombreProv;
     public javax.swing.JLabel labelPasswrord;
     private javax.swing.JLabel labelPrecioCProd1;
@@ -1505,11 +1664,14 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelPrecioVProd1;
     private javax.swing.JLabel labelPrecioVProd2;
     private javax.swing.JLabel labelProveedorProd;
+    private javax.swing.JLabel labelSubtotalVenta4;
     private javax.swing.JLabel labelTelefono;
     private javax.swing.JLabel labelTelefono1;
     private javax.swing.JLabel labelTelefonoCliente;
     private javax.swing.JLabel labelTelefonoProv;
+    private javax.swing.JLabel labelTotalPagoVenta;
     private javax.swing.JLabel labelUsuario;
+    public javax.swing.JButton pagarVenta;
     private javax.swing.JPanel panelActualizarStock;
     private javax.swing.JPanel panelBienvenida;
     private javax.swing.JPanel panelCategoria;
@@ -1526,6 +1688,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTable tableCategoria;
     public javax.swing.JTable tableCliente;
     public javax.swing.JTable tableProducto;
+    public javax.swing.JTable tableProductosVenta;
     public javax.swing.JTable tableProveedor;
     public javax.swing.JTable tableStock;
     public javax.swing.JTable tableUsuarios;
@@ -1538,11 +1701,13 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textBuscarProv;
     public javax.swing.JTextField textBuscarUsuario;
     public javax.swing.JTextField textCantidadProd;
+    public javax.swing.JTextField textCantidadProdVenta;
     public javax.swing.JTextField textCedulaCliente;
     public javax.swing.JTextField textCorreo;
     public javax.swing.JTextField textDescripcionProd;
     public javax.swing.JTextField textDireccionEmp;
     public javax.swing.JTextField textDireccionProv;
+    public javax.swing.JTextField textEfectivoVenta;
     public javax.swing.JTextField textIdCategoria;
     public javax.swing.JTextField textIdCliente;
     public javax.swing.JTextField textIdProd;
@@ -1567,5 +1732,8 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textUsuario;
     public javax.swing.JLabel tituloPanel;
     public javax.swing.JPasswordField txtPassword;
+    private javax.swing.JLabel valorIva;
+    private javax.swing.JLabel valorSubtotal;
+    private javax.swing.JLabel valorTotalPago;
     // End of variables declaration//GEN-END:variables
 }

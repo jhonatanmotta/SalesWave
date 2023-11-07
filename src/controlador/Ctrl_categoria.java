@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
+import metodos.Validaciones;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
 import vista.Menu;
@@ -56,11 +57,14 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     // metodo para registrar categorias en la base de datos
     public void registrarCategoria() {
         // se obtiene el nombre de la categoria del tgextField
-        String nombre = menu.textNombreCategoria.getText();
+        String nombre = menu.textNombreCategoria.getText().trim();
         // valida si esta vacio
-        if (nombre.isEmpty()) {
+        if (!Validaciones.validarNoVacios("Uno o más campos están vacíos",nombre) ||
+                !Validaciones.validarCantidadCaracteres(nombre, 30, "El campo nombre sobrepasa la cantidad de caracteres aceptados")) {
+            return;
+//        if (nombre.isEmpty()) {
             // mensaje de error por campo vacio
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+//            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
         } else {
             // se llama al objeto cat y el setter se le asigna su nombre
             cat.setNombre(nombre);
@@ -77,13 +81,16 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void modificarCategoria() {
-        if (menu.textIdCategoria.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila",menu.textIdCategoria.getText())) {
+            return;
+//        if (menu.textIdCategoria.getText().equals("")) {
+//            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
         } else {
             int id = Integer.parseInt(menu.textIdCategoria.getText());
-            String nombre = menu.textNombreCategoria.getText();
-            if (nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+            String nombre = menu.textNombreCategoria.getText().trim();
+            if (!Validaciones.validarNoVacios("Uno o más campos están vacíos",nombre)) {
+                return;
+//                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
             } else {
                 cat.setIdCategoria(id);
                 cat.setNombre(nombre);
@@ -100,8 +107,8 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void eliminarCategoria() {
-        if (menu.textIdCategoria.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar una categoria");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar una categoria",menu.textIdCategoria.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdCategoria.getText());
             if (catDao.estadoCategoria(0, id)) {
@@ -116,8 +123,8 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void habilitarCategoria() {
-        if (menu.textIdCategoria.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para habilitar una categoria");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar una categoria",menu.textIdCategoria.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdCategoria.getText());
             if (catDao.estadoCategoria(1, id)) {
@@ -132,13 +139,18 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void listarCategoria() {
-        List<Categoria> lista = catDao.listaCategorias(menu.textBuscarCategoria.getText());
+        List<Categoria> lista = catDao.listaCategorias(menu.textBuscarCategoria.getText().trim());
         modeloTablaCategoria = (DefaultTableModel) menu.tableCategoria.getModel();
         Object[] ob = new Object[3];
         for (int i = 0; i < lista.size(); i++) {
             ob[0] = lista.get(i).getIdCategoria();
             ob[1] = lista.get(i).getNombre();
-            ob[2] = lista.get(i).getEstado();
+//            ob[2] = lista.get(i).getEstado();
+            if (lista.get(i).getEstado() == 1) {
+                ob[2] = "Disponible";
+            } else {
+                ob[2] = "Baja";
+            }
             modeloTablaCategoria.addRow(ob);
         }
         menu.tableCategoria.setModel(modeloTablaCategoria);
@@ -169,8 +181,8 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void agregarContenidoInput(int fila) {
-        int estado = Integer.parseInt(menu.tableCategoria.getValueAt(fila, 2).toString());
-        if (estado == 1){
+        String estado = menu.tableCategoria.getValueAt(fila, 2).toString();
+        if (estado == "Disponible"){
             menu.jMenuEliminarCategoria.setVisible(true);
             menu.jMenuHabilitarCategoria.setVisible(false);
         } else {

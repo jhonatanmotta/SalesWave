@@ -19,6 +19,7 @@ import metodos.ComboBox;
 import modelo.Producto;
 import modelo.ProductoDAO;
 import modelo.Proveedor;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import vista.Menu;
 
 public class Ctrl_producto implements ActionListener, MouseListener, KeyListener {
@@ -53,6 +54,18 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         this.menu.textIdProdStock.setVisible(false);
         this.menu.textStockAct.setEnabled(false);
         menu.textBuscarProd.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar producto");
+        menu.comboBoxCategoriaProd.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Selecciona una categoria");
+        menu.comboBoxProveedorProd.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Selecciona un proveedor");
+        menu.comboBoxProductos.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Selecciona un producto");
+        AutoCompleteDecorator.decorate(menu.comboBoxCategoriaProd);
+        AutoCompleteDecorator.decorate(menu.comboBoxProveedorProd);
+        AutoCompleteDecorator.decorate(menu.comboBoxProductos);
+    }
+
+    public void estadoCombo() {
+        menu.comboBoxCategoriaProd.setSelectedIndex(-1);
+        menu.comboBoxProveedorProd.setSelectedIndex(-1);
+        menu.comboBoxProductos.setSelectedIndex(-1);
     }
 
     public void registrarProducto() {
@@ -64,24 +77,21 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         String precioVenta = menu.textPrecioCProd.getText().trim();
         String cantidad = menu.textCantidadProd.getText().trim();
         String ivaProd = (String) menu.comboBoxIvaProd.getSelectedItem();
-        if (nombreProd.isEmpty() || descripcionProd.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty()) {
+        if (nombreProd.isEmpty() || descripcionProd.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty() || categoriaProd == null || proveedorProd == null) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un iva", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 switch (ivaProd) {
-                    case "No agrava iva": {
+                    case "No agrava iva" ->  {
                         prod.setIva(0);
-                        break;
                     }
-                    case "5%": {
+                    case "5%" ->  {
                         prod.setIva(5);
-                        break;
                     }
-                    case "19%": {
+                    case "19%" ->  {
                         prod.setIva(19);
-                        break;
                     }
                 }
                 prod.setNombre(nombreProd);
@@ -108,39 +118,36 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
         } else {
             int id = Integer.parseInt(menu.textIdProd.getText());
-            String nombre = menu.textNombreProd.getText();
-            String descripcion = menu.textDescripcionProd.getText();
-            String precioCompra = menu.textPrecioCProd.getText();
-            String precioVenta = menu.textPrecioVProd.getText();
-            String cantidad = menu.textCantidadProd.getText();
+            String nombre = menu.textNombreProd.getText().trim();
+            String descripcion = menu.textDescripcionProd.getText().trim();
+            String precioCompra = menu.textPrecioCProd.getText().trim();
+            String precioVenta = menu.textPrecioVProd.getText().trim();
+            String cantidad = menu.textCantidadProd.getText().trim();
             ComboBox categoriaProd = (ComboBox) menu.comboBoxCategoriaProd.getSelectedItem();
             ComboBox proveedorProd = (ComboBox) menu.comboBoxProveedorProd.getSelectedItem();
             String ivaProd = (String) menu.comboBoxIvaProd.getSelectedItem();
-            if (nombre.isEmpty() || descripcion.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty()) {
+            if (nombre.isEmpty() || descripcion.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty() || categoriaProd == null || proveedorProd == null) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
                     JOptionPane.showMessageDialog(null, "Debe seleccionar un iva", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     switch (ivaProd) {
-                        case "No agrava iva": {
+                        case "No agrava iva" ->  {
                             prod.setIva(0);
-                            break;
                         }
-                        case "5%": {
+                        case "5%" ->  {
                             prod.setIva(5);
-                            break;
                         }
-                        case "19%": {
+                        case "19%" ->  {
                             prod.setIva(19);
-                            break;
                         }
                     }
                     prod.setIdProducto(id);
                     prod.setNombre(nombre);
                     prod.setDescripcion(descripcion);
-                    prod.setPrecioCompra(Double.valueOf(precioCompra));
-                    prod.setPrecioVenta(Double.valueOf(precioVenta));
+                    prod.setPrecioCompra(Double.parseDouble(precioCompra));
+                    prod.setPrecioVenta(Double.parseDouble(precioVenta));
                     prod.setCantidad(Integer.parseInt(cantidad));
                     prod.setIdCategoria_fk(categoriaProd.getId());
                     prod.setIdProveedor_fk(proveedorProd.getId());
@@ -190,7 +197,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     }
 
     public void listarProducto() {
-        List<Producto> lista = prodDao.listaProductos(menu.textBuscarProd.getText());
+        List<Producto> lista = prodDao.listaProductos(menu.textBuscarProd.getText().trim());
         modeloTabla = (DefaultTableModel) menu.tableProducto.getModel();
         Object[] ob = new Object[5];
         for (int i = 0; i < lista.size(); i++) {
@@ -198,18 +205,22 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             ob[1] = lista.get(i).getNombre();
             ob[2] = lista.get(i).getDescripcion();
             ob[3] = lista.get(i).getCantidad();
-            ob[4] = lista.get(i).getEstado();
+            if (lista.get(i).getEstado() == 1) {
+                ob[4] = "Disponible";
+            } else {
+                ob[4] = "Baja";
+            }
             modeloTabla.addRow(ob);
         }
         menu.tableProducto.setModel(modeloTabla);
         menu.tableStock.setModel(modeloTabla);
-        
+
         menu.tableProducto.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableProducto.getColumnModel().getColumn(0).setMaxWidth(0);
-        
+
         menu.tableStock.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableStock.getColumnModel().getColumn(0).setMaxWidth(0);
-        
+
         JTableHeader headerProd = menu.tableProducto.getTableHeader();
         JTableHeader headerStock = menu.tableStock.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
@@ -233,8 +244,8 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     }
 
     public void agregarContenidoInput(int fila) {
-        int estado = Integer.parseInt(menu.tableProducto.getValueAt(fila, 4).toString());
-        if (estado == 1) {
+        String estado = menu.tableProducto.getValueAt(fila, 4).toString();
+        if (estado == "Disponible") {
             menu.jMenuEliminarProd.setVisible(true);
             menu.jMenuHabilitarProd.setVisible(false);
         } else {
@@ -248,17 +259,14 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         int idProducto = Integer.parseInt(menu.textIdProd.getText());
         Producto producto = prodDao.buscarProducto(idProducto);
         switch (producto.getIva()) {
-            case 0: {
+            case 0 ->  {
                 menu.comboBoxIvaProd.setSelectedItem("No agrava iva");
-                break;
             }
-            case 5: {
+            case 5 ->  {
                 menu.comboBoxIvaProd.setSelectedItem("5%");
-                break;
             }
-            case 19: {
+            case 19 ->  {
                 menu.comboBoxIvaProd.setSelectedItem("19%");
-                break;
             }
         }
         menu.textNombreProd.setText(producto.getNombre());
@@ -269,7 +277,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         menu.comboBoxCategoriaProd.setSelectedItem(new ComboBox(producto.getIdCategoria_fk(), producto.getCategoria()));
         menu.comboBoxProveedorProd.setSelectedItem(new ComboBox(producto.getIdProveedor_fk(), producto.getProveedor()));
     }
-    
+
     public void agregarContenidoStock(int fila) {
         menu.textIdProdStock.setText(menu.tableStock.getValueAt(fila, 0).toString());
         int idProducto = Integer.parseInt(menu.textIdProdStock.getText());
@@ -287,6 +295,9 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         menu.textPrecioVProd.setText("");
         menu.textCantidadProd.setText("");
         menu.textIdProd.setText("");
+        menu.comboBoxCategoriaProd.setSelectedIndex(-1);
+        menu.comboBoxProveedorProd.setSelectedIndex(-1);
+        menu.comboBoxProductos.setSelectedIndex(-1);
         menu.comboBoxIvaProd.setSelectedItem("Seleccione iva");
         menu.btn_registrarProd.setEnabled(true);
         menu.textCantidadProd.setEnabled(true);
@@ -304,7 +315,8 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         for (int i = 0; i < listaProveedor.size(); i++) {
             int idProv = listaProveedor.get(i).getIdProveedor();
             String nombreProv = listaProveedor.get(i).getNombre();
-            menu.comboBoxProveedorProd.addItem(new ComboBox(idProv, nombreProv));
+            String apellidoProv = listaProveedor.get(i).getApellido();
+            menu.comboBoxProveedorProd.addItem(new ComboBox(idProv, nombreProv + " " + apellidoProv));
         }
         for (int i = 0; i < listaProductos.size(); i++) {
             int idProd = listaProductos.get(i).getIdProducto();
@@ -323,21 +335,25 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
         if (productoSeleccionado != null) {
             int id = productoSeleccionado.getId();
-            int cantidad = prodDao.cantidadProductos(id);
-            menu.textStockAct.setText(String.valueOf(cantidad));
+            Producto producto = prodDao.buscarCantidadProd(id);
+            menu.textStockAct.setText(String.valueOf(producto.getCantidad()));
+        } else {
+            menu.textStockAct.setText("");
         }
     }
 
     public void actualizarStock() {
         int stockActual = Integer.parseInt(menu.textStockAct.getText());
-        String cantidad = menu.textStockNew.getText();
-        if (cantidad.equals("")) {
+        String cantidad = menu.textStockNew.getText().trim();
+        ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
+        if (productoSeleccionado == null ) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (cantidad.equals("")) {
             JOptionPane.showMessageDialog(null, "Debes agregar una cantidad para actualizar el stock", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             if (Integer.parseInt(cantidad) <= 0) {
                 JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa o igual a cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
                 int id = productoSeleccionado.getId();
                 int stockNuevo = Integer.parseInt(cantidad) + stockActual;
                 if (prodDao.actualizarCantidad(stockNuevo, id)) {
@@ -369,6 +385,8 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             actualizarStock();
             limpiarTabla();
             listarProducto();
+            estadoCombo();
+            menu.textStockAct.setText("");
         }
     }
 
@@ -386,6 +404,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             listarProducto();
             eliminarItemsCombox();
             llenarComboBox();
+            estadoCombo();
         } else if (e.getSource() == menu.btn_irStock) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(8);
@@ -394,6 +413,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             listarProducto();
             eliminarItemsCombox();
             llenarComboBox();
+            estadoCombo();
         } else if (e.getSource() == menu.btn_volverProd) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(2);

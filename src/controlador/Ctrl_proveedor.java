@@ -46,10 +46,10 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void registrarProv() {
-        String nombre = menu.textNombreProv.getText();
-        String apellido = menu.textApellidoProv.getText();
-        String direccion = menu.textDireccionProv.getText();
-        String telefono = menu.textTelefonoProv.getText();
+        String nombre = menu.textNombreProv.getText().trim();
+        String apellido = menu.textApellidoProv.getText().trim();
+        String direccion = menu.textDireccionProv.getText().trim();
+        String telefono = menu.textTelefonoProv.getText().trim();
         if (nombre.isEmpty() || apellido.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
         } else {
@@ -73,10 +73,10 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
         } else {
             int id = Integer.parseInt(menu.textIdProv.getText());
-            String nombre = menu.textNombreProv.getText();
-            String apellido = menu.textApellidoProv.getText();
-            String direccion = menu.textDireccionProv.getText();
-            String telefono = menu.textTelefonoProv.getText();
+            String nombre = menu.textNombreProv.getText().trim();
+            String apellido = menu.textApellidoProv.getText().trim();
+            String direccion = menu.textDireccionProv.getText().trim();
+            String telefono = menu.textTelefonoProv.getText().trim();
             if (nombre.isEmpty() || apellido.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
             } else {
@@ -130,7 +130,7 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void listarProv() {
-        List<Proveedor> lista = provDao.listaProv(menu.textBuscarProv.getText());
+        List<Proveedor> lista = provDao.listaProv(menu.textBuscarProv.getText().trim());
         modeloTablaProv = (DefaultTableModel) menu.tableProveedor.getModel();
         Object[] ob = new Object[5];
         for (int i = 0; i < lista.size(); i++) {
@@ -138,7 +138,11 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             ob[1] = lista.get(i).getNombre();
             ob[2] = lista.get(i).getApellido();
             ob[3] = lista.get(i).getTelefono();
-            ob[4] = lista.get(i).getEstado();
+            if (lista.get(i).getEstado() == 1) {
+                ob[4] = "Habilitado";
+            } else {
+                ob[4] = "Deshabilitado";
+            }
             modeloTablaProv.addRow(ob);
         }
         menu.tableProveedor.setModel(modeloTablaProv);
@@ -164,8 +168,8 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void agregarContenidoInput(int fila) {
-        int estado = Integer.parseInt(menu.tableProveedor.getValueAt(fila, 4).toString());
-        if (estado == 1) {
+        String estado = menu.tableProveedor.getValueAt(fila, 4).toString();
+        if (estado == "Habilitado") {
             menu.jMenuEliminarProv.setVisible(true);
             menu.jMenuHabilitarProv.setVisible(false);
         } else {

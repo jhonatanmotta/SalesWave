@@ -11,11 +11,23 @@ import javax.swing.JOptionPane;
 
 public class ProductoDAO {
 
-    //se trae la conexion a la bd, se declara el PreparedStatement y el ResultSet
+    //se crea un objeto de la clase Conexion y se llama a su metodo static conectar()
     private static Connection conexion = Conexion.conectar();
+    //se inicializa la variable PreparedStatement ps que se utiliza para ejecutar consultas SQL
     private static PreparedStatement ps = null;
+    //se declara la variable ResultSet retorno que se utiliza para recuperar datos de una bd después de ejecutar una consulta SQL
     private static ResultSet retorno;
 
+    /**
+     * el metodo registroProducto ejecuta una sentendia SQL con los datos a
+     * registrar de la tabla producto
+     *
+     * @param prod Instancia de la clase Producto que contiene la informacion
+     * que se desea guardar
+     * @return booolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean registroProducto(Producto prod) {
         boolean retornoRegistro = false;
         String sql = "INSERT INTO producto (nombre, descripcion, cantidad, precioCompra, precioVenta, iva, idCategoria_fk, idProveedor_fk, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -40,6 +52,15 @@ public class ProductoDAO {
         return retornoRegistro;
     }
 
+    /**
+     * el metodo listaProductos lista los datos de la tabla producto en un
+     * ArrayList para luego mostrarlos en la tabla
+     *
+     * @param String el valor que se desea buscar coincidencias dentro de una
+     * columna. Para luego mostrar los datos en la tabla
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listaProductos(String valorBusqueda) {
         List<Producto> listaProd = new ArrayList();
         //consulta a la base de datos
@@ -69,6 +90,16 @@ public class ProductoDAO {
         return listaProd;
     }
 
+    /**
+     * el metodo modificarProducto ejecuta una senticia SQL para actualizar los
+     * datos de la tabla Producto
+     *
+     * @param prod Instancia de la clase Producto que contiene la informacion
+     * que se desea actualizar
+     * @return boolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean modificarProducto(Producto prod) {
         String sql = "UPDATE producto SET nombre = ?, descripcion = ?, precioCompra = ?, precioVenta = ?, iva = ?,"
                 + " estado = ?, idCategoria_fk = ?, idProveedor_fk = ? WHERE idProducto = ?";
@@ -92,6 +123,17 @@ public class ProductoDAO {
         }
     }
 
+    /**
+     * el metodo estadoProducto cambia la columna estado de la tabla producto
+     *
+     * @param int estado valor que se le desea dar a la columna ya sea 1 =
+     * activo o 0 = desactiva
+     * @param int id para referenciar la fila a la que se desea cambiar el
+     * estado
+     * @return boolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean estadoProducto(int estado, int id) {
         String sql = "UPDATE producto SET estado = ? WHERE idProducto = ?";
         try {
@@ -107,6 +149,13 @@ public class ProductoDAO {
         }
     }
 
+    /**
+     * el metodo listarComboCategoria lista el contenido de la tabla categoria
+     * para luego mostrarlo en un comboBox
+     *
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listarComboCategoria() {
         List<Categoria> categoria = new ArrayList<>();
         String sql = "SELECT * FROM categoria WHERE estado = ? ORDER BY nombre";
@@ -127,6 +176,13 @@ public class ProductoDAO {
         return categoria;
     }
 
+    /**
+     * el metodo listarComboProveedor lista el contenido de la tabla proveedor
+     * para luego mostrarlo en un comboBox
+     *
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listarComboProveedor() {
         List<Proveedor> proveedor = new ArrayList<>();
         String sql = "SELECT * FROM proveedor WHERE estado = ? ORDER BY nombre";
@@ -149,7 +205,14 @@ public class ProductoDAO {
         }
         return proveedor;
     }
-    
+
+    /**
+     * el metodo listarComboProducto lista el contenido de la tabla producto
+     * para luego mostrarlo en un comboBox
+     *
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listarComboProducto() {
         List<Producto> producto = new ArrayList<>();
         String sql = "SELECT * FROM producto WHERE estado = ? ORDER BY nombre";
@@ -174,24 +237,48 @@ public class ProductoDAO {
         }
         return producto;
     }
-
-    public int cantidadProductos(int idProducto) {
-        String sql = "SELECT cantidad FROM producto WHERE idProducto = ?";
-        int cantidad = 0;
+    
+    /**
+     * el metodo listarComboCliente lista el contenido de la tabla cliente
+     * para luego mostrarlo en un comboBox
+     *
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
+    public List listarComboCliente() {
+        List<Cliente> cliente = new ArrayList<>();
+        String sql = "SELECT * FROM cliente WHERE estado = ? ORDER BY nombre";
         try {
             ps = conexion.prepareStatement(sql);
-            ps.setInt(1, idProducto);
+            ps.setInt(1, 1);
             retorno = ps.executeQuery();
             while (retorno.next()) {
-                cantidad = (retorno.getInt("cantidad"));
+                Cliente client = new Cliente();
+                client.setIdCliente(retorno.getInt("idCliente"));
+                client.setNombre(retorno.getString("nombre"));
+                client.setApellido(retorno.getString("apellido"));
+                client.setCedula(retorno.getString("cedula"));
+                client.setTelefono(retorno.getString("telefono"));
+                client.setEstado(retorno.getInt("estado"));
+                cliente.add(client);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
-        return cantidad;
+        return cliente;
     }
-    
-    public boolean actualizarCantidad (int cant, int id) {
+
+    /**
+     * el metodo actualizarCantidad, actuliza la cantidad de un producto
+     * especifico
+     *
+     * @param int cant, nueva cantidad del producto
+     * @param int id, id del producto del que se desea cambiar su cantidad
+     * @return boolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
+    public boolean actualizarCantidad(int cant, int id) {
         String sql = "UPDATE producto SET cantidad = ? WHERE idProducto = ?";
         try {
             ps = conexion.prepareStatement(sql);
@@ -204,7 +291,18 @@ public class ProductoDAO {
             return false;
         }
     }
-    
+
+    /**
+     * el metodo buscarProducto, busca un producto en especifico y se trae toda
+     * su informacion ademas del idCategoria, nombre Categoria, idProveedor,
+     * nombre Proveedor de sus respectivas tablas haciendo uso del INNER JOIN
+     *
+     * @param int idProducto para refereciar de que producto se desea conocer su
+     * informacion
+     * @return Producto, devuelve un objeto de la clase Producto que contiene la
+     * informacion de un producto
+     * @throws SQLException exception de SQL
+     */
     public Producto buscarProducto(int idProducto) {
         String sql = "SELECT prod.*, cat.idCategoria, cat.nombre as categoria, prov.idProveedor, prov.nombre "
                 + "as proveedor FROM producto prod INNER JOIN categoria cat ON prod.idCategoria_fk = cat.idCategoria "
@@ -215,7 +313,6 @@ public class ProductoDAO {
             ps.setInt(1, idProducto);
             retorno = ps.executeQuery();
             if (retorno.next()) {
-//                prod.setIdProducto(retorno.getInt("idProducto"));
                 prod.setNombre(retorno.getString("nombre"));
                 prod.setDescripcion(retorno.getString("descripcion"));
                 prod.setCantidad(retorno.getInt("cantidad"));
@@ -232,7 +329,17 @@ public class ProductoDAO {
         }
         return prod;
     }
-    
+
+    /**
+     * el metodo buscarCantidadProd, busca el id, nombre y cantidad de un
+     * producto especifico
+     *
+     * @param int idProducto para refereciar de que producto se desea conocer su
+     * informacion
+     * @return Producto devuelve un objeto de la clase Producto que contiene la
+     * informacion de un producto
+     * @throws SQLException exception de SQL
+     */
     public Producto buscarCantidadProd(int idProducto) {
         Producto prod = new Producto();
         String sql = "SELECT idProducto, nombre, cantidad FROM producto WHERE idProducto = ?";

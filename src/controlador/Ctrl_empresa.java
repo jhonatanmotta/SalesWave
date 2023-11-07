@@ -15,7 +15,7 @@ import modelo.EmpresaDAO;
 import vista.Menu;
 
 public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener {
-    
+
     // atributos del controlador empresa 
     private Empresa emp; // atributo de tipo Empresa para asignar una instancia de este
     private EmpresaDAO empDao; // atributo de tipo EmpresaDAO para asignar una instancia de este
@@ -52,11 +52,11 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
 //        menu.textTelefonoEmp.setEnabled(false);
 //        menu.textDireccionEmp.setEnabled(false);
 //    }
-    public void validarContrasena() {
-        String nombre = menu.textNombreEmp.getText();
-        String nit = menu.textNitEmp.getText();
-        String telefono = menu.textTelefonoEmp.getText();
-        String direccion = menu.textDireccionEmp.getText();
+    public void modificarInformacion() {
+        String nombre = menu.textNombreEmp.getText().trim();
+        String nit = menu.textNitEmp.getText().trim();
+        String telefono = menu.textTelefonoEmp.getText().trim();
+        String direccion = menu.textDireccionEmp.getText().trim();
         if (nombre.isEmpty() || nit.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
         } else {
@@ -67,10 +67,7 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
             if (result == JOptionPane.OK_OPTION) {
                 char[] passwordChars = passwordField.getPassword(); // Obtener la contraseña como un arreglo de caracteres
                 String password = new String(passwordChars); // Convertir el arreglo de caracteres a una cadena
-                // Obtener usuario y contraseña del usuario que se logeo al inicio
-                Credenciales credenciales = Credenciales.getInstancia(); // Se obtiene la instancia de Credenciales
-                String passwordLogin = credenciales.getContrasena(); // Se obtienen la contrasena usando el metodo get de Credenciales
-                if (password.equals(passwordLogin)) {
+                if (validarContrasena(password)) {
                     emp.setNombre(nombre);
                     emp.setNit(nit);
                     emp.setTelefono(telefono);
@@ -85,10 +82,21 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
         }
     }
 
+    public boolean validarContrasena(String password) {
+        // Obtener usuario y contraseña del usuario que se logeo al inicio
+        Credenciales credenciales = Credenciales.getInstancia(); // Se obtiene la instancia de Credenciales
+        String passwordLogin = credenciales.getContrasena(); // Se obtienen la contrasena usando el metodo get de Credenciales
+        if (password.equals(passwordLogin)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menu.btn_modificarEmp) {
-            validarContrasena();
+            modificarInformacion();
             llenarInformacion();
         }
     }

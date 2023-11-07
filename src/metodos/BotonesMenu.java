@@ -15,35 +15,11 @@ public class BotonesMenu{
     private JLabel tituloPanel;
     private final Color colorDefault = new Color(0, 161, 199);
     private final Color colorPressed = new Color(0, 149, 184);
-    
-//    public BotonesMenu(Menu menu) {
-//        this.menu = menu;
-//        this.tabbedPane = menu.jTabbedPanel;
-//        tabbedPane.setSelectedIndex(1);
-//        this.menu.btnInicio.addActionListener(this);
-//        this.menu.btnUsuario.addActionListener(this);
-//        this.menu.btnProducto.addActionListener(this);
-//        this.menu.btnCliente.addActionListener(this);
-//        this.menu.btnCategoria.addActionListener(this);
-//        this.menu.btnProveedor.addActionListener(this);
-//        this.menu.btnVenta.addActionListener(this);
-//        this.menu.btnReporte.addActionListener(this);
-//        this.menu.btn_actualizarStock.addActionListener(this);
-//    }
+
     public BotonesMenu(Menu menu) {
         this.menu = menu;
         this.tabbedPane = menu.jTabbedPanel;
         this.tituloPanel = menu.tituloPanel;
-//        tabbedPane.setSelectedIndex(1);
-//        this.menu.btnInicio.addActionListener(this);
-//        this.menu.btnUsuario.addActionListener(this);
-//        this.menu.btnProducto.addActionListener(this);
-//        this.menu.btnCliente.addActionListener(this);
-//        this.menu.btnCategoria.addActionListener(this);
-//        this.menu.btnProveedor.addActionListener(this);
-//        this.menu.btnVenta.addActionListener(this);
-//        this.menu.btnReporte.addActionListener(this);
-//        this.menu.btn_actualizarStock.addActionListener(this);
     }
 
     public void cambiarColorDefault (){
@@ -69,39 +45,4 @@ public class BotonesMenu{
     public void cambiarTitulo (String texto) {
         tituloPanel.setText(texto);
     }
-    
-    
-//    @Override
-//    public void actionPerformed(ActionEvent e) {
-//        cambiarColorDefault ();
-//        if (e.getSource() == menu.btnInicio) {
-//            cambiarPanel (0);
-//            cambiarColor (menu.btnInicio);
-//        } else if (e.getSource() == menu.btnUsuario) {
-//            cambiarPanel (1);
-//            cambiarColor (menu.btnUsuario);
-//        } else if (e.getSource() == menu.btnProducto) {
-//            cambiarPanel(2);
-//            cambiarColor (menu.btnProducto);
-//            
-//        } else if (e.getSource() == menu.btnCliente) {
-//            cambiarPanel(3);
-//            cambiarColor (menu.btnCliente);
-//        } else if (e.getSource() == menu.btnCategoria) {
-//            cambiarPanel(4);
-//            cambiarColor (menu.btnCategoria);
-//        } else if (e.getSource() == menu.btnProveedor) {
-//            cambiarPanel(5);
-//            cambiarColor (menu.btnProveedor);
-//        } else if (e.getSource() == menu.btnVenta) {
-//            cambiarPanel(6);
-//            cambiarColor (menu.btnVenta);
-//        } else if (e.getSource() == menu.btnReporte) {
-//            cambiarPanel(7);
-//            cambiarColor (menu.btnReporte);
-//        } else if (e.getSource() == menu.btn_actualizarStock) {
-//            cambiarPanel(8);
-//        }
-    }
-
-//}
+}
