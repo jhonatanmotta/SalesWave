@@ -74,7 +74,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         String nombreProd = menu.textNombreProd.getText().trim();
         String descripcionProd = menu.textDescripcionProd.getText().trim();
         String precioCompra = menu.textPrecioCProd.getText().trim();
-        String precioVenta = menu.textPrecioCProd.getText().trim();
+        String precioVenta = menu.textPrecioVProd.getText().trim();
         String cantidad = menu.textCantidadProd.getText().trim();
         String ivaProd = (String) menu.comboBoxIvaProd.getSelectedItem();
         if (nombreProd.isEmpty() || descripcionProd.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty() || categoriaProd == null || proveedorProd == null) {

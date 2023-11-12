@@ -9,24 +9,30 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
 import metodos.ComboBox;
+import metodos.Credenciales;
 import metodos.Validaciones;
 import modelo.Cliente;
 import modelo.Producto;
 import modelo.ProductoDAO;
 import modelo.detalleVenta;
+import modelo.encabezadoVenta;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import vista.Menu;
 
 public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
 
     private ProductoDAO prodDao;
+    private encabezadoVenta encabezado;
+    private detalleVenta detalle;
     private Menu menu;
     DefaultTableModel modeloTabla = new DefaultTableModel();
     List<detalleVenta> listaProductosVenta = new ArrayList<>();
@@ -42,18 +48,25 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     private int porcentajeIva = 0;
     private double iva = 0.0;
     private double total = 0.0;
-    
+
     //calculos generales 
     private double subtotalVenta = 0.0;
     private double ivaVenta = 0.0;
     private double totalVenta = 0.0;
 
-    public Ctrl_venta(ProductoDAO prodDao, Menu menu) {
+    private int filaEliminar = -1;
+
+    public Ctrl_venta(ProductoDAO prodDao, encabezadoVenta encabezado, detalleVenta detalle, Menu menu) {
         this.menu = menu;
         this.prodDao = prodDao;
+        this.encabezado = encabezado;
+        this.detalle = detalle;
         this.menu.btnVenta.addMouseListener(this);
         this.menu.aniadirProdVenta.addActionListener(this);
-
+        this.menu.pagarVenta.addActionListener(this);
+        this.menu.tableProductosVenta.addMouseListener(this);
+        this.menu.jMenuEliminarVentaProd.addActionListener(this);
+        this.menu.generarVenta.addActionListener(this);
         styleVenta();
     }
 
@@ -75,6 +88,9 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
 
         menu.comboBoxClientesVenta.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Selecciona un cliente");
         AutoCompleteDecorator.decorate(menu.comboBoxClientesVenta);
+
+        menu.textEfectivoVenta.setEnabled(false);
+        menu.pagarVenta.setEnabled(false);
     }
 
     public void estadoCombo() {
@@ -95,6 +111,22 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     public void limpiarDatos() {
         menu.comboBoxProductosVenta.setSelectedIndex(-1);
         menu.textCantidadProdVenta.setText("");
+        menu.textEfectivoVenta.setText("");
+        menu.cambioVenta.setText("0.0");
+    }
+
+    public void resetDatosVenta() {
+        menu.comboBoxProductosVenta.setSelectedIndex(-1);
+        menu.comboBoxClientesVenta.setSelectedIndex(-1);
+        menu.textCantidadProdVenta.setText("");
+        menu.valorSubtotal.setText("0.0");
+        menu.valorTotalPago.setText("0.0");
+        menu.valorIva.setText("0.0");
+        menu.textEfectivoVenta.setText("");
+        menu.cambioVenta.setText("0.0");
+        idDetalle = 1;
+        menu.textEfectivoVenta.setEnabled(false);
+        menu.pagarVenta.setEnabled(false);
     }
 
 //    public static void main(String[] args) {
@@ -102,7 +134,6 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
 //        System.out.println(ivaCalculado + " hola");
 //    }
     public void agregarDetalleVenta() {
-
         int indexSeleccionado = menu.comboBoxProductosVenta.getSelectedIndex();
         String cantidadProd = menu.textCantidadProdVenta.getText();
         if (indexSeleccionado == -1) {
@@ -128,11 +159,11 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                         iva = calcularIva(precioProducto, cantidadProducto, porcentajeIva);
                         if (!buscarValorTabla(nombreProducto)) {
                             if (cantidadProducto <= cantidadProductoDataBase) {
-                                iva = (double) Math.round(subtotal * 100) / 100;
+//                                iva = (double) Math.round(subtotal * 100) / 100;
                                 subtotal = precioProducto * cantidadProducto;
-                                subtotal = (double) Math.round(subtotal * 100) / 100;
+//                                subtotal = (double) Math.round(subtotal * 100) / 100;
                                 total = subtotal + iva;
-                                total = (double) Math.round(total * 100) / 100;
+//                                total = (double) Math.round(total * 100) / 100;
                                 producto = new detalleVenta(idDetalle, 1, idProducto, nombreProducto, cantidadProducto, precioProducto, subtotal, iva, total, 1);
                                 listaProductosVenta.add(producto);
                                 idDetalle++;
@@ -151,16 +182,98 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         }
     }
 
-    public void calcularCantidades () {
-        double subtotalVenta = 0.0;
-        double ivaVenta = 0.0;
-        double totalVenta = 0.0;
+    public void generarVenta() {
+        Date date = new Date();
+        String fechaActual = new SimpleDateFormat("yyyy/MM/dd").format(date);
+        int indexSeleccionado = menu.comboBoxClientesVenta.getSelectedIndex();
+        if (indexSeleccionado == -1) {
+            JOptionPane.showMessageDialog(null, "Debes seleccionar un cliente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (listaProductosVenta.size() > 0) {
+                Credenciales credenciales = Credenciales.getInstancia(); // Se obtiene la instancia de Credenciales
+                String usuarioLogeado = credenciales.getUsuario(); // Se obtienen el usuario usando el metodo get de Credenciales
+                int idUsuario = prodDao.buscarUsuario(usuarioLogeado);
+                ComboBox clienteSeleccionado = (ComboBox) menu.comboBoxClientesVenta.getSelectedItem();
+                encabezado.setIdCliente_fk(clienteSeleccionado.getId());
+                encabezado.setIdEmpresa_fk(1);
+                encabezado.setIdUsuario_fk(idUsuario);
+                encabezado.setValorPagar(totalVenta);
+                encabezado.setFechaVenta(fechaActual);
+                if (prodDao.registroEncabezado(encabezado)) {
+                    int lastIdEncabezadoVenta = prodDao.obtenerIdEncabezado();
+                    for (detalleVenta producto : listaProductosVenta) {
+                        detalle.setIdEncabezadoVenta_fk(lastIdEncabezadoVenta);
+                        detalle.setIdProducto_fk(producto.getIdProducto_fk());
+                        detalle.setCantidad(producto.getCantidad());
+                        detalle.setPrecioUnitario(producto.getPrecioUnitario());
+                        detalle.setSubtotal(producto.getSubtotal());
+                        detalle.setIva(producto.getIva());
+                        detalle.setTotalPagar(producto.getTotalPagar());
+                        if (prodDao.registroDetalle(detalle)) {
+                            resetDatosVenta();
+                            actualizarStock(producto.getIdProducto_fk(), producto.getCantidad());
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al registrar el detalle de la venta del producto" + producto.getNombreProducto(), "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    JOptionPane.showMessageDialog(null, "La venta ha sido facturada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    listaProductosVenta.clear();
+                    listarVenta();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al registrar el encabezado de la venta", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay productos agregados en la cola", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+    public void calcularCantidades() {
+        subtotalVenta = 0.0;
+        ivaVenta = 0.0;
+        totalVenta = 0.0;
         for (detalleVenta valor : listaProductosVenta) {
             subtotalVenta += valor.getSubtotal();
             ivaVenta += valor.getIva();
             totalVenta += valor.getTotalPagar();
         }
-        
+        menu.valorSubtotal.setText(String.valueOf(subtotalVenta));
+        menu.valorIva.setText(String.valueOf(ivaVenta));
+        menu.valorTotalPago.setText(String.valueOf(totalVenta));
+        menu.textEfectivoVenta.setEnabled(true);
+        menu.pagarVenta.setEnabled(true);
+    }
+
+    public void calcularCambio() {
+        String efectivo = menu.textEfectivoVenta.getText();
+//        String total = 
+        if (!Validaciones.validarNoVacios("Debes ingresar un monto de dinero primero", efectivo)) {
+            return;
+        } else {
+            if (!Validaciones.validarParseoADouble(efectivo, "Debes ingresar un valor numerico")) {
+                return;
+            } else {
+                if (!Validaciones.validarNumeroEnteroNoNegativo(efectivo, "El monto debe ser mayor a cero")) {
+                    return;
+                } else {
+                    double montoPago = Double.parseDouble(efectivo);
+                    double totalPago = Double.parseDouble(menu.valorTotalPago.getText());
+                    if (!Validaciones.valorMenor(totalPago, montoPago, "Parece que no te alcanza para pagar prueba con otra cantidad")) {
+                        return;
+                    } else {
+                        double cambio = montoPago - totalPago;
+                        menu.cambioVenta.setText(String.valueOf(cambio));
+                    }
+                }
+            }
+        }
+    }
+
+    public void actualizarStock (int idProducto, int cantidadVendida) {
+        Producto producto = prodDao.buscarCantidadProd(idProducto);
+        int cantidadActual = producto.getCantidad();
+        int nuevaCantidad = cantidadActual - cantidadVendida;
+        prodDao.actualizarCantidad(nuevaCantidad, idProducto);
     }
     
     public boolean buscarValorTabla(String productoBusqueda) {
@@ -191,12 +304,14 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         menu.tableProductosVenta.setModel(modeloTabla);
     }
 
-    public boolean validacionFormatoNumero(String valor) {
-        try {
-            int num = Integer.parseInt(valor);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+    public void eliminarProducto() {
+        if (filaEliminar > -1) {
+            int prodEliminar = (int) menu.tableProductosVenta.getValueAt(filaEliminar, 0);
+            if (prodEliminar > -1) {
+                listaProductosVenta.remove(prodEliminar - 1);
+                listarVenta();
+                calcularCantidades();
+            }
         }
     }
 
@@ -225,8 +340,18 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menu.aniadirProdVenta) {
-//            menu.textCantidadProdVenta.requestFocus();
             agregarDetalleVenta();
+        } else if (e.getSource() == menu.pagarVenta) {
+            calcularCambio();
+        } else if (e.getSource() == menu.jMenuEliminarVentaProd) {
+            eliminarProducto();
+            limpiarDatos();
+            if (listaProductosVenta.size() == 0) {
+                menu.textEfectivoVenta.setEnabled(false);
+                menu.pagarVenta.setEnabled(false);
+            }
+        } else if (e.getSource() == menu.generarVenta) {
+            generarVenta();
         }
     }
 
@@ -240,6 +365,8 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
             eliminarItemsCombox();
             llenarComboBox();
             estadoCombo();
+        } else if (e.getSource() == menu.tableProductosVenta) {
+            filaEliminar = menu.tableProductosVenta.rowAtPoint(e.getPoint());
         }
     }
 

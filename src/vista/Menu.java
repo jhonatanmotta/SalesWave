@@ -21,6 +21,8 @@ import modelo.Proveedor;
 import modelo.ProveedorDAO;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
+import modelo.detalleVenta;
+import modelo.encabezadoVenta;
 
 public class Menu extends javax.swing.JFrame {
 
@@ -36,6 +38,8 @@ public class Menu extends javax.swing.JFrame {
     ProductoDAO prodDao = new ProductoDAO();
     Empresa emp = new Empresa();
     EmpresaDAO empDao = new EmpresaDAO();
+    encabezadoVenta encabezado = new encabezadoVenta();
+    detalleVenta detalle = new detalleVenta();
 
     public Menu() {
         initComponents();
@@ -50,7 +54,7 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_proveedor controladorProveedor = new Ctrl_proveedor(prov, provDao, this);
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
         Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp,empDao, this);
-        Ctrl_venta controladorVenta = new Ctrl_venta(prodDao,this);
+        Ctrl_venta controladorVenta = new Ctrl_venta(prodDao,encabezado, detalle, this);
     }
 
     /**
@@ -1070,7 +1074,7 @@ public class Menu extends javax.swing.JFrame {
 
         valorTotalPago.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         valorTotalPago.setForeground(new java.awt.Color(51, 51, 51));
-        valorTotalPago.setText("00000");
+        valorTotalPago.setText("0.0");
         panelVenta.add(valorTotalPago, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, 30));
 
         labelSubtotalVenta4.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1080,12 +1084,12 @@ public class Menu extends javax.swing.JFrame {
 
         cambioVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         cambioVenta.setForeground(new java.awt.Color(51, 51, 51));
-        cambioVenta.setText("0000");
+        cambioVenta.setText("0.0");
         panelVenta.add(cambioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 560, -1, 30));
 
         valorIva.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         valorIva.setForeground(new java.awt.Color(51, 51, 51));
-        valorIva.setText("000");
+        valorIva.setText("0.0");
         panelVenta.add(valorIva, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, 30));
 
         aniadirProdVenta.setBackground(new java.awt.Color(232, 158, 67));
@@ -1103,7 +1107,7 @@ public class Menu extends javax.swing.JFrame {
 
         valorSubtotal.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         valorSubtotal.setForeground(new java.awt.Color(51, 51, 51));
-        valorSubtotal.setText("0000");
+        valorSubtotal.setText("0.0");
         panelVenta.add(valorSubtotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 70, -1, 30));
 
         pagarVenta.setBackground(new java.awt.Color(232, 158, 67));
@@ -1590,7 +1594,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btn_registrarProv;
     public javax.swing.JButton btn_registrarUsuario;
     public javax.swing.JButton btn_volverProd;
-    private javax.swing.JLabel cambioVenta;
+    public javax.swing.JLabel cambioVenta;
     public javax.swing.JComboBox<Object> comboBoxCategoriaProd;
     public javax.swing.JComboBox<Object> comboBoxClientesVenta;
     public javax.swing.JComboBox<String> comboBoxIvaProd;
@@ -1606,7 +1610,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JMenuItem jMenuEliminarProd;
     public javax.swing.JMenuItem jMenuEliminarProv;
     public javax.swing.JMenuItem jMenuEliminarUsuario;
-    private javax.swing.JMenuItem jMenuEliminarVentaProd;
+    public javax.swing.JMenuItem jMenuEliminarVentaProd;
     public javax.swing.JMenuItem jMenuHabilitarCategoria;
     public javax.swing.JMenuItem jMenuHabilitarCliente;
     public javax.swing.JMenuItem jMenuHabilitarProd;
@@ -1634,7 +1638,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelBuscarProd;
     private javax.swing.JLabel labelBuscarProv;
     private javax.swing.JLabel labelBuscarUsuario;
-    private javax.swing.JLabel labelCambioVenta;
+    public javax.swing.JLabel labelCambioVenta;
     public javax.swing.JLabel labelCantidadAct;
     public javax.swing.JLabel labelCantidadNew;
     public javax.swing.JLabel labelCantidadProd;
@@ -1644,7 +1648,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelClienteProd;
     private javax.swing.JLabel labelComboProd;
     private javax.swing.JLabel labelDescripcionProd;
-    private javax.swing.JLabel labelDineroVenta;
+    public javax.swing.JLabel labelDineroVenta;
     private javax.swing.JLabel labelDireccionProv;
     private javax.swing.JLabel labelEmpresaDireccion;
     private javax.swing.JLabel labelEmpresaNit;
@@ -1732,8 +1736,8 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textUsuario;
     public javax.swing.JLabel tituloPanel;
     public javax.swing.JPasswordField txtPassword;
-    private javax.swing.JLabel valorIva;
-    private javax.swing.JLabel valorSubtotal;
-    private javax.swing.JLabel valorTotalPago;
+    public javax.swing.JLabel valorIva;
+    public javax.swing.JLabel valorSubtotal;
+    public javax.swing.JLabel valorTotalPago;
     // End of variables declaration//GEN-END:variables
 }

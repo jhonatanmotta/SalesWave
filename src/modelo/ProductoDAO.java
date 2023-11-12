@@ -1,5 +1,6 @@
 package modelo;
 
+import com.mysql.cj.xdevapi.Statement;
 import conexion.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -237,10 +238,10 @@ public class ProductoDAO {
         }
         return producto;
     }
-    
+
     /**
-     * el metodo listarComboCliente lista el contenido de la tabla cliente
-     * para luego mostrarlo en un comboBox
+     * el metodo listarComboCliente lista el contenido de la tabla cliente para
+     * luego mostrarlo en un comboBox
      *
      * @return List una lista de los datos recuperados de la consulta SQL
      * @throws SQLException exception de SQL
@@ -356,5 +357,84 @@ public class ProductoDAO {
             System.out.println(e);
         }
         return prod;
+    }
+
+    public boolean registroEncabezado(encabezadoVenta encabezado) {
+        boolean retornoRegistro = false;
+        String sql = "INSERT INTO encabezadoventa (idCliente_fk, idEmpresa_fk, idUsuario_fk, valorPagar, fechaVenta, estado) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, encabezado.getIdCliente_fk());
+            ps.setInt(2, encabezado.getIdEmpresa_fk());
+            ps.setInt(3, encabezado.getIdUsuario_fk());
+            ps.setDouble(4, encabezado.getValorPagar());
+            ps.setString(5, encabezado.getFechaVenta());
+            ps.setInt(6, 1);
+            ps.execute();
+            retornoRegistro = true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error al registrar la encabezado de la venta");
+            retornoRegistro = false;
+        }
+        return retornoRegistro;
+    }
+
+    public int obtenerIdEncabezado() {
+        int id = 0;
+        String sql = "SELECT max(idEncabezadoVenta) as id FROM encabezadoventa";
+        try {
+            ps = conexion.prepareStatement(sql);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                id = (retorno.getInt("id"));
+                
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error al obtener el ultimo id del encabezado de la venta");
+        }
+        System.out.println(id);
+        return id;
+    }
+    
+    public int buscarUsuario (String usuario) {
+        int id = -1;
+        String sql = "SELECT idUsuario FROM usuario WHERE usuario = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, usuario);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                id = (retorno.getInt("idUsuario"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error al buscar el usuario");
+        }
+        return id;
+    }
+    
+        public boolean registroDetalle(detalleVenta detalle) {
+        boolean retornoRegistro = false;
+        String sql = "INSERT INTO detalleVenta (idEncabezadoVenta_fk, idProducto_fk, cantidad, precioUnitario, subtotal, iva, totalPagar, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setInt(1, detalle.getIdEncabezadoVenta_fk());
+            ps.setInt(2, detalle.getIdProducto_fk());
+            ps.setInt(3, detalle.getCantidad());
+            ps.setDouble(4, detalle.getPrecioUnitario());
+            ps.setDouble(5, detalle.getSubtotal());
+            ps.setDouble(6, detalle.getIva());
+            ps.setDouble(7, detalle.getTotalPagar());
+            ps.setInt(8, 1);
+            ps.execute();
+            retornoRegistro = true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error al registrar el detalle de la venta");
+            retornoRegistro = false;
+        }
+        return retornoRegistro;
     }
 }

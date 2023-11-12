@@ -3,17 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/detalleVenta.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/controlador/Ctrl_producto.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/conexion/Conexion.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/UsuarioDAO.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/metodos/Validaciones.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/controlador/Ctrl_categoria.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/ProductoDAO.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/Cliente.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/vista/Menu.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/modelo/encabezadoVenta.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SistemaDeVentas/src/controlador/Ctrl_venta.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/vista/Menu.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/controlador/Ctrl_cliente.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/controlador/Ctrl_venta.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/metodos/Validaciones.java</file>
         </group>
     </open-files>
 </project-private>

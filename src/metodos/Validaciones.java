@@ -35,6 +35,17 @@ public class Validaciones {
             return false;
         }
     }
+    
+    // Método para validar si un String se puede parsear a un double
+    public static boolean validarParseoADouble(String str, String MensajeError) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, MensajeError, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+    }
 
     // Método para validar si un String es un número entero mayor, menor o igual a cero
     public static boolean validarNumeroEnteroNoNegativo(String str, String MensajeError) {
@@ -52,6 +63,15 @@ public class Validaciones {
         }
     }
 
+    public static boolean valorMenor(double totalPago, double montoPago, String MensajeError) {
+        if (montoPago < totalPago) {
+            JOptionPane.showMessageDialog(null, MensajeError, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
 //    public static void main(String[] args) {
 //        // Ejemplo de uso de los métodos
 //        validarCantidadCaracteres("123456", 5, "Debe tener como maximo 5 carecteres");
