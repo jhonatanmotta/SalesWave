@@ -1,6 +1,7 @@
 package controlador;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.itextpdf.text.BadElementException;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,16 +10,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
 import metodos.ComboBox;
 import metodos.Credenciales;
+import metodos.GeneradorPDFFactura;
 import metodos.Validaciones;
 import modelo.Cliente;
 import modelo.Producto;
@@ -129,10 +135,6 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         menu.pagarVenta.setEnabled(false);
     }
 
-//    public static void main(String[] args) {
-//        double ivaCalculado = calcularIva(10000.0, 3, 19);
-//        System.out.println(ivaCalculado + " hola");
-//    }
     public void agregarDetalleVenta() {
         int indexSeleccionado = menu.comboBoxProductosVenta.getSelectedIndex();
         String cantidadProd = menu.textCantidadProdVenta.getText();
@@ -182,7 +184,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         }
     }
 
-    public void generarVenta() {
+    public void generarVenta() throws FileNotFoundException, BadElementException, IOException {
         Date date = new Date();
         String fechaActual = new SimpleDateFormat("yyyy/MM/dd").format(date);
         int indexSeleccionado = menu.comboBoxClientesVenta.getSelectedIndex();
@@ -210,13 +212,25 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                         detalle.setIva(producto.getIva());
                         detalle.setTotalPagar(producto.getTotalPagar());
                         if (prodDao.registroDetalle(detalle)) {
-                            resetDatosVenta();
+//                            resetDatosVenta();
                             actualizarStock(producto.getIdProducto_fk(), producto.getCantidad());
                         } else {
                             JOptionPane.showMessageDialog(null, "Error al registrar el detalle de la venta del producto" + producto.getNombreProducto(), "Advertencia", JOptionPane.WARNING_MESSAGE);
                         }
                     }
                     JOptionPane.showMessageDialog(null, "La venta ha sido facturada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    GeneradorPDFFactura factura = new GeneradorPDFFactura();
+                    factura.setNombreCliente(clienteSeleccionado.getNombre());
+                    factura.setNombreUsuario(usuarioLogeado);
+                    factura.setIdEmpresa(1);
+                    factura.setNumVenta(lastIdEncabezadoVenta);
+                    factura.setFechaFactura(fechaActual);
+                    factura.setListaProductos(menu.tableProductosVenta);
+                    factura.setSubtotal(subtotalVenta);
+                    factura.setIva(ivaVenta);
+                    factura.setTotal(totalVenta);
+                    factura.generarFactura();
+                    resetDatosVenta();
                     listaProductosVenta.clear();
                     listarVenta();
                 } else {
@@ -228,6 +242,9 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         }
     }
 
+    public void GeneradorPDFFactura () { 
+    }
+    
     public void calcularCantidades() {
         subtotalVenta = 0.0;
         ivaVenta = 0.0;
@@ -351,7 +368,13 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                 menu.pagarVenta.setEnabled(false);
             }
         } else if (e.getSource() == menu.generarVenta) {
-            generarVenta();
+            try {
+                generarVenta();
+            } catch (BadElementException ex) {
+                System.out.println("");
+            } catch (IOException ex) {
+                System.out.println("");
+            }
         }
     }
 

@@ -394,7 +394,6 @@ public class ProductoDAO {
             System.out.println(e);
             JOptionPane.showMessageDialog(null, "Error al obtener el ultimo id del encabezado de la venta");
         }
-        System.out.println(id);
         return id;
     }
     

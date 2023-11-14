@@ -4,9 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/vista/Menu.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/controlador/Ctrl_cliente.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/metodos/GeneradorPDFFactura.java</file>
             <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/controlador/Ctrl_venta.java</file>
-            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/metodos/Validaciones.java</file>
+            <file>file:/C:/Users/jhona/Documents/Proyecto/SalesWave/src/modelo/ProductoDAO.java</file>
         </group>
     </open-files>
 </project-private>

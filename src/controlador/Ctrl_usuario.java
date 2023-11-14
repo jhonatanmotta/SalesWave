@@ -234,7 +234,7 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(1);
             botones.cambiarColor(menu.btnUsuario);
-            botones.cambiarTitulo("Registro de Usuario");
+            botones.cambiarTitulo("Gestion de Usuarios");
             limpiarTabla();
             listarUsuario();
         }

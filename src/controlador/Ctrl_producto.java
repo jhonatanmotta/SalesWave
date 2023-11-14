@@ -334,6 +334,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     public void llenarCantProd() {
         ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
         if (productoSeleccionado != null) {
+            menu.btn_actualizarStock.setEnabled(true);
             int id = productoSeleccionado.getId();
             Producto producto = prodDao.buscarCantidadProd(id);
             menu.textStockAct.setText(String.valueOf(producto.getCantidad()));
@@ -399,7 +400,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(2);
             botones.cambiarColor(menu.btnProducto);
-            botones.cambiarTitulo("Registro de Productos");
+            botones.cambiarTitulo("Gestion de Productos");
             limpiarTabla();
             listarProducto();
             eliminarItemsCombox();
@@ -414,10 +415,12 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             eliminarItemsCombox();
             llenarComboBox();
             estadoCombo();
+            menu.btn_actualizarStock.setEnabled(false);
+            menu.textStockNew.setText("");
         } else if (e.getSource() == menu.btn_volverProd) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(2);
-            botones.cambiarTitulo("Registro de Productos");
+            botones.cambiarTitulo("Gestion de Productos");
             limpiarTabla();
             listarProducto();
         } else if (e.getSource() == menu.tableStock) {

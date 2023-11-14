@@ -219,7 +219,7 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(3);
             botones.cambiarColor(menu.btnCliente);
-            botones.cambiarTitulo("Registro de Cliente");
+            botones.cambiarTitulo("Gestion de Clientes");
             limpiarTabla();
             listarCliente();
         }

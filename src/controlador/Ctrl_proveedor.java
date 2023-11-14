@@ -224,7 +224,7 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(5);
             botones.cambiarColor(menu.btnProveedor);
-            botones.cambiarTitulo("Registro de Proveedor");
+            botones.cambiarTitulo("Gestion de Proveedor");
             limpiarTabla();
             listarProv();
         }
