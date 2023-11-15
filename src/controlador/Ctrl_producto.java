@@ -252,7 +252,6 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             menu.jMenuHabilitarProd.setVisible(true);
             menu.jMenuEliminarProd.setVisible(false);
         }
-//        menu.btn_modificarProd.setEnabled(true);
         menu.textCantidadProd.setEnabled(false);
         menu.btn_registrarProd.setEnabled(false);
         menu.textIdProd.setText(menu.tableProducto.getValueAt(fila, 0).toString());
@@ -344,10 +343,9 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     }
 
     public void actualizarStock() {
-        int stockActual = Integer.parseInt(menu.textStockAct.getText());
         String cantidad = menu.textStockNew.getText().trim();
-        ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
-        if (productoSeleccionado == null ) {
+        int productoIndexSeleccionado = menu.comboBoxProductos.getSelectedIndex();
+        if (productoIndexSeleccionado == -1) {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else if (cantidad.equals("")) {
             JOptionPane.showMessageDialog(null, "Debes agregar una cantidad para actualizar el stock", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -355,11 +353,11 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             if (Integer.parseInt(cantidad) <= 0) {
                 JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa o igual a cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
+                ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
+                int stockActual = Integer.parseInt(menu.textStockAct.getText());
                 int id = productoSeleccionado.getId();
                 int stockNuevo = Integer.parseInt(cantidad) + stockActual;
                 if (prodDao.actualizarCantidad(stockNuevo, id)) {
-                    menu.textStockAct.setText(String.valueOf(stockNuevo));
-                    menu.textStockNew.setText("");
                     JOptionPane.showMessageDialog(null, "El stock disponible de " + String.valueOf(productoSeleccionado.getNombre()) + " ha sido actualizado");
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo actualizar el stock de " + String.valueOf(productoSeleccionado.getNombre()));
@@ -388,6 +386,7 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             listarProducto();
             estadoCombo();
             menu.textStockAct.setText("");
+            menu.textStockNew.setText("");
         }
     }
 

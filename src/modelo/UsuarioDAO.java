@@ -31,7 +31,6 @@ public class UsuarioDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al iniciar sesion");
         }
         return false;
     }
@@ -51,7 +50,6 @@ public class UsuarioDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
             return false;
         }
     }
@@ -81,7 +79,6 @@ public class UsuarioDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al listar usuarios");
         }
         return listaUsers;
     }
@@ -101,7 +98,6 @@ public class UsuarioDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
             return false;
         }
     }
@@ -122,6 +118,36 @@ public class UsuarioDAO {
         return user;
     }
     
+    public boolean validarUsuario (String user) {
+        String sql = "SELECT usuario FROM usuario WHERE usuario = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, user);
+            retorno = ps.executeQuery();
+            while (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public boolean validarCorreo (String email) {
+        String sql = "SELECT correo FROM usuario WHERE correo = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, email);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
     public boolean estadoUsuario(int estado, int id) {
         String sql = "UPDATE usuario SET estado = ? WHERE idUsuario = ?";
 
@@ -133,7 +159,6 @@ public class UsuarioDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cambiar de estado el usuario");
             return false;
         }
     }

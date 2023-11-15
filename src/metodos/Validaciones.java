@@ -1,5 +1,7 @@
 package metodos;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class Validaciones {
@@ -35,7 +37,7 @@ public class Validaciones {
             return false;
         }
     }
-    
+
     // Método para validar si un String se puede parsear a un double
     public static boolean validarParseoADouble(String str, String MensajeError) {
         try {
@@ -71,11 +73,42 @@ public class Validaciones {
             return true;
         }
     }
-    
-//    public static void main(String[] args) {
-//        // Ejemplo de uso de los métodos
-//        validarCantidadCaracteres("123456", 5, "Debe tener como maximo 5 carecteres");
-//        validarParseoAEntero("1", "No posee el formato de numero");
-//        validarNumeroEnteroNoNegativo("10", "El numero no debe ser menor o igual a cero");
-//    }
+
+    public static boolean validarCorreo(String correo) {
+        // Expresión regular para verificar el formato de un correo electrónico
+        String expresion = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        // Compilar la expresión regular
+        Pattern patron = Pattern.compile(expresion);
+
+        // Comparar el texto ingresado con la expresión regular
+        Matcher matcher = patron.matcher(correo);
+
+        // Devolver true si coincide con el formato de correo electrónico
+        return matcher.matches();
+    }
+
+    public static boolean validarRangoCaracteres(String texto, int minimo, int maximo, String MensajeError) {
+        int longitudTexto = texto.length();
+        if (longitudTexto >= minimo && longitudTexto <= maximo) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, MensajeError, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+    }
+
+    public static boolean validarContrasena(String contraseña) {
+            // Expresión regular para verificar el formato de la contraseña
+            String expresion = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!¡?¿*(){}\\[\\]_|<>,:;/-]).{10,}$";
+
+            // Compilar la expresión regular
+            Pattern patron = Pattern.compile(expresion);
+
+            // Comparar la contraseña con la expresión regular
+            Matcher matcher = patron.matcher(contraseña);
+
+            // Devolver true si coincide con el formato de contraseña
+            return matcher.matches();
+    }
 }

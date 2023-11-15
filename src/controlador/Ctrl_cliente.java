@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
+import metodos.Validaciones;
 import modelo.Cliente;
 import modelo.ClienteDAO;
 import vista.Menu;
@@ -50,20 +51,32 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
         String apellido = menu.textApellidoCliente.getText().trim();
         String cedula = menu.textCedulaCliente.getText().trim();
         String telefono = menu.textTelefonoCliente.getText().trim();
-        if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, cedula, telefono)) {
+            return;
         } else {
-            client.setNombre(nombre);
-            client.setApellido(apellido);
-            client.setCedula(cedula);
-            client.setTelefono(telefono);
-            if (clientDao.registroCliente(client)) {
-                limpiarTabla();
-                listarCliente();
-                limpiarContenidoInput();
-                JOptionPane.showMessageDialog(null, "Cliente registrado con exito");
+            if (clientDao.validarCedula(cedula)) {
+                JOptionPane.showMessageDialog(null, "Parece que este numero de cedula esta asociado a otro usuario", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+                if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
+                    return;
+                } else {
+                    if (!Validaciones.validarParseoAEntero(cedula, "El número de cedula de contener solo valores numericos")) {
+                        return;
+                    } else {
+                        client.setNombre(nombre);
+                        client.setApellido(apellido);
+                        client.setCedula(cedula);
+                        client.setTelefono(telefono);
+                        if (clientDao.registroCliente(client)) {
+                            limpiarTabla();
+                            listarCliente();
+                            limpiarContenidoInput();
+                            JOptionPane.showMessageDialog(null, "Cliente registrado con exito");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+                        }
+                    }
+                }
             }
         }
     }
@@ -147,10 +160,10 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             modeloTablaCliente.addRow(ob);
         }
         menu.tableCliente.setModel(modeloTablaCliente);
-        
+
         menu.tableCliente.getColumnModel().getColumn(0).setMinWidth(0);
-        menu.tableCliente.getColumnModel().getColumn(0).setMaxWidth(0); 
-        
+        menu.tableCliente.getColumnModel().getColumn(0).setMaxWidth(0);
+
         JTableHeader header = menu.tableCliente.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;

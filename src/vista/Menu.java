@@ -53,8 +53,8 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_categoria controladorCategoria = new Ctrl_categoria(cat, catDao, this);
         Ctrl_proveedor controladorProveedor = new Ctrl_proveedor(prov, provDao, this);
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
-        Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp,empDao, this);
-        Ctrl_venta controladorVenta = new Ctrl_venta(prodDao,encabezado, detalle, this);
+        Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp, empDao, this);
+        Ctrl_venta controladorVenta = new Ctrl_venta(prodDao, encabezado, detalle, this);
     }
 
     /**
@@ -405,6 +405,16 @@ public class Menu extends javax.swing.JFrame {
         textNombre.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombre.setForeground(new java.awt.Color(51, 51, 51));
         textNombre.setPreferredSize(new java.awt.Dimension(160, 30));
+        textNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textNombreActionPerformed(evt);
+            }
+        });
+        textNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreKeyTyped(evt);
+            }
+        });
         panelUsuario.add(textNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, -1));
 
         labelApellido.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -415,6 +425,11 @@ public class Menu extends javax.swing.JFrame {
         textApellido.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textApellido.setForeground(new java.awt.Color(51, 51, 51));
         textApellido.setPreferredSize(new java.awt.Dimension(160, 30));
+        textApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textApellidoKeyTyped(evt);
+            }
+        });
         panelUsuario.add(textApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
 
         labelPasswrord.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -425,6 +440,16 @@ public class Menu extends javax.swing.JFrame {
         txtPassword.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtPassword.setForeground(new java.awt.Color(51, 51, 51));
         txtPassword.setPreferredSize(new java.awt.Dimension(170, 30));
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyTyped(evt);
+            }
+        });
         panelUsuario.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 60, -1, -1));
 
         labelUsuario.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -435,6 +460,11 @@ public class Menu extends javax.swing.JFrame {
         textUsuario.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textUsuario.setForeground(new java.awt.Color(51, 51, 51));
         textUsuario.setPreferredSize(new java.awt.Dimension(160, 30));
+        textUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textUsuarioKeyTyped(evt);
+            }
+        });
         panelUsuario.add(textUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 120, -1, -1));
 
         labelTelefono.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -445,6 +475,11 @@ public class Menu extends javax.swing.JFrame {
         textTelefono.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textTelefono.setForeground(new java.awt.Color(51, 51, 51));
         textTelefono.setPreferredSize(new java.awt.Dimension(160, 30));
+        textTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTelefonoKeyTyped(evt);
+            }
+        });
         panelUsuario.add(textTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
 
         labelBuscarUsuario.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -505,6 +540,11 @@ public class Menu extends javax.swing.JFrame {
                 textCorreoActionPerformed(evt);
             }
         });
+        textCorreo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textCorreoKeyTyped(evt);
+            }
+        });
         panelUsuario.add(textCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 60, 240, -1));
 
         jTabbedPanel.addTab("usuario", panelUsuario);
@@ -514,26 +554,51 @@ public class Menu extends javax.swing.JFrame {
         textNombreProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreProd.setForeground(new java.awt.Color(51, 51, 51));
         textNombreProd.setPreferredSize(new java.awt.Dimension(160, 30));
+        textNombreProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreProdKeyTyped(evt);
+            }
+        });
         panelProducto.add(textNombreProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 60, 180, -1));
 
         textDescripcionProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textDescripcionProd.setForeground(new java.awt.Color(51, 51, 51));
         textDescripcionProd.setPreferredSize(new java.awt.Dimension(160, 30));
+        textDescripcionProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textDescripcionProdKeyTyped(evt);
+            }
+        });
         panelProducto.add(textDescripcionProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 410, -1));
 
         textPrecioCProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textPrecioCProd.setForeground(new java.awt.Color(51, 51, 51));
         textPrecioCProd.setPreferredSize(new java.awt.Dimension(160, 30));
+        textPrecioCProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textPrecioCProdKeyTyped(evt);
+            }
+        });
         panelProducto.add(textPrecioCProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, -1, -1));
 
         textPrecioVProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textPrecioVProd.setForeground(new java.awt.Color(51, 51, 51));
         textPrecioVProd.setPreferredSize(new java.awt.Dimension(160, 30));
+        textPrecioVProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textPrecioVProdKeyTyped(evt);
+            }
+        });
         panelProducto.add(textPrecioVProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 160, -1, -1));
 
         textCantidadProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textCantidadProd.setForeground(new java.awt.Color(51, 51, 51));
         textCantidadProd.setPreferredSize(new java.awt.Dimension(120, 30));
+        textCantidadProd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textCantidadProdKeyTyped(evt);
+            }
+        });
         panelProducto.add(textCantidadProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 160, 90, -1));
 
         textBuscarProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -689,11 +754,21 @@ public class Menu extends javax.swing.JFrame {
         textApellidoCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textApellidoCliente.setForeground(new java.awt.Color(51, 51, 51));
         textApellidoCliente.setPreferredSize(new java.awt.Dimension(160, 30));
+        textApellidoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textApellidoClienteKeyTyped(evt);
+            }
+        });
         panelCliente.add(textApellidoCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 60, -1, -1));
 
         textCedulaCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textCedulaCliente.setForeground(new java.awt.Color(51, 51, 51));
         textCedulaCliente.setPreferredSize(new java.awt.Dimension(160, 30));
+        textCedulaCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textCedulaClienteKeyTyped(evt);
+            }
+        });
         panelCliente.add(textCedulaCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, -1, -1));
 
         labelTelefonoCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -737,6 +812,11 @@ public class Menu extends javax.swing.JFrame {
         textNombreCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreCliente.setForeground(new java.awt.Color(51, 51, 51));
         textNombreCliente.setPreferredSize(new java.awt.Dimension(160, 30));
+        textNombreCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreClienteKeyTyped(evt);
+            }
+        });
         panelCliente.add(textNombreCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, -1));
 
         labelNombreCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -747,6 +827,11 @@ public class Menu extends javax.swing.JFrame {
         textTelefonoCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textTelefonoCliente.setForeground(new java.awt.Color(51, 51, 51));
         textTelefonoCliente.setPreferredSize(new java.awt.Dimension(160, 30));
+        textTelefonoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTelefonoClienteKeyTyped(evt);
+            }
+        });
         panelCliente.add(textTelefonoCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, -1));
 
         labelCedulaCliente.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -799,6 +884,11 @@ public class Menu extends javax.swing.JFrame {
         textNombreCategoria.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreCategoria.setForeground(new java.awt.Color(51, 51, 51));
         textNombreCategoria.setPreferredSize(new java.awt.Dimension(300, 30));
+        textNombreCategoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreCategoriaKeyTyped(evt);
+            }
+        });
         panelCategoria.add(textNombreCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, -1, -1));
 
         labelNombreCategoria.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -935,6 +1025,11 @@ public class Menu extends javax.swing.JFrame {
         textDireccionProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textDireccionProv.setForeground(new java.awt.Color(51, 51, 51));
         textDireccionProv.setPreferredSize(new java.awt.Dimension(160, 30));
+        textDireccionProv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textDireccionProvKeyTyped(evt);
+            }
+        });
         panelProveedor.add(textDireccionProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 400, -1));
 
         labelApellidoProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -945,6 +1040,11 @@ public class Menu extends javax.swing.JFrame {
         textApellidoProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textApellidoProv.setForeground(new java.awt.Color(51, 51, 51));
         textApellidoProv.setPreferredSize(new java.awt.Dimension(160, 30));
+        textApellidoProv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textApellidoProvKeyTyped(evt);
+            }
+        });
         panelProveedor.add(textApellidoProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, -1, -1));
 
         labelTelefonoProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -955,6 +1055,11 @@ public class Menu extends javax.swing.JFrame {
         textTelefonoProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textTelefonoProv.setForeground(new java.awt.Color(51, 51, 51));
         textTelefonoProv.setPreferredSize(new java.awt.Dimension(160, 30));
+        textTelefonoProv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTelefonoProvKeyTyped(evt);
+            }
+        });
         panelProveedor.add(textTelefonoProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 60, -1, -1));
 
         labelDireccionProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -965,6 +1070,11 @@ public class Menu extends javax.swing.JFrame {
         textNombreProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreProv.setForeground(new java.awt.Color(51, 51, 51));
         textNombreProv.setPreferredSize(new java.awt.Dimension(160, 30));
+        textNombreProv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreProvKeyTyped(evt);
+            }
+        });
         panelProveedor.add(textNombreProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
 
         textIdProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1191,6 +1301,11 @@ public class Menu extends javax.swing.JFrame {
         textStockNew.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textStockNew.setForeground(new java.awt.Color(51, 51, 51));
         textStockNew.setPreferredSize(new java.awt.Dimension(120, 30));
+        textStockNew.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textStockNewKeyTyped(evt);
+            }
+        });
         panelActualizarStock.add(textStockNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 90, -1));
 
         labelCantidadAct.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1548,6 +1663,140 @@ public class Menu extends javax.swing.JFrame {
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    private void textNombreClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreClienteKeyTyped
+        if (textNombreCliente.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreClienteKeyTyped
+
+    private void textNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textNombreActionPerformed
+
+    private void textNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreKeyTyped
+        if (textNombre.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreKeyTyped
+
+    private void textApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoKeyTyped
+        if (textApellido.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textApellidoKeyTyped
+
+    private void textCorreoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textCorreoKeyTyped
+        if (textCorreo.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textCorreoKeyTyped
+
+    private void textUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textUsuarioKeyTyped
+        if (textUsuario.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textUsuarioKeyTyped
+
+    private void txtPasswordKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyTyped
+        if (String.valueOf(txtPassword.getPassword()).length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPasswordKeyTyped
+
+    private void textTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoKeyTyped
+        if (textTelefono.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTelefonoKeyTyped
+
+    private void textApellidoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoClienteKeyTyped
+        if (textApellidoCliente.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textApellidoClienteKeyTyped
+
+    private void textCedulaClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textCedulaClienteKeyTyped
+        if (textCedulaCliente.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textCedulaClienteKeyTyped
+
+    private void textTelefonoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoClienteKeyTyped
+        if (textTelefonoCliente.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTelefonoClienteKeyTyped
+
+    private void textNombreCategoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreCategoriaKeyTyped
+        if (textNombreCategoria.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreCategoriaKeyTyped
+
+    private void textNombreProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreProvKeyTyped
+        if (textNombreProv.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreProvKeyTyped
+
+    private void textApellidoProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoProvKeyTyped
+        if (textApellidoProv.getText().length() >= 30) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textApellidoProvKeyTyped
+
+    private void textTelefonoProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoProvKeyTyped
+        if (textTelefonoProv.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTelefonoProvKeyTyped
+
+    private void textDireccionProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textDireccionProvKeyTyped
+        if (textDireccionProv.getText().length() >= 50) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textDireccionProvKeyTyped
+
+    private void textNombreProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreProdKeyTyped
+        if (textNombreProd.getText().length() >= 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreProdKeyTyped
+
+    private void textDescripcionProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textDescripcionProdKeyTyped
+        if (textDescripcionProd.getText().length() >= 200) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textDescripcionProdKeyTyped
+
+    private void textPrecioCProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textPrecioCProdKeyTyped
+        if (textPrecioCProd.getText().length() >= 13) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textPrecioCProdKeyTyped
+
+    private void textPrecioVProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textPrecioVProdKeyTyped
+        if (textPrecioVProd.getText().length() >= 13) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textPrecioVProdKeyTyped
+
+    private void textCantidadProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textCantidadProdKeyTyped
+        if (textCantidadProd.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textCantidadProdKeyTyped
+
+    private void textStockNewKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textStockNewKeyTyped
+        if (textStockNew.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textStockNewKeyTyped
 
     /**
      * @param args the command line arguments

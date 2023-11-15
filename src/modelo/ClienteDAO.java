@@ -32,7 +32,6 @@ public class ClienteDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar el cliente");
             return false;
         }
     }
@@ -62,7 +61,6 @@ public class ClienteDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al listar clientes");
         }
         return listaClients;
     }
@@ -81,9 +79,23 @@ public class ClienteDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al modificar el cliente");
             return false;
         }
+    }
+    
+    public boolean validarCedula (String cedula) {
+        String sql = "SELECT cedula FROM cliente WHERE cedula = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, cedula);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
     
     public boolean estadoCliente (int estado, int id) {
@@ -96,7 +108,6 @@ public class ClienteDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cambiar de estado el cliente");
             return false;
         }
     }

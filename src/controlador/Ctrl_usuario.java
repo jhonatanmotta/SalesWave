@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
+import metodos.Validaciones;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
 import vista.Menu;
@@ -53,22 +54,43 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
         String usuario = menu.textUsuario.getText().trim();
         String telefono = menu.textTelefono.getText().trim();
         String password = String.valueOf(menu.txtPassword.getPassword());
-        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || usuario.isEmpty() || telefono.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, correo, usuario, telefono, password)) {
+            return;
         } else {
-            user.setNombre(nombre);
-            user.setApellido(apellido);
-            user.setCorreo(correo);
-            user.setUsuario(usuario);
-            user.setTelefono(telefono);
-            user.setPassword(password);
-            if (userDao.registroUsuario(user)) {
-                limpiarTabla();
-                listarUsuario();
-                limpiarContenidoInput();
-                JOptionPane.showMessageDialog(null, "Usuario registrado con exito");
+            if (!Validaciones.validarCorreo(correo)) {
+                JOptionPane.showMessageDialog(null, "El correo parece no poseer el formato esperado", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+                if (userDao.validarCorreo(correo)) {
+                    JOptionPane.showMessageDialog(null, "El correo ya esta asociado a otro usuario", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    if (userDao.validarUsuario(usuario)) {
+                        JOptionPane.showMessageDialog(null, "Ya existe este usuario en el sistema", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!Validaciones.validarRangoCaracteres(password, 10, 30, "La contraseña debe tener un minimo de 10 caracteres")
+                                || !Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
+                            return;
+                        } else {
+                            if (!Validaciones.validarContrasena(password)) {
+                                JOptionPane.showMessageDialog(null, "La contraseña debe tener minus, MAYUS, números y un caracter especial", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                            } else {
+                                user.setNombre(nombre);
+                                user.setApellido(apellido);
+                                user.setCorreo(correo);
+                                user.setUsuario(usuario);
+                                user.setTelefono(telefono);
+                                user.setPassword(password);
+                                if (userDao.registroUsuario(user)) {
+                                    limpiarTabla();
+                                    listarUsuario();
+                                    limpiarContenidoInput();
+                                    JOptionPane.showMessageDialog(null, "Usuario registrado con exito");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -83,22 +105,26 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             String correo = menu.textCorreo.getText().trim();
             String usuario = menu.textUsuario.getText().trim();
             String telefono = menu.textTelefono.getText().trim();
-            if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || usuario.isEmpty() || telefono.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, correo, usuario, telefono)) {
+                return;
             } else {
-                user.setIdUsuario(id);
-                user.setNombre(nombre);
-                user.setApellido(apellido);
-                user.setCorreo(correo);
-                user.setUsuario(usuario);
-                user.setTelefono(telefono);
-                if (userDao.modificarUsuario(user)) {
-                    limpiarTabla();
-                    listarUsuario();
-                    limpiarContenidoInput();
-                    JOptionPane.showMessageDialog(null, "Usuario modificado con exito");
+                if (!Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
+                    return;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
+                    user.setIdUsuario(id);
+                    user.setNombre(nombre);
+                    user.setApellido(apellido);
+                    user.setCorreo(correo);
+                    user.setUsuario(usuario);
+                    user.setTelefono(telefono);
+                    if (userDao.modificarUsuario(user)) {
+                        limpiarTabla();
+                        listarUsuario();
+                        limpiarContenidoInput();
+                        JOptionPane.showMessageDialog(null, "Usuario modificado con exito");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al modificar el usuario");
+                    }
                 }
             }
         }
@@ -155,10 +181,10 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             modeloTabla.addRow(ob);
         }
         menu.tableUsuarios.setModel(modeloTabla);
-        
+
         menu.tableUsuarios.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableUsuarios.getColumnModel().getColumn(0).setMaxWidth(0);
-        
+
         JTableHeader header = menu.tableUsuarios.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;
@@ -185,7 +211,6 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
             menu.jMenuHabilitarUsuario.setVisible(true);
             menu.jMenuEliminarUsuario.setVisible(false);
         }
-        menu.btn_modificarUsuario.setEnabled(true);
         menu.btn_registrarUsuario.setEnabled(false);
         menu.txtPassword.setEnabled(false);
         int idUsuario = (int) menu.tableUsuarios.getValueAt(fila, 0);
