@@ -57,10 +57,10 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
             if (clientDao.validarCedula(cedula)) {
                 JOptionPane.showMessageDialog(null, "Parece que este numero de cedula esta asociado a otro usuario", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
+                if (!Validaciones.validarParseoAEntero(cedula, "El número de cedula debe contener solo valores numericos")) {
                     return;
                 } else {
-                    if (!Validaciones.validarParseoAEntero(cedula, "El número de cedula de contener solo valores numericos")) {
+                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
                         return;
                     } else {
                         client.setNombre(nombre);
@@ -82,37 +82,45 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
     }
 
     public void modificarCliente() {
-        if (menu.textIdCliente.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar los datos del cliente", menu.textIdCliente.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdCliente.getText());
             String nombre = menu.textNombreCliente.getText().trim();
             String apellido = menu.textApellidoCliente.getText().trim();
             String cedula = menu.textCedulaCliente.getText().trim();
             String telefono = menu.textTelefonoCliente.getText().trim();
-            if (nombre.isEmpty() || apellido.isEmpty() || cedula.isEmpty() || telefono.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, cedula, telefono)) {
+                return;
             } else {
-                client.setIdCliente(id);
-                client.setNombre(nombre);
-                client.setApellido(apellido);
-                client.setCedula(cedula);
-                client.setTelefono(telefono);
-                if (clientDao.modificarCliente(client)) {
-                    limpiarTabla();
-                    listarCliente();
-                    limpiarContenidoInput();
-                    JOptionPane.showMessageDialog(null, "Cliente modificado con exito");
+                if (!Validaciones.validarParseoAEntero(cedula, "El número de cedula debe contener solo valores numericos")) {
+                    return;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al modificar el cliente");
+                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
+                        return;
+                    } else {
+                        client.setIdCliente(id);
+                        client.setNombre(nombre);
+                        client.setApellido(apellido);
+                        client.setCedula(cedula);
+                        client.setTelefono(telefono);
+                        if (clientDao.modificarCliente(client)) {
+                            limpiarTabla();
+                            listarCliente();
+                            limpiarContenidoInput();
+                            JOptionPane.showMessageDialog(null, "Cliente modificado con exito");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al modificar el cliente");
+                        }
+                    }
                 }
             }
         }
     }
 
     public void eliminarCliente() {
-        if (menu.textIdCliente.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar un cliente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar un cliente", menu.textIdCliente.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdCliente.getText());
             if (clientDao.estadoCliente(0, id)) {
@@ -127,8 +135,8 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
     }
 
     public void habilitarCliente() {
-        if (menu.textIdCliente.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para habilitar un cliente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar un cliente", menu.textIdCliente.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdCliente.getText());
             if (clientDao.estadoCliente(1, id)) {

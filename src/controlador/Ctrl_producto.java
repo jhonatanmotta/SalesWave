@@ -16,6 +16,7 @@ import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
 import modelo.Categoria;
 import metodos.ComboBox;
+import metodos.Validaciones;
 import modelo.Producto;
 import modelo.ProductoDAO;
 import modelo.Proveedor;
@@ -77,45 +78,59 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         String precioVenta = menu.textPrecioVProd.getText().trim();
         String cantidad = menu.textCantidadProd.getText().trim();
         String ivaProd = (String) menu.comboBoxIvaProd.getSelectedItem();
-        if (nombreProd.isEmpty() || descripcionProd.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty() || categoriaProd == null || proveedorProd == null) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombreProd, descripcionProd, precioCompra, precioVenta, cantidad)) {
+            return;
         } else {
-            if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
-                JOptionPane.showMessageDialog(null, "Debe seleccionar un iva", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (categoriaProd == null) {
+                JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando una categoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                switch (ivaProd) {
-                    case "No agrava iva" ->  {
-                        prod.setIva(0);
-                    }
-                    case "5%" ->  {
-                        prod.setIva(5);
-                    }
-                    case "19%" ->  {
-                        prod.setIva(19);
-                    }
-                }
-                prod.setNombre(nombreProd);
-                prod.setDescripcion(descripcionProd);
-                prod.setCantidad(Integer.parseInt(cantidad));
-                prod.setPrecioCompra(Double.parseDouble(precioCompra));
-                prod.setPrecioVenta(Double.parseDouble(precioVenta));
-                prod.setIdCategoria_fk(categoriaProd.getId());
-                prod.setIdProveedor_fk(proveedorProd.getId());
-                if (prodDao.registroProducto(prod)) {
-                    limpiarTabla();
-                    listarProducto();
-                    limpiarContenidoInput();
-                    JOptionPane.showMessageDialog(null, "Producto registrado con exito");
+                if (proveedorProd == null) {
+                    JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando un proveedor", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al registrar el producto");
+                    if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
+                        JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando un iva para este producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!Validaciones.validarParseoAEntero(cantidad, "La cantidad de un producto debe ser un valor numerico")
+                                || !Validaciones.validarParseoADouble(precioCompra, "El precio de compra de un producto debe ser un valor numerico")
+                                || !Validaciones.validarParseoADouble(precioVenta, "El precio de venta de un producto debe ser un valor numerico")) {
+                            return;
+                        } else {
+                            switch (ivaProd) {
+                                case "No agrava iva" -> {
+                                    prod.setIva(0);
+                                }
+                                case "5%" -> {
+                                    prod.setIva(5);
+                                }
+                                case "19%" -> {
+                                    prod.setIva(19);
+                                }
+                            }
+                            prod.setNombre(nombreProd);
+                            prod.setDescripcion(descripcionProd);
+                            prod.setCantidad(Integer.parseInt(cantidad));
+                            prod.setPrecioCompra(Double.parseDouble(precioCompra));
+                            prod.setPrecioVenta(Double.parseDouble(precioVenta));
+                            prod.setIdCategoria_fk(categoriaProd.getId());
+                            prod.setIdProveedor_fk(proveedorProd.getId());
+                            if (prodDao.registroProducto(prod)) {
+                                limpiarTabla();
+                                listarProducto();
+                                limpiarContenidoInput();
+                                JOptionPane.showMessageDialog(null, "Producto registrado con exito");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error al registrar el producto");
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
     public void modificarProducto() {
-        if (menu.textIdProd.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar los datos del producto", menu.textIdProd.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdProd.getText());
             String nombre = menu.textNombreProd.getText().trim();
@@ -126,38 +141,52 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
             ComboBox categoriaProd = (ComboBox) menu.comboBoxCategoriaProd.getSelectedItem();
             ComboBox proveedorProd = (ComboBox) menu.comboBoxProveedorProd.getSelectedItem();
             String ivaProd = (String) menu.comboBoxIvaProd.getSelectedItem();
-            if (nombre.isEmpty() || descripcion.isEmpty() || precioCompra.isEmpty() || precioVenta.isEmpty() || cantidad.isEmpty() || categoriaProd == null || proveedorProd == null) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, descripcion, precioCompra, precioVenta, cantidad)) {
+                return;
             } else {
-                if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
-                    JOptionPane.showMessageDialog(null, "Debe seleccionar un iva", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                if (categoriaProd == null) {
+                    JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando una categoria", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    switch (ivaProd) {
-                        case "No agrava iva" ->  {
-                            prod.setIva(0);
-                        }
-                        case "5%" ->  {
-                            prod.setIva(5);
-                        }
-                        case "19%" ->  {
-                            prod.setIva(19);
-                        }
-                    }
-                    prod.setIdProducto(id);
-                    prod.setNombre(nombre);
-                    prod.setDescripcion(descripcion);
-                    prod.setPrecioCompra(Double.parseDouble(precioCompra));
-                    prod.setPrecioVenta(Double.parseDouble(precioVenta));
-                    prod.setCantidad(Integer.parseInt(cantidad));
-                    prod.setIdCategoria_fk(categoriaProd.getId());
-                    prod.setIdProveedor_fk(proveedorProd.getId());
-                    if (prodDao.modificarProducto(prod)) {
-                        limpiarTabla();
-                        listarProducto();
-                        limpiarContenidoInput();
-                        JOptionPane.showMessageDialog(null, "Producto modificado con exito");
+                    if (proveedorProd == null) {
+                        JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando una proveedor", "Advertencia", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al modificar el producto");
+                        if (ivaProd.equalsIgnoreCase("Seleccione iva")) {
+                            JOptionPane.showMessageDialog(null, "Parece que no estas seleccionando un iva", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            if (!Validaciones.validarParseoAEntero(cantidad, "La cantidad de un producto debe ser un valor numerico")
+                                    || !Validaciones.validarParseoADouble(precioCompra, "El precio de compra de un producto debe ser un valor numerico")
+                                    || !Validaciones.validarParseoADouble(precioVenta, "El precio de venta de un producto debe ser un valor numerico")) {
+                                return;
+                            } else {
+                                switch (ivaProd) {
+                                    case "No agrava iva" -> {
+                                        prod.setIva(0);
+                                    }
+                                    case "5%" -> {
+                                        prod.setIva(5);
+                                    }
+                                    case "19%" -> {
+                                        prod.setIva(19);
+                                    }
+                                }
+                                prod.setIdProducto(id);
+                                prod.setNombre(nombre);
+                                prod.setDescripcion(descripcion);
+                                prod.setPrecioCompra(Double.parseDouble(precioCompra));
+                                prod.setPrecioVenta(Double.parseDouble(precioVenta));
+                                prod.setCantidad(Integer.parseInt(cantidad));
+                                prod.setIdCategoria_fk(categoriaProd.getId());
+                                prod.setIdProveedor_fk(proveedorProd.getId());
+                                if (prodDao.modificarProducto(prod)) {
+                                    limpiarTabla();
+                                    listarProducto();
+                                    limpiarContenidoInput();
+                                    JOptionPane.showMessageDialog(null, "Producto modificado con exito");
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Error al modificar el producto");
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -165,8 +194,8 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     }
 
     public void eliminarProducto() {
-        if (menu.textIdProd.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar un producto");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar un producto", menu.textIdProd.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdProd.getText());
             if (prodDao.estadoProducto(0, id)) {
@@ -181,8 +210,8 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
     }
 
     public void habilitarProducto() {
-        if (menu.textIdProd.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para habilitar un producto");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar un producto", menu.textIdProd.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdProd.getText());
             if (prodDao.estadoProducto(1, id)) {
@@ -258,13 +287,13 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         int idProducto = Integer.parseInt(menu.textIdProd.getText());
         Producto producto = prodDao.buscarProducto(idProducto);
         switch (producto.getIva()) {
-            case 0 ->  {
+            case 0 -> {
                 menu.comboBoxIvaProd.setSelectedItem("No agrava iva");
             }
-            case 5 ->  {
+            case 5 -> {
                 menu.comboBoxIvaProd.setSelectedItem("5%");
             }
-            case 19 ->  {
+            case 19 -> {
                 menu.comboBoxIvaProd.setSelectedItem("19%");
             }
         }
@@ -347,20 +376,26 @@ public class Ctrl_producto implements ActionListener, MouseListener, KeyListener
         int productoIndexSeleccionado = menu.comboBoxProductos.getSelectedIndex();
         if (productoIndexSeleccionado == -1) {
             JOptionPane.showMessageDialog(null, "Debes seleccionar un producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else if (cantidad.equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes agregar una cantidad para actualizar el stock", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else if (!Validaciones.validarNoVacios("Debes agregar una cantidad para actualizar el stock", cantidad)) {
+            return;
         } else {
-            if (Integer.parseInt(cantidad) <= 0) {
-                JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa o igual a cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            if (!Validaciones.validarParseoAEntero(cantidad, "La cantidad de un producto debe ser un valor numerico")) {
+//            if (Integer.parseInt(cantidad) <= 0) {
+                return;
             } else {
-                ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
-                int stockActual = Integer.parseInt(menu.textStockAct.getText());
-                int id = productoSeleccionado.getId();
-                int stockNuevo = Integer.parseInt(cantidad) + stockActual;
-                if (prodDao.actualizarCantidad(stockNuevo, id)) {
-                    JOptionPane.showMessageDialog(null, "El stock disponible de " + String.valueOf(productoSeleccionado.getNombre()) + " ha sido actualizado");
+                if (Integer.parseInt(cantidad) <= 0) {
+                    JOptionPane.showMessageDialog(null, "La cantidad no puede ser negativa o igual a cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo actualizar el stock de " + String.valueOf(productoSeleccionado.getNombre()));
+                    System.out.println("holaaa");
+                    ComboBox productoSeleccionado = (ComboBox) menu.comboBoxProductos.getSelectedItem();
+                    int stockActual = Integer.parseInt(menu.textStockAct.getText());
+                    int id = productoSeleccionado.getId();
+                    int stockNuevo = Integer.parseInt(cantidad) + stockActual;
+                    if (prodDao.actualizarCantidad(stockNuevo, id)) {
+                        JOptionPane.showMessageDialog(null, "El stock disponible de " + String.valueOf(productoSeleccionado.getNombre()) + " ha sido actualizado");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo actualizar el stock de " + String.valueOf(productoSeleccionado.getNombre()));
+                    }
                 }
             }
         }

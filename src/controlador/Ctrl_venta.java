@@ -263,7 +263,6 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
 
     public void calcularCambio() {
         String efectivo = menu.textEfectivoVenta.getText();
-//        String total = 
         if (!Validaciones.validarNoVacios("Debes ingresar un monto de dinero primero", efectivo)) {
             return;
         } else {

@@ -33,7 +33,6 @@ public class ProveedorDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar el proveedor");
             return false;
         }
     }
@@ -63,7 +62,6 @@ public class ProveedorDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al listar proveedor");
         }
         return listaProv;
     }
@@ -87,7 +85,6 @@ public class ProveedorDAO {
             }
         } catch (SQLException e){
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al llenar los inputs de proveedor");
         }
         return listaProv;
     }
@@ -106,7 +103,6 @@ public class ProveedorDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al modificar el proveedor");
             return false;
         }
     }
@@ -121,7 +117,6 @@ public class ProveedorDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cambiar de estado el proveedor");
             return false;
         }
     }

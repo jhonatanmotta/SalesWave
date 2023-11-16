@@ -96,8 +96,8 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void modificarUsuario() {
-        if (menu.textIdUsuario.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar los datos de un usuario", menu.textIdUsuario.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdUsuario.getText());
             String nombre = menu.textNombre.getText().trim();
@@ -131,8 +131,8 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void eliminarUsuario() {
-        if (menu.textIdUsuario.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar un usuario");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar un usuario", menu.textIdUsuario.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdUsuario.getText());
             if (userDao.estadoUsuario(0, id)) {
@@ -147,8 +147,8 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
     }
 
     public void habilitarUsuario() {
-        if (menu.textIdUsuario.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para habilitar un usuario");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar un usuario", menu.textIdUsuario.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdUsuario.getText());
             if (userDao.estadoUsuario(1, id)) {

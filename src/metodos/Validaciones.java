@@ -60,7 +60,7 @@ public class Validaciones {
                 return false;
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Hay un error revisa la cantidad que estas ingresando", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return false;
         }
     }

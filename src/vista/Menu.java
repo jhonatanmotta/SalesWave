@@ -1122,6 +1122,11 @@ public class Menu extends javax.swing.JFrame {
         textCantidadProdVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textCantidadProdVenta.setForeground(new java.awt.Color(51, 51, 51));
         textCantidadProdVenta.setPreferredSize(new java.awt.Dimension(120, 30));
+        textCantidadProdVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textCantidadProdVentaKeyTyped(evt);
+            }
+        });
         panelVenta.add(textCantidadProdVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 90, -1));
 
         tableProductosVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1213,6 +1218,11 @@ public class Menu extends javax.swing.JFrame {
         textEfectivoVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textEfectivoVenta.setForeground(new java.awt.Color(51, 51, 51));
         textEfectivoVenta.setPreferredSize(new java.awt.Dimension(120, 30));
+        textEfectivoVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textEfectivoVentaKeyTyped(evt);
+            }
+        });
         panelVenta.add(textEfectivoVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 560, 140, -1));
 
         valorSubtotal.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1797,6 +1807,18 @@ public class Menu extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_textStockNewKeyTyped
+
+    private void textCantidadProdVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textCantidadProdVentaKeyTyped
+        if (textCantidadProdVenta.getText().length() >= 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textCantidadProdVentaKeyTyped
+
+    private void textEfectivoVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textEfectivoVentaKeyTyped
+        if (textEfectivoVenta.getText().length() >= 15) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textEfectivoVentaKeyTyped
 
     /**
      * @param args the command line arguments

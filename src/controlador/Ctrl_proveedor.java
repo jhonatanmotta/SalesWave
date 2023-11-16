@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
+import metodos.Validaciones;
 import modelo.Proveedor;
 import modelo.ProveedorDAO;
 import vista.Menu;
@@ -50,8 +51,8 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
         String apellido = menu.textApellidoProv.getText().trim();
         String direccion = menu.textDireccionProv.getText().trim();
         String telefono = menu.textTelefonoProv.getText().trim();
-        if (nombre.isEmpty() || apellido.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, direccion, telefono)) {
+            return;
         } else {
             prov.setNombre(nombre);
             prov.setApellido(apellido);
@@ -69,16 +70,16 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void modificarProv() {
-        if (menu.textIdProv.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar los datos de un proveedor", menu.textIdProv.getText())) {
+                return;
         } else {
             int id = Integer.parseInt(menu.textIdProv.getText());
             String nombre = menu.textNombreProv.getText().trim();
             String apellido = menu.textApellidoProv.getText().trim();
             String direccion = menu.textDireccionProv.getText().trim();
             String telefono = menu.textTelefonoProv.getText().trim();
-            if (nombre.isEmpty() || apellido.isEmpty() || direccion.isEmpty() || telefono.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, direccion, telefono)) {
+                return;
             } else {
                 prov.setIdProveedor(id);
                 prov.setNombre(nombre);
@@ -98,8 +99,8 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void eliminarProv() {
-        if (menu.textIdProv.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para eliminar un proveedor");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar un proveedor", menu.textIdProv.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdProv.getText());
             if (provDao.estadoProv(0, id)) {
@@ -114,8 +115,8 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
     }
 
     public void habilitarProv() {
-        if (menu.textIdProv.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila para habilitar un proveedor");
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar un proveedor", menu.textIdProv.getText())) {
+            return;
         } else {
             int id = Integer.parseInt(menu.textIdProv.getText());
             if (provDao.estadoProv(1, id)) {
@@ -146,10 +147,10 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             modeloTablaProv.addRow(ob);
         }
         menu.tableProveedor.setModel(modeloTablaProv);
-        
+
         menu.tableProveedor.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableProveedor.getColumnModel().getColumn(0).setMaxWidth(0);
-        
+
         JTableHeader header = menu.tableProveedor.getTableHeader();
         Color headerColor = new Color(232, 158, 67);
         Color textColor = Color.WHITE;

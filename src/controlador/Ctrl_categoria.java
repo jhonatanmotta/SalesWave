@@ -59,7 +59,7 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
         // se obtiene el nombre de la categoria del tgextField
         String nombre = menu.textNombreCategoria.getText().trim();
         // valida si esta vacio
-        if (!Validaciones.validarNoVacios("Uno o más campos están vacíos",nombre) ||
+        if (!Validaciones.validarNoVacios("El campo nombre categoria esta vacio",nombre) ||
                 !Validaciones.validarCantidadCaracteres(nombre, 30, "El campo nombre sobrepasa la cantidad de caracteres aceptados")) {
             return;
 //        if (nombre.isEmpty()) {
@@ -81,16 +81,13 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     }
 
     public void modificarCategoria() {
-        if (!Validaciones.validarNoVacios("Debes seleccionar una fila",menu.textIdCategoria.getText())) {
+        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar el nombre de una categoria",menu.textIdCategoria.getText())) {
             return;
-//        if (menu.textIdCategoria.getText().equals("")) {
-//            JOptionPane.showMessageDialog(null, "Debes seleccionar una fila");
         } else {
             int id = Integer.parseInt(menu.textIdCategoria.getText());
             String nombre = menu.textNombreCategoria.getText().trim();
-            if (!Validaciones.validarNoVacios("Uno o más campos están vacíos",nombre)) {
+            if (!Validaciones.validarNoVacios("El campo nombre categoria esta vacio",nombre)) {
                 return;
-//                JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
             } else {
                 cat.setIdCategoria(id);
                 cat.setNombre(nombre);

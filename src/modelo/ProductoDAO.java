@@ -47,7 +47,6 @@ public class ProductoDAO {
             retornoRegistro = true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar el producto");
             retornoRegistro = false;
         }
         return retornoRegistro;
@@ -86,7 +85,6 @@ public class ProductoDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al listar productos");
         }
         return listaProd;
     }
@@ -119,7 +117,6 @@ public class ProductoDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al modificar el producto");
             return false;
         }
     }
@@ -145,7 +142,6 @@ public class ProductoDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cambiar de estado del producto");
             return false;
         }
     }
@@ -374,7 +370,6 @@ public class ProductoDAO {
             retornoRegistro = true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar la encabezado de la venta");
             retornoRegistro = false;
         }
         return retornoRegistro;
@@ -392,7 +387,6 @@ public class ProductoDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al obtener el ultimo id del encabezado de la venta");
         }
         return id;
     }
@@ -409,7 +403,6 @@ public class ProductoDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al buscar el usuario");
         }
         return id;
     }
@@ -431,7 +424,6 @@ public class ProductoDAO {
             retornoRegistro = true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar el detalle de la venta");
             retornoRegistro = false;
         }
         return retornoRegistro;
