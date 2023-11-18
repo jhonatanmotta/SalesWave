@@ -1,8 +1,8 @@
 package modelo;
 
 public class encabezadoVenta {
-   
-     //atributos encabezadoVenta
+
+    //atributos encabezadoVenta
     private int idEncabezadoVenta;
     private int idCliente_fk;
     private int idEmpresa_fk;
@@ -10,11 +10,12 @@ public class encabezadoVenta {
     private double valorPagar;
     private String fechaVenta;
     private int estado;
+    private String nombreCliente;
 
     public encabezadoVenta() {
     }
 
-    public encabezadoVenta(int idEncabezadoVenta, int idCliente_fk, int idEmpresa_fk, int idUsuario_fk, double valorPagar, String fechaVenta, int estado) {
+    public encabezadoVenta(int idEncabezadoVenta, int idCliente_fk, int idEmpresa_fk, int idUsuario_fk, double valorPagar, String fechaVenta, int estado, String nombreCliente) {
         this.idEncabezadoVenta = idEncabezadoVenta;
         this.idCliente_fk = idCliente_fk;
         this.idEmpresa_fk = idEmpresa_fk;
@@ -22,8 +23,8 @@ public class encabezadoVenta {
         this.valorPagar = valorPagar;
         this.fechaVenta = fechaVenta;
         this.estado = estado;
+        this.nombreCliente = nombreCliente;
     }
-
 
     public int getIdEncabezadoVenta() {
         return idEncabezadoVenta;
@@ -64,7 +65,7 @@ public class encabezadoVenta {
     public void setValorPagar(double valorPagar) {
         this.valorPagar = valorPagar;
     }
-    
+
     public String getFechaVenta() {
         return fechaVenta;
     }
@@ -80,7 +81,13 @@ public class encabezadoVenta {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-    
-    
-    
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
+
 }

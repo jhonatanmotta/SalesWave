@@ -30,6 +30,7 @@ public class BotonesMenu{
         menu.btnCategoria.setBackground(colorDefault);
         menu.btnProveedor.setBackground(colorDefault);
         menu.btnVenta.setBackground(colorDefault);
+        menu.btnHistorial.setBackground(colorDefault);
         menu.btnEmpresa.setBackground(colorDefault);
     }
     

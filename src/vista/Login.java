@@ -3,6 +3,8 @@ package vista;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighterIJTheme;
 import controlador.Ctrl_login;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 public class Login extends javax.swing.JFrame {
 
@@ -14,7 +16,12 @@ public class Login extends javax.swing.JFrame {
 //        Ctrl_login controladorLogin = new Ctrl_login(this);
 //        this.setSize(700, 500);
     }
-
+    
+//    @Override
+//    public Image getIconImage() {
+//        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("../iconos/logo.png"));
+//        return retValue;
+//    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -31,7 +38,6 @@ public class Login extends javax.swing.JFrame {
         separadorPassword = new javax.swing.JSeparator();
         txt_password = new javax.swing.JPasswordField();
         btn_IniciarSesion = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -122,12 +128,6 @@ public class Login extends javax.swing.JFrame {
         btn_IniciarSesion.setPreferredSize(new java.awt.Dimension(153, 33));
         panel02.add(btn_IniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 357, -1, -1));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("¿Olvidaste tu contraseña?");
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        panel02.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 430, -1, -1));
-
         getContentPane().add(panel02, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 0, -1, -1));
 
         pack();
@@ -157,7 +157,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel copyright;
     private javax.swing.JLabel iconPassword;
     private javax.swing.JLabel iconUser;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel panel01;
     private javax.swing.JPanel panel02;

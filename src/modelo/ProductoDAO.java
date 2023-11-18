@@ -383,15 +383,15 @@ public class ProductoDAO {
             retorno = ps.executeQuery();
             if (retorno.next()) {
                 id = (retorno.getInt("id"));
-                
+
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return id;
     }
-    
-    public int buscarUsuario (String usuario) {
+
+    public int buscarUsuario(String usuario) {
         int id = -1;
         String sql = "SELECT idUsuario FROM usuario WHERE usuario = ?";
         try {
@@ -406,8 +406,8 @@ public class ProductoDAO {
         }
         return id;
     }
-    
-        public boolean registroDetalle(detalleVenta detalle) {
+
+    public boolean registroDetalle(detalleVenta detalle) {
         boolean retornoRegistro = false;
         String sql = "INSERT INTO detalleVenta (idEncabezadoVenta_fk, idProducto_fk, cantidad, precioUnitario, subtotal, iva, totalPagar, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -427,5 +427,108 @@ public class ProductoDAO {
             retornoRegistro = false;
         }
         return retornoRegistro;
+    }
+
+    public boolean buscarCliente(String cedulaCliente) {
+        String sql = "SELECT cedula FROM cliente WHERE cedula = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, cedulaCliente);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+    
+    public boolean buscarFecha(String fechaInicio, String fechaFinal) {
+        String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
+                + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
+                + "ON encabezado.idCliente_fk = cliente.idCliente WHERE fechaVenta BETWEEN ? AND ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, fechaInicio);
+            ps.setString(2, fechaFinal);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public boolean buscarClienteFecha(String fechaInicio, String fechaFinal, String cedulaCliente) {
+         String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
+                + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
+                + "ON encabezado.idCliente_fk = cliente.idCliente WHERE fechaVenta BETWEEN ? AND ? AND cliente.cedula = ?";
+        try {
+            ps = conexion.prepareStatement(sql);
+            ps.setString(1, fechaInicio);
+            ps.setString(2, fechaFinal);
+            ps.setString(3, cedulaCliente);
+            retorno = ps.executeQuery();
+            if (retorno.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    public List listaVentas(String fechaInicio, String fechaFinal, String cedula) {
+        List<encabezadoVenta> listaVentas = new ArrayList();
+        String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente "
+                + "FROM encabezadoventa encabezado INNER JOIN cliente ON encabezado.idCliente_fk = cliente.idCliente";
+
+        String sqlBusquedaFecha = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente "
+                + "FROM encabezadoventa encabezado INNER JOIN cliente ON encabezado.idCliente_fk = cliente.idCliente "
+                + "WHERE fechaVenta BETWEEN ? AND ?";
+
+        String sqlBusquedaCliente = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
+                + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
+                + "ON encabezado.idCliente_fk = cliente.idCliente WHERE cliente.cedula = ?";
+
+        String sqlBusquedaClienteFecha = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
+                + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
+                + "ON encabezado.idCliente_fk = cliente.idCliente WHERE fechaVenta BETWEEN ? AND ? AND cliente.cedula = ?";
+        try {
+            if (fechaInicio.isEmpty() && fechaFinal.isEmpty() && cedula.isEmpty()) {
+                System.out.println("Estoy en normal");
+                ps = conexion.prepareStatement(sql);
+            } else if (fechaInicio.isEmpty() && fechaFinal.isEmpty() && !cedula.isEmpty()) {
+                System.out.println("Estoy en buscar cliente");
+                ps = conexion.prepareStatement(sqlBusquedaCliente);
+                ps.setString(1, cedula);
+            } else if (!fechaInicio.isEmpty() && !fechaFinal.isEmpty() && cedula.isEmpty()) {
+                System.out.println("Estoy en buscar por fecha");
+                ps = conexion.prepareStatement(sqlBusquedaFecha);
+                ps.setString(1, fechaInicio);
+                ps.setString(2, fechaFinal);
+            } else if (!fechaInicio.isEmpty() && !fechaFinal.isEmpty() && !cedula.isEmpty()) {
+                System.out.println("Estoy en buscar por fecha y cliente");
+                ps = conexion.prepareStatement(sqlBusquedaClienteFecha);
+                ps.setString(1, fechaInicio);
+                ps.setString(2, fechaFinal);
+                ps.setString(3, cedula);
+            }
+            retorno = ps.executeQuery();
+            while (retorno.next()) {
+                encabezadoVenta encabezado = new encabezadoVenta();
+                encabezado.setIdEncabezadoVenta(retorno.getInt("idEncabezadoVenta"));
+                encabezado.setValorPagar(retorno.getDouble("valorPagar"));
+                encabezado.setFechaVenta(retorno.getString("fechaVenta"));
+                encabezado.setNombreCliente(retorno.getString("nombreCliente") + " " + retorno.getString("apellidoCliente"));
+                listaVentas.add(encabezado);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return listaVentas;
     }
 }

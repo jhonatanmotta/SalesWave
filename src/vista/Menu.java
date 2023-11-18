@@ -4,11 +4,15 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatMaterialLighte
 import controlador.Ctrl_categoria;
 import controlador.Ctrl_cliente;
 import controlador.Ctrl_empresa;
+import controlador.Ctrl_historial;
 import controlador.Ctrl_inicio;
 import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
 import controlador.Ctrl_usuario;
 import controlador.Ctrl_venta;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.JOptionPane;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
 import modelo.Cliente;
@@ -55,8 +59,15 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
         Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp, empDao, this);
         Ctrl_venta controladorVenta = new Ctrl_venta(prodDao, encabezado, detalle, this);
+        Ctrl_historial controladorHistorial = new Ctrl_historial(prodDao, encabezado, this);
     }
 
+//    @Override
+//    public Image getIconImage() {
+//        Image retValue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("../iconos/logo.png"));
+//        return retValue;
+//    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -85,7 +96,10 @@ public class Menu extends javax.swing.JFrame {
         jMenuEliminarVentaProd = new javax.swing.JMenuItem();
         jTabbedPanel = new javax.swing.JTabbedPane();
         panelBienvenida = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        TituloInicio = new javax.swing.JLabel();
+        btn_InicioVender = new javax.swing.JButton();
+        btn_InicioHistorial = new javax.swing.JButton();
+        LogoInicio = new javax.swing.JLabel();
         panelUsuario = new javax.swing.JPanel();
         jScrollUsuario = new javax.swing.JScrollPane();
         tableUsuarios = new javax.swing.JTable();
@@ -105,7 +119,7 @@ public class Menu extends javax.swing.JFrame {
         btn_modificarUsuario = new javax.swing.JButton();
         btn_registrarUsuario = new javax.swing.JButton();
         btn_limpiarUsuario = new javax.swing.JButton();
-        labelTelefono1 = new javax.swing.JLabel();
+        labelCorreo = new javax.swing.JLabel();
         textCorreo = new javax.swing.JTextField();
         panelProducto = new javax.swing.JPanel();
         textNombreProd = new javax.swing.JTextField();
@@ -117,7 +131,6 @@ public class Menu extends javax.swing.JFrame {
         textIdProd = new javax.swing.JTextField();
         labelProveedorProd = new javax.swing.JLabel();
         labelDescripcionProd = new javax.swing.JLabel();
-        labelPrecioVProd = new javax.swing.JLabel();
         labelIvaProd = new javax.swing.JLabel();
         btn_registrarProd = new javax.swing.JButton();
         btn_modificarProd = new javax.swing.JButton();
@@ -125,8 +138,9 @@ public class Menu extends javax.swing.JFrame {
         labelBuscarProd = new javax.swing.JLabel();
         jScrollProducto = new javax.swing.JScrollPane();
         tableProducto = new javax.swing.JTable();
+        labelPrecioCProd = new javax.swing.JLabel();
         labelPrecioCProd1 = new javax.swing.JLabel();
-        labelPrecioVProd1 = new javax.swing.JLabel();
+        labelPrecioVProd = new javax.swing.JLabel();
         labelPrecioVProd2 = new javax.swing.JLabel();
         btn_limpiarProd = new javax.swing.JButton();
         comboBoxIvaProd = new javax.swing.JComboBox<>();
@@ -202,8 +216,18 @@ public class Menu extends javax.swing.JFrame {
         textEfectivoVenta = new javax.swing.JTextField();
         valorSubtotal = new javax.swing.JLabel();
         pagarVenta = new javax.swing.JButton();
-        panelReporte = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        panelHistorial = new javax.swing.JPanel();
+        jScrollHistorial = new javax.swing.JScrollPane();
+        tableHistorial = new javax.swing.JTable();
+        jDateFinal = new com.toedter.calendar.JDateChooser();
+        textBuscarClientHistorial = new javax.swing.JTextField();
+        labelFechaInicial = new javax.swing.JLabel();
+        labelFechaFinal = new javax.swing.JLabel();
+        btn_buscarFactura = new javax.swing.JButton();
+        jDateInicial = new com.toedter.calendar.JDateChooser();
+        labelFechaInicial1 = new javax.swing.JLabel();
+        labelFechaInicial2 = new javax.swing.JLabel();
+        btn_abrirFactura = new javax.swing.JButton();
         panelActualizarStock = new javax.swing.JPanel();
         labelComboProd = new javax.swing.JLabel();
         comboBoxProductos = new javax.swing.JComboBox<>();
@@ -238,7 +262,7 @@ public class Menu extends javax.swing.JFrame {
         btnCerrarSesion = new javax.swing.JButton();
         btnCategoria = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
-        btnReporte = new javax.swing.JButton();
+        btnHistorial = new javax.swing.JButton();
         panelHeader = new javax.swing.JPanel();
         tituloPanel = new javax.swing.JLabel();
 
@@ -362,8 +386,36 @@ public class Menu extends javax.swing.JFrame {
         panelBienvenida.setPreferredSize(new java.awt.Dimension(870, 670));
         panelBienvenida.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setText("inicio");
-        panelBienvenida.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 221, -1, -1));
+        TituloInicio.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        TituloInicio.setText("SalesWave");
+        panelBienvenida.add(TituloInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, -1, -1));
+
+        btn_InicioVender.setBackground(new java.awt.Color(232, 158, 67));
+        btn_InicioVender.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_InicioVender.setForeground(new java.awt.Color(255, 255, 255));
+        btn_InicioVender.setText("Vender");
+        btn_InicioVender.setPreferredSize(new java.awt.Dimension(100, 30));
+        btn_InicioVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_InicioVenderActionPerformed(evt);
+            }
+        });
+        panelBienvenida.add(btn_InicioVender, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 160, 230, 60));
+
+        btn_InicioHistorial.setBackground(new java.awt.Color(232, 158, 67));
+        btn_InicioHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_InicioHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btn_InicioHistorial.setText("Historial");
+        btn_InicioHistorial.setPreferredSize(new java.awt.Dimension(100, 30));
+        btn_InicioHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_InicioHistorialActionPerformed(evt);
+            }
+        });
+        panelBienvenida.add(btn_InicioHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, 230, 60));
+
+        LogoInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/logo.png"))); // NOI18N
+        panelBienvenida.add(LogoInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, -1, -1));
 
         jTabbedPanel.addTab("inicio", panelBienvenida);
 
@@ -525,10 +577,10 @@ public class Menu extends javax.swing.JFrame {
         });
         panelUsuario.add(btn_limpiarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 120, -1, -1));
 
-        labelTelefono1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        labelTelefono1.setForeground(new java.awt.Color(51, 51, 51));
-        labelTelefono1.setText("Correo");
-        panelUsuario.add(labelTelefono1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, -1, 30));
+        labelCorreo.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelCorreo.setForeground(new java.awt.Color(51, 51, 51));
+        labelCorreo.setText("Correo");
+        panelUsuario.add(labelCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, -1, 30));
 
         textCorreo.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textCorreo.setForeground(new java.awt.Color(51, 51, 51));
@@ -626,11 +678,6 @@ public class Menu extends javax.swing.JFrame {
         labelDescripcionProd.setText("Descripcion");
         panelProducto.add(labelDescripcionProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, -1, 30));
 
-        labelPrecioVProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        labelPrecioVProd.setForeground(new java.awt.Color(51, 51, 51));
-        labelPrecioVProd.setText("Compra");
-        panelProducto.add(labelPrecioVProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 177, -1, -1));
-
         labelIvaProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelIvaProd.setForeground(new java.awt.Color(51, 51, 51));
         labelIvaProd.setText("Iva");
@@ -696,15 +743,20 @@ public class Menu extends javax.swing.JFrame {
 
         panelProducto.add(jScrollProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 840, 353));
 
+        labelPrecioCProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelPrecioCProd.setForeground(new java.awt.Color(51, 51, 51));
+        labelPrecioCProd.setText("Compra");
+        panelProducto.add(labelPrecioCProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 177, -1, -1));
+
         labelPrecioCProd1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelPrecioCProd1.setForeground(new java.awt.Color(51, 51, 51));
         labelPrecioCProd1.setText("Precio");
         panelProducto.add(labelPrecioCProd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 157, -1, -1));
 
-        labelPrecioVProd1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        labelPrecioVProd1.setForeground(new java.awt.Color(51, 51, 51));
-        labelPrecioVProd1.setText("Precio");
-        panelProducto.add(labelPrecioVProd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 157, -1, -1));
+        labelPrecioVProd.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelPrecioVProd.setForeground(new java.awt.Color(51, 51, 51));
+        labelPrecioVProd.setText("Precio");
+        panelProducto.add(labelPrecioVProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 157, -1, -1));
 
         labelPrecioVProd2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelPrecioVProd2.setForeground(new java.awt.Color(51, 51, 51));
@@ -1020,7 +1072,7 @@ public class Menu extends javax.swing.JFrame {
         labelNombreProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelNombreProv.setForeground(new java.awt.Color(51, 51, 51));
         labelNombreProv.setText("Nombre");
-        panelProveedor.add(labelNombreProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, 30));
+        panelProveedor.add(labelNombreProv, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 60, 30));
 
         textDireccionProv.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textDireccionProv.setForeground(new java.awt.Color(51, 51, 51));
@@ -1240,26 +1292,77 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPanel.addTab("venta", panelVenta);
 
-        jLabel4.setText("reporte");
+        panelHistorial.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout panelReporteLayout = new javax.swing.GroupLayout(panelReporte);
-        panelReporte.setLayout(panelReporteLayout);
-        panelReporteLayout.setHorizontalGroup(
-            panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelReporteLayout.createSequentialGroup()
-                .addGap(199, 199, 199)
-                .addComponent(jLabel4)
-                .addContainerGap(643, Short.MAX_VALUE))
-        );
-        panelReporteLayout.setVerticalGroup(
-            panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelReporteLayout.createSequentialGroup()
-                .addGap(206, 206, 206)
-                .addComponent(jLabel4)
-                .addContainerGap(447, Short.MAX_VALUE))
-        );
+        tableHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        tableHistorial.setForeground(new java.awt.Color(51, 51, 51));
+        tableHistorial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jTabbedPanel.addTab("reporte", panelReporte);
+            },
+            new String [] {
+                "ID", "Número", "Cliente", "Valor", "Fecha"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableHistorial.setComponentPopupMenu(jPopupProducto);
+        tableHistorial.setRowHeight(30);
+        tableHistorial.setSelectionBackground(new java.awt.Color(191, 232, 241));
+        tableHistorial.getTableHeader().setResizingAllowed(false);
+        tableHistorial.getTableHeader().setReorderingAllowed(false);
+        jScrollHistorial.setViewportView(tableHistorial);
+
+        panelHistorial.add(jScrollHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, 840, 353));
+        panelHistorial.add(jDateFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 80, 150, 30));
+
+        textBuscarClientHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        textBuscarClientHistorial.setForeground(new java.awt.Color(51, 51, 51));
+        textBuscarClientHistorial.setPreferredSize(new java.awt.Dimension(160, 30));
+        panelHistorial.add(textBuscarClientHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 230, -1));
+
+        labelFechaInicial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelFechaInicial.setForeground(new java.awt.Color(51, 51, 51));
+        labelFechaInicial.setText("Desde");
+        panelHistorial.add(labelFechaInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, -1, 30));
+
+        labelFechaFinal.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelFechaFinal.setForeground(new java.awt.Color(51, 51, 51));
+        labelFechaFinal.setText("Hasta");
+        panelHistorial.add(labelFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, -1, 30));
+
+        btn_buscarFactura.setBackground(new java.awt.Color(232, 158, 67));
+        btn_buscarFactura.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_buscarFactura.setForeground(new java.awt.Color(255, 255, 255));
+        btn_buscarFactura.setText("Buscar");
+        btn_buscarFactura.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelHistorial.add(btn_buscarFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 130, -1));
+        panelHistorial.add(jDateInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, 150, 30));
+
+        labelFechaInicial1.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelFechaInicial1.setForeground(new java.awt.Color(51, 51, 51));
+        labelFechaInicial1.setText("Buscar cliente:");
+        panelHistorial.add(labelFechaInicial1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, 30));
+
+        labelFechaInicial2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelFechaInicial2.setForeground(new java.awt.Color(51, 51, 51));
+        labelFechaInicial2.setText("Buscar por fecha:");
+        panelHistorial.add(labelFechaInicial2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, 30));
+
+        btn_abrirFactura.setBackground(new java.awt.Color(232, 158, 67));
+        btn_abrirFactura.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_abrirFactura.setForeground(new java.awt.Color(255, 255, 255));
+        btn_abrirFactura.setText("Abrir Factura");
+        btn_abrirFactura.setPreferredSize(new java.awt.Dimension(100, 30));
+        panelHistorial.add(btn_abrirFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 250, 120, -1));
+
+        jTabbedPanel.addTab("historial", panelHistorial);
 
         panelActualizarStock.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1531,6 +1634,11 @@ public class Menu extends javax.swing.JFrame {
         btnCerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCerrarSesion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnCerrarSesion.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
+            }
+        });
         panelMenu.add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 650, -1, -1));
 
         btnCategoria.setBackground(new java.awt.Color(0, 161, 199));
@@ -1560,21 +1668,21 @@ public class Menu extends javax.swing.JFrame {
         btnInicio.setPreferredSize(new java.awt.Dimension(200, 50));
         panelMenu.add(btnInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, -1, -1));
 
-        btnReporte.setBackground(new java.awt.Color(0, 161, 199));
-        btnReporte.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
-        btnReporte.setForeground(new java.awt.Color(255, 255, 255));
-        btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/report.png"))); // NOI18N
-        btnReporte.setText("Reportes");
-        btnReporte.setBorderPainted(false);
-        btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReporte.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnReporte.setPreferredSize(new java.awt.Dimension(200, 50));
-        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+        btnHistorial.setBackground(new java.awt.Color(0, 161, 199));
+        btnHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btnHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/report.png"))); // NOI18N
+        btnHistorial.setText("Historial");
+        btnHistorial.setBorderPainted(false);
+        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorial.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnHistorial.setPreferredSize(new java.awt.Dimension(200, 50));
+        btnHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReporteActionPerformed(evt);
+                btnHistorialActionPerformed(evt);
             }
         });
-        panelMenu.add(btnReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 435, -1, -1));
+        panelMenu.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 435, -1, -1));
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -1670,9 +1778,9 @@ public class Menu extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_limpiarUsuarioActionPerformed
 
-    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnReporteActionPerformed
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
@@ -1820,6 +1928,26 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textEfectivoVentaKeyTyped
 
+    private void btn_InicioVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InicioVenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_InicioVenderActionPerformed
+
+    private void btn_InicioHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InicioHistorialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_InicioHistorialActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        String [] opciones = {"Sí", "No"};
+        int alerta = JOptionPane.showOptionDialog(null, "¿Estas seguro de que quieres Cerrar Sesion?", 
+                "Advertencia", JOptionPane.YES_NO_OPTION, 
+                JOptionPane.WARNING_MESSAGE, null, opciones, opciones[1]);
+         if (alerta == JOptionPane.YES_OPTION) {
+                Login login = new Login();
+                login.setVisible(true);
+                this.dispose();
+            }
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1835,18 +1963,24 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LogoInicio;
+    private javax.swing.JLabel TituloInicio;
     public javax.swing.JButton aniadirProdVenta;
     public javax.swing.JButton btnCategoria;
     public javax.swing.JButton btnCerrarSesion;
     public javax.swing.JButton btnCliente;
     public javax.swing.JButton btnEmpresa;
+    public javax.swing.JButton btnHistorial;
     public javax.swing.JButton btnInicio;
     public javax.swing.JButton btnProducto;
     public javax.swing.JButton btnProveedor;
-    public javax.swing.JButton btnReporte;
     public javax.swing.JButton btnUsuario;
     public javax.swing.JButton btnVenta;
+    public javax.swing.JButton btn_InicioHistorial;
+    public javax.swing.JButton btn_InicioVender;
+    public javax.swing.JButton btn_abrirFactura;
     public javax.swing.JButton btn_actualizarStock;
+    public javax.swing.JButton btn_buscarFactura;
     public javax.swing.JButton btn_irStock;
     public javax.swing.JButton btn_limpiarCategoria;
     public javax.swing.JButton btn_limpiarCliente;
@@ -1873,8 +2007,8 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JComboBox<Object> comboBoxProductosVenta;
     public javax.swing.JComboBox<Object> comboBoxProveedorProd;
     public javax.swing.JButton generarVenta;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
+    public com.toedter.calendar.JDateChooser jDateFinal;
+    public com.toedter.calendar.JDateChooser jDateInicial;
     private javax.swing.JLabel jLabel5;
     public javax.swing.JMenuItem jMenuEliminarCategoria;
     public javax.swing.JMenuItem jMenuEliminarCliente;
@@ -1895,6 +2029,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPopupMenu jPopupVenta;
     private javax.swing.JScrollPane jScrollCategoria;
     private javax.swing.JScrollPane jScrollCliente;
+    private javax.swing.JScrollPane jScrollHistorial;
     private javax.swing.JScrollPane jScrollProducto;
     private javax.swing.JScrollPane jScrollProductosVenta;
     private javax.swing.JScrollPane jScrollProveedor;
@@ -1918,6 +2053,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelCedulaCliente;
     private javax.swing.JLabel labelClienteProd;
     private javax.swing.JLabel labelComboProd;
+    private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelDescripcionProd;
     public javax.swing.JLabel labelDineroVenta;
     private javax.swing.JLabel labelDireccionProv;
@@ -1925,6 +2061,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelEmpresaNit;
     private javax.swing.JLabel labelEmpresaNombre;
     private javax.swing.JLabel labelEmpresaTelefono;
+    private javax.swing.JLabel labelFechaFinal;
+    private javax.swing.JLabel labelFechaInicial;
+    private javax.swing.JLabel labelFechaInicial1;
+    private javax.swing.JLabel labelFechaInicial2;
     public javax.swing.JLabel labelIvaProd;
     private javax.swing.JLabel labelIvaVenta;
     private javax.swing.JLabel labelNombre;
@@ -1934,14 +2074,13 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelNombreProdVenta;
     private javax.swing.JLabel labelNombreProv;
     public javax.swing.JLabel labelPasswrord;
+    private javax.swing.JLabel labelPrecioCProd;
     private javax.swing.JLabel labelPrecioCProd1;
     private javax.swing.JLabel labelPrecioVProd;
-    private javax.swing.JLabel labelPrecioVProd1;
     private javax.swing.JLabel labelPrecioVProd2;
     private javax.swing.JLabel labelProveedorProd;
     private javax.swing.JLabel labelSubtotalVenta4;
     private javax.swing.JLabel labelTelefono;
-    private javax.swing.JLabel labelTelefono1;
     private javax.swing.JLabel labelTelefonoCliente;
     private javax.swing.JLabel labelTelefonoProv;
     private javax.swing.JLabel labelTotalPagoVenta;
@@ -1953,15 +2092,16 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelEmpresa;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelHistorial;
     private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelPassword;
     private javax.swing.JPanel panelProducto;
     private javax.swing.JPanel panelProveedor;
-    private javax.swing.JPanel panelReporte;
     public javax.swing.JPanel panelUsuario;
     private javax.swing.JPanel panelVenta;
     public javax.swing.JTable tableCategoria;
     public javax.swing.JTable tableCliente;
+    public javax.swing.JTable tableHistorial;
     public javax.swing.JTable tableProducto;
     public javax.swing.JTable tableProductosVenta;
     public javax.swing.JTable tableProveedor;
@@ -1971,6 +2111,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textApellidoCliente;
     public javax.swing.JTextField textApellidoProv;
     public javax.swing.JTextField textBuscarCategoria;
+    public javax.swing.JTextField textBuscarClientHistorial;
     public javax.swing.JTextField textBuscarCliente;
     public javax.swing.JTextField textBuscarProd;
     public javax.swing.JTextField textBuscarProv;
