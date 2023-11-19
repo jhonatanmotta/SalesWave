@@ -19,11 +19,11 @@ public class Conexion {
             // Se realiza la conexión utilizando la URL, la base de datos, el usuario y la contraseña
             cn = DriverManager.getConnection(url + bd, user, password);
             // Mensaje de éxito al conectarse a la base de datos
-            System.out.println("La conexión a la base de datos " + bd + " fue exitosa");
+//            System.out.println("La conexión a la base de datos " + bd + " fue exitosa");
             return cn;
         } catch (SQLException ex) {
             // Mensaje de error al no poder conectarse a la base de datos
-            System.out.println("No se pudo conectar a la base de datos");
+//            System.out.println("No se pudo conectar a la base de datos");
         }
         return null;
     }

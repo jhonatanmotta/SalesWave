@@ -355,6 +355,16 @@ public class ProductoDAO {
         return prod;
     }
 
+    /**
+     * el metodo registroEncabezado ejecuta una sentendia SQL con los datos a
+     * registrar de la tabla encabezadoVenta
+     *
+     * @param encabezado Instancia de la clase encabezadoVenta que contiene la
+     * informacion que se desea guardar
+     * @return booolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean registroEncabezado(encabezadoVenta encabezado) {
         boolean retornoRegistro = false;
         String sql = "INSERT INTO encabezadoventa (idCliente_fk, idEmpresa_fk, idUsuario_fk, valorPagar, fechaVenta, estado) VALUES (?, ?, ?, ?, ?, ?)";
@@ -375,6 +385,13 @@ public class ProductoDAO {
         return retornoRegistro;
     }
 
+    /**
+     * el metodo obtenerIdEncabezado busca el ultimo id insertado en la tabla de
+     * encabezadoVenta
+     *
+     * @return int id, ultimo id regsitrado en dicha tabla
+     * @throws SQLException exception de SQL
+     */
     public int obtenerIdEncabezado() {
         int id = 0;
         String sql = "SELECT max(idEncabezadoVenta) as id FROM encabezadoventa";
@@ -391,6 +408,13 @@ public class ProductoDAO {
         return id;
     }
 
+    /**
+     * el metodo buscarUsuario busca un usuario en la base de datos y obtiene su
+     * id
+     *
+     * @return int id del usuario encontrado en la base de datos
+     * @throws SQLException exception de SQL
+     */
     public int buscarUsuario(String usuario) {
         int id = -1;
         String sql = "SELECT idUsuario FROM usuario WHERE usuario = ?";
@@ -407,6 +431,16 @@ public class ProductoDAO {
         return id;
     }
 
+    /**
+     * el metodo registroDetalle ejecuta una sentendia SQL con los datos a
+     * registrar de la tabla detalleVenta
+     *
+     * @param detalle Instancia de la clase detalleVenta que contiene la
+     * informacion que se desea guardar
+     * @return booolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean registroDetalle(detalleVenta detalle) {
         boolean retornoRegistro = false;
         String sql = "INSERT INTO detalleVenta (idEncabezadoVenta_fk, idProducto_fk, cantidad, precioUnitario, subtotal, iva, totalPagar, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -429,6 +463,15 @@ public class ProductoDAO {
         return retornoRegistro;
     }
 
+    /**
+     * el metodo buscarCliente busca un cliente en la base de datos por su
+     * cedula
+     *
+     * @param String cedulaCliente
+     * @return booolean true si se encuentra un cliente con dicha cedula, false
+     * si no se encuentra ningun usuario
+     * @throws SQLException exception de SQL
+     */
     public boolean buscarCliente(String cedulaCliente) {
         String sql = "SELECT cedula FROM cliente WHERE cedula = ?";
         try {
@@ -443,7 +486,16 @@ public class ProductoDAO {
         }
         return false;
     }
-    
+
+    /**
+     * el metodo buscarFecha busca entre un rango de fechas ventas
+     *
+     * @param String fechaInicio, fecha desde la cual se va buscar
+     * @param String fechaFinal, fecha hasta la cual se va buscar
+     * @return booolean true si se encuentran ventas en dichos rangos de fechas,
+     * false si no se encuentran ventas
+     * @throws SQLException exception de SQL
+     */
     public boolean buscarFecha(String fechaInicio, String fechaFinal) {
         String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
                 + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
@@ -462,8 +514,19 @@ public class ProductoDAO {
         return false;
     }
 
+    /**
+     * el metodo buscarClienteFecha busca entre un rango de fechas compras
+     * realizadas por un cliente
+     *
+     * @param String cedulaCliente, del cual se desea conocer sus compras
+     * @param String fechaInicio, fecha desde la cual se va buscar
+     * @param String fechaFinal, fecha hasta la cual se va buscar
+     * @return booolean true si se encuentran compras de un cliente en dichos
+     * rangos de fechas, false si no se encuentran compras
+     * @throws SQLException exception de SQL
+     */
     public boolean buscarClienteFecha(String fechaInicio, String fechaFinal, String cedulaCliente) {
-         String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
+        String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
                 + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
                 + "ON encabezado.idCliente_fk = cliente.idCliente WHERE fechaVenta BETWEEN ? AND ? AND cliente.cedula = ?";
         try {
@@ -481,54 +544,70 @@ public class ProductoDAO {
         return false;
     }
 
+    /**
+     * el metodo listaVentas lista los datos de la tabla encabezadoVenta en un
+     * ArrayList para luego mostrarlos en la tabla de ventas
+     *
+     * @param String cedulaCliente, del cual se desea conocer sus compras
+     * @param String fechaInicio, fecha desde la cual se va buscar
+     * @param String fechaFinal, fecha hasta la cual se va buscar
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listaVentas(String fechaInicio, String fechaFinal, String cedula) {
+        // ArrayList que contendra los datos recuperados de la base de datos
         List<encabezadoVenta> listaVentas = new ArrayList();
+        // cadena de consulta para listar todas las ventas
         String sql = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente "
                 + "FROM encabezadoventa encabezado INNER JOIN cliente ON encabezado.idCliente_fk = cliente.idCliente";
-
+        // cadena de consulta para listar las ventas entre cierto rango de fechas
         String sqlBusquedaFecha = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente "
                 + "FROM encabezadoventa encabezado INNER JOIN cliente ON encabezado.idCliente_fk = cliente.idCliente "
                 + "WHERE fechaVenta BETWEEN ? AND ?";
-
+        // cadena de consulta para listar todas las compras de un cliente
         String sqlBusquedaCliente = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
                 + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
                 + "ON encabezado.idCliente_fk = cliente.idCliente WHERE cliente.cedula = ?";
-
+        // cadena de consulta para listar todas las compras de un cliente en un rango de fechas
         String sqlBusquedaClienteFecha = "SELECT encabezado.*, cliente.nombre as nombreCliente, cliente.apellido as apellidoCliente, "
                 + "cliente.cedula as cedulaCliente FROM encabezadoventa encabezado INNER JOIN cliente "
                 + "ON encabezado.idCliente_fk = cliente.idCliente WHERE fechaVenta BETWEEN ? AND ? AND cliente.cedula = ?";
         try {
+            // si la fecha de inico, final y cedula son vacios se muestran todas las ventas
             if (fechaInicio.isEmpty() && fechaFinal.isEmpty() && cedula.isEmpty()) {
-                System.out.println("Estoy en normal");
                 ps = conexion.prepareStatement(sql);
+            // si la fecha de inicio y final son vacias, semuestran todas las compras de un cliente
             } else if (fechaInicio.isEmpty() && fechaFinal.isEmpty() && !cedula.isEmpty()) {
-                System.out.println("Estoy en buscar cliente");
                 ps = conexion.prepareStatement(sqlBusquedaCliente);
                 ps.setString(1, cedula);
+            // si la cedula del cliente es vacia, se muestras todas ventas en el rango de fechas especificado
             } else if (!fechaInicio.isEmpty() && !fechaFinal.isEmpty() && cedula.isEmpty()) {
-                System.out.println("Estoy en buscar por fecha");
                 ps = conexion.prepareStatement(sqlBusquedaFecha);
                 ps.setString(1, fechaInicio);
                 ps.setString(2, fechaFinal);
+            // si ninguna variable es vacia se muestran todas las compras de un cliente entre el rango de fecha especdificado
             } else if (!fechaInicio.isEmpty() && !fechaFinal.isEmpty() && !cedula.isEmpty()) {
-                System.out.println("Estoy en buscar por fecha y cliente");
                 ps = conexion.prepareStatement(sqlBusquedaClienteFecha);
                 ps.setString(1, fechaInicio);
                 ps.setString(2, fechaFinal);
                 ps.setString(3, cedula);
             }
             retorno = ps.executeQuery();
+            // si se ha obtenido informacion de la consulta
             while (retorno.next()) {
                 encabezadoVenta encabezado = new encabezadoVenta();
+                // se establece la informacion de las ventas en el objeto encabezado
                 encabezado.setIdEncabezadoVenta(retorno.getInt("idEncabezadoVenta"));
                 encabezado.setValorPagar(retorno.getDouble("valorPagar"));
                 encabezado.setFechaVenta(retorno.getString("fechaVenta"));
                 encabezado.setNombreCliente(retorno.getString("nombreCliente") + " " + retorno.getString("apellidoCliente"));
+                // se añade el objeto al ArrayList
                 listaVentas.add(encabezado);
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
+        // retorna el ArrayList
         return listaVentas;
     }
 }

@@ -39,23 +39,4 @@ public class ComboBox {
     public String toString() {
         return this.getNombre();
     }
-
-//    // Método para verificar la igualdad de ComboBoxes basándose en su ID
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) { // Si es el mismo objeto, son iguales
-//            return true;
-//        }
-//        if (obj == null || getClass() != obj.getClass()) { // Si el objeto no es una instancia de ComboBox, no son iguales
-//            return false;
-//        }
-//        ComboBox other = (ComboBox) obj; // Se convierte el objeto a ComboBox para comparar IDs
-//        return id == other.id; // Se compara el ID de los ComboBoxes
-//    }
-//
-//    // Método para generar un código hash basado en el ID
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id);
-//    }
 }

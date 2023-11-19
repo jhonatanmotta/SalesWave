@@ -46,7 +46,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     // lista de los productos en la cola de venta
     List<detalleVenta> listaProductosVenta = new ArrayList<>();
     
-    private detalleVenta producto; // isntancia detalleVenta
+    private detalleVenta producto; // instancia detalleVenta
     private int idProducto = 0; //id del Producto por defecto
     private int idDetalle = 1; //id del detalleVenta por defecto
     private String nombreProducto = ""; //nombreProducto por defecto
@@ -134,7 +134,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         menu.cambioVenta.setText("0.0");
     }
 
-    // metodo que vuelve todos los elementos de la venta a su esta por defecto 
+    // metodo que vuelve todos los elementos de la venta a su estado por defecto 
     // ya se vacio o un indice selecccionado por defecto
     // algunos botones los vuelve deshabilitados
     public void resetDatosVenta() {
@@ -289,9 +289,11 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                     // se lista la cola que al momento estara vacia
                     listarVenta();
                 } else {
+                    // mensaje de error
                     JOptionPane.showMessageDialog(null, "Error al registrar el encabezado de la venta", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
+                // mensaje de error
                 JOptionPane.showMessageDialog(null, "No hay productos agregados en la cola", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         }
@@ -372,7 +374,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         // for que recorre la tabla para buscar coincidencias con el valor que se esta buscando
         for (int fila = 0; fila < modeloTabla.getRowCount(); fila++) {
             Object valor = modeloTabla.getValueAt(fila, 1);
-            // si el producto es encontrado en la cola de venta, cambia la variable de retorno a truev y
+            // si el producto es encontrado en la cola de venta, cambia la variable de retorno a true y
             //rompe el bucle for
             if (valor != null && valor.toString().equals(productoBusqueda)) {
                 encontrado = true;
@@ -451,10 +453,13 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     // actionPerformed que recibe todos los eventos de la vista y ejecuta metodos
     @Override
     public void actionPerformed(ActionEvent e) {
+        // accion para añadir productos a la cola
         if (e.getSource() == menu.aniadirProdVenta) {
             agregarDetalleVenta();
+            // accion de pagar la venta
         } else if (e.getSource() == menu.pagarVenta) {
             calcularCambio();
+            // accion para eliminar un producto de la cola de venta
         } else if (e.getSource() == menu.jMenuEliminarVentaProd) {
             eliminarProducto();
             limpiarDatos();
@@ -462,6 +467,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                 menu.textEfectivoVenta.setEnabled(false);
                 menu.pagarVenta.setEnabled(false);
             }
+            // accion de generar una venta que ejecuta metodos dentro de la clase
         } else if (e.getSource() == menu.generarVenta) {
             try {
                 generarVenta();
@@ -476,6 +482,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     // mouseClicked que recibe todos los clicks de la vista y ejecuta metodos
     @Override
     public void mouseClicked(MouseEvent e) {
+        // accion de venta en el menu del sistema
         if (e.getSource() == menu.btnVenta) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(6);
@@ -484,9 +491,11 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
             eliminarItemsCombox();
             llenarComboBox();
             estadoCombo();
+            // accion de click en la tabla para luego eliminar la fila
         } else if (e.getSource() == menu.tableProductosVenta) {
             filaEliminar = menu.tableProductosVenta.rowAtPoint(e.getPoint());
         } 
+        // accion de venta en el inicio del sistema
          else if (e.getSource() == menu.btn_InicioVender) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(6);
