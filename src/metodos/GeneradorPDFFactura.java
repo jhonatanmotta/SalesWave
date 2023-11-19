@@ -23,43 +23,54 @@ import javax.swing.JTable;
 
 public class GeneradorPDFFactura {
 
-    private String nombreCliente;
-    private String nombreUsuario;
-    private int idEmpresa;
-    private int numVenta;
-    private String fechaFactura;
-    private String nombreArchivoPDF;
-    private JTable listaProductos;
-    private double subtotal;
-    private double iva;
-    private double total;
+    private String nombreCliente; // Almacena el nombre del cliente asociado a la factura
+    private String nombreUsuario; // Almacena el nombre del usuario relacionado con la factura
+    private int idEmpresa; // Almacena el ID de la empresa correspondiente a la factura
+    private int numVenta; // Almacena el número de venta o factura
+    private String fechaFactura; // Almacena la fecha de emisión de la factura
+    private String nombreArchivoPDF; // Almacena el nombre del archivo PDF de la factura
+    private JTable listaProductos; // Almacena la lista de productos de la factura
+    private double subtotal; // Almacena el monto subtotal de la factura
+    private double iva; // Almacena el monto del impuesto IVA aplicado a la factura
+    private double total; // Almacena el monto total a pagar de la factura
 
+    // Constructor vacio
     public GeneradorPDFFactura() {
     }
 
+    // Constructor de la clase GeneradorPDFFactura para inicializar sus variables con los datos de la factura
     public GeneradorPDFFactura(String nombreCliente, String nombreUsuario, int idEmpresa, int numVenta, String fechaFactura, String nombreArchivoPDF, JTable listaProductos, double subtotal, double iva, double total) {
-        this.nombreCliente = nombreCliente;
-        this.nombreUsuario = nombreUsuario;
-        this.idEmpresa = idEmpresa;
-        this.numVenta = numVenta;
-        this.fechaFactura = fechaFactura;
-        this.nombreArchivoPDF = nombreArchivoPDF;
-        this.listaProductos = listaProductos;
-        this.subtotal = subtotal;
-        this.iva = iva;
-        this.total = total;
+        this.nombreCliente = nombreCliente; // Nombre del cliente de la factura
+        this.nombreUsuario = nombreUsuario; // Nombre del usuario asociado a la factura
+        this.idEmpresa = idEmpresa; // ID de la empresa relacionada con la factura
+        this.numVenta = numVenta; // Número de la venta/factura
+        this.fechaFactura = fechaFactura; // Fecha de la factura
+        this.nombreArchivoPDF = nombreArchivoPDF; // Nombre del archivo PDF asociado a la factura
+        this.listaProductos = listaProductos; // Lista de productos de la factura (posiblemente una tabla)
+        this.subtotal = subtotal; // Monto subtotal de la factura
+        this.iva = iva; // Monto del impuesto IVA de la factura
+        this.total = total; // Monto total de la factura
     }
 
+    // Metodo para generar una factura
     public void generarFactura() throws FileNotFoundException, BadElementException, IOException {
         try {
             // Nombre del archivo a crear
-            nombreArchivoPDF = "Factura_" + numVenta + "_" + nombreCliente + "_" + obtenerNombreArchivo(fechaFactura) + ".pdf";
+            nombreArchivoPDF = "Factura_" + numVenta + "_" + nombreCliente + "_" + obtenerFechaArchivo(fechaFactura) + ".pdf";
 
+            // Se instancia un objeto FileOutputStream para manejar la escritura del archivo
             FileOutputStream archivo;
+
+            // Se crea una instancia de File con la ruta y nombre del archivo PDF
             File ruta = new File("src/facturas/" + nombreArchivoPDF);
+
+            // Se establece el archivo de salida utilizando la ruta especificada
             archivo = new FileOutputStream(ruta);
+
+            // Se instancia un objeto Document que representa el archivo PDF a crear
             Document archivoPDF = new Document();
 
+            // Se asocia el archivo PDF con el FileOutputStream para permitir la escritura
             PdfWriter.getInstance(archivoPDF, archivo);
 
             // Abro el archivo que cree para empezar a trabajar con el
@@ -130,7 +141,7 @@ public class GeneradorPDFFactura {
             tablaProductos.setWidths(anchoColumnasProducto);
             // Se estable un espacio entre los datos de la venta y la tabla productos
             tablaProductos.setSpacingBefore(30f);
-            
+
             // Titulo de la cabecera de la tabla y asignacion del estilo
             PdfPCell columnaDescripcion = new PdfPCell(new Phrase("Descripcion", estiloCabeceraTabla));
             PdfPCell columnaCantidad = new PdfPCell(new Phrase("Cantidad", estiloCabeceraTabla));
@@ -164,7 +175,7 @@ public class GeneradorPDFFactura {
             BaseColor colorBorde = new BaseColor(0xE8, 0x9E, 0x43);
             // Ciclo for que recorre el contenido de la tabla
             for (int i = 0; i < listaProductos.getRowCount(); i++) {
-                
+
                 // se le asignan a las variables, los valores de la tabla de venta en los puntos especificados
                 String producto = listaProductos.getValueAt(i, 1).toString();
                 String cantidad = listaProductos.getValueAt(i, 2).toString();
@@ -176,7 +187,7 @@ public class GeneradorPDFFactura {
                 PdfPCell cantidadValor = new PdfPCell(new Phrase(cantidad, estiloDatos));
                 PdfPCell precioValor = new PdfPCell(new Phrase("$ " + precio, estiloDatos));
                 PdfPCell totalValor = new PdfPCell(new Phrase("$ " + total, estiloDatos));
-                
+
                 // Se le quitan los bordes a las celdas del cuerpo de la tabla productos
                 productoValor.setBorder(Rectangle.NO_BORDER);
                 cantidadValor.setBorder(Rectangle.NO_BORDER);
@@ -209,7 +220,7 @@ public class GeneradorPDFFactura {
             }
             // Se agrega la tabla productos al archivo
             archivoPDF.add(tablaProductos);
-            
+
             // Crear tabla para añadir los totales de la venta
             PdfPTable tablaTotales = new PdfPTable(4);
             // Se estable el ancho de la tabla
@@ -251,14 +262,17 @@ public class GeneradorPDFFactura {
             tablaTotales.addCell("");
             tablaTotales.addCell(columnaTotalGeneral);
             tablaTotales.addCell(columnaValorTotal);
-            
+
             // Se agrega la tabla de totales al archivo
             archivoPDF.add(tablaTotales);
-            
-            // Se cierra el archivoPDF
+
+            // Se cierra el documento PDF para finalizar su escritura y liberar recursos
             archivoPDF.close();
-            
+
+            // Se cierra el flujo de salida del archivo PDF
             archivo.close();
+
+            // Se utiliza la clase Desktop para abrir el archivo PDF recién creado en la aplicación predeterminada para archivos PDF
             Desktop.getDesktop().open(ruta);
             // Atrapa las excepciones que se puedan generar
         } catch (DocumentException | IOException e) {
@@ -267,84 +281,104 @@ public class GeneradorPDFFactura {
         }
     }
 
-    public String obtenerNombreArchivo(String fecha) {
-        String fechaNueva = "";
+    // Método para obtener un nombre de archivo a partir de una fecha
+    public String obtenerFechaArchivo(String fecha) {
+        String fechaNueva = ""; // Variable para almacenar la nueva fecha
+        // Recorre la cadena de fecha
         for (int i = 0; i < fecha.length(); i++) {
-            if (fecha.charAt(i) == '/') {
-                fechaNueva = fecha.replace('/', '_');
+            if (fecha.charAt(i) == '/') { // Si encuentra un '/', reemplaza todos los '/' con '_'
+                fechaNueva = fecha.replace('/', '_'); // Reemplaza '/' por '_'
             }
         }
-        return fechaNueva;
+        return fechaNueva; // Devuelve la nueva fecha
     }
 
+    // Devuelve el nombre del cliente
     public String getNombreCliente() {
         return nombreCliente;
     }
 
+    // Establece el nombre del cliente
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
 
+    // Devuelve el nombre del usuario
     public String getNombreUsuario() {
         return nombreUsuario;
     }
 
+    // Establece el nombre del usuario
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
 
+    // Devuelve el ID de la empresa
     public int getIdEmpresa() {
         return idEmpresa;
     }
 
+    // Establece el ID de la empresa
     public void setIdEmpresa(int idEmpresa) {
         this.idEmpresa = idEmpresa;
     }
 
+    // Devuelve el número de venta
     public int getNumVenta() {
         return numVenta;
     }
 
+    // Establece el número de venta
     public void setNumVenta(int numVenta) {
         this.numVenta = numVenta;
     }
 
+    // Devuelve la fecha de la factura
     public String getFechaFactura() {
         return fechaFactura;
     }
 
+    // Establece la fecha de la factura
     public void setFechaFactura(String fechaFactura) {
         this.fechaFactura = fechaFactura;
     }
 
+    // Devuelve la tabla de lista de productos
     public JTable getListaProductos() {
         return listaProductos;
     }
 
+    // Establece la tabla de lista de productos
     public void setListaProductos(JTable listaProductos) {
         this.listaProductos = listaProductos;
     }
 
+    // Devuelve el subtotal
     public double getSubtotal() {
         return subtotal;
     }
 
+    // Establece el subtotal
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
 
+    // Devuelve el IVA
     public double getIva() {
         return iva;
     }
 
+    // Establece el IVA
     public void setIva(double iva) {
         this.iva = iva;
     }
 
+    // Devuelve el total
     public double getTotal() {
         return total;
     }
 
+    // Establece el total
     public void setTotal(double total) {
         this.total = total;
     }

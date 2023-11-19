@@ -10,8 +10,6 @@ import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
 import controlador.Ctrl_usuario;
 import controlador.Ctrl_venta;
-import java.awt.Image;
-import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
@@ -57,7 +55,7 @@ public class Menu extends javax.swing.JFrame {
         Ctrl_categoria controladorCategoria = new Ctrl_categoria(cat, catDao, this);
         Ctrl_proveedor controladorProveedor = new Ctrl_proveedor(prov, provDao, this);
         Ctrl_producto controladorProducto = new Ctrl_producto(prod, prodDao, this);
-        Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp, empDao, this);
+        Ctrl_empresa controladorEmpresa = new Ctrl_empresa(emp, user, empDao, userDao, this);
         Ctrl_venta controladorVenta = new Ctrl_venta(prodDao, encabezado, detalle, this);
         Ctrl_historial controladorHistorial = new Ctrl_historial(prodDao, encabezado, this);
     }
@@ -100,6 +98,9 @@ public class Menu extends javax.swing.JFrame {
         btn_InicioVender = new javax.swing.JButton();
         btn_InicioHistorial = new javax.swing.JButton();
         LogoInicio = new javax.swing.JLabel();
+        copyright = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPaneInicio = new javax.swing.JTextPane();
         panelUsuario = new javax.swing.JPanel();
         jScrollUsuario = new javax.swing.JScrollPane();
         tableUsuarios = new javax.swing.JTable();
@@ -252,6 +253,16 @@ public class Menu extends javax.swing.JFrame {
         textNombreEmp = new javax.swing.JTextField();
         textTelefonoEmp = new javax.swing.JTextField();
         btn_modificarEmp = new javax.swing.JButton();
+        tituloCambioPassword = new javax.swing.JLabel();
+        tituloConficuracionEmpresa = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        txtPasswordNewConfirm = new javax.swing.JPasswordField();
+        labelPasswordCurrent = new javax.swing.JLabel();
+        labelPasswordNewConfirm = new javax.swing.JLabel();
+        txtPasswordCurrent = new javax.swing.JPasswordField();
+        labelPasswordNew = new javax.swing.JLabel();
+        txtPasswordNew = new javax.swing.JPasswordField();
+        btn_modificarPassword = new javax.swing.JButton();
         panelMenu = new javax.swing.JPanel();
         btnUsuario = new javax.swing.JButton();
         btnProducto = new javax.swing.JButton();
@@ -388,7 +399,7 @@ public class Menu extends javax.swing.JFrame {
 
         TituloInicio.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
         TituloInicio.setText("SalesWave");
-        panelBienvenida.add(TituloInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, -1, -1));
+        panelBienvenida.add(TituloInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
         btn_InicioVender.setBackground(new java.awt.Color(232, 158, 67));
         btn_InicioVender.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -400,7 +411,7 @@ public class Menu extends javax.swing.JFrame {
                 btn_InicioVenderActionPerformed(evt);
             }
         });
-        panelBienvenida.add(btn_InicioVender, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 160, 230, 60));
+        panelBienvenida.add(btn_InicioVender, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, 230, 60));
 
         btn_InicioHistorial.setBackground(new java.awt.Color(232, 158, 67));
         btn_InicioHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -412,10 +423,26 @@ public class Menu extends javax.swing.JFrame {
                 btn_InicioHistorialActionPerformed(evt);
             }
         });
-        panelBienvenida.add(btn_InicioHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, 230, 60));
+        panelBienvenida.add(btn_InicioHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 290, 230, 60));
 
         LogoInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/logo.png"))); // NOI18N
         panelBienvenida.add(LogoInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, -1, -1));
+
+        copyright.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        copyright.setForeground(new java.awt.Color(102, 102, 102));
+        copyright.setText("© Jhonatan Motta 2023");
+        panelBienvenida.add(copyright, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 640, -1, -1));
+
+        jTextPaneInicio.setEditable(false);
+        jTextPaneInicio.setBorder(null);
+        jTextPaneInicio.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        jTextPaneInicio.setText("¡Bienvenido a SalesWave! Tu aliado en la gestión de ventas para emprendedores y pequeños negocios. Simplifica, organiza y haz crecer tu negocio con nuestro software. ¡Comencemos a hacer olas juntos en el mundo de las ventas!");
+        jTextPaneInicio.setDisabledTextColor(new java.awt.Color(102, 102, 102));
+        jTextPaneInicio.setEnabled(false);
+        jTextPaneInicio.setFocusable(false);
+        jScrollPane2.setViewportView(jTextPaneInicio);
+
+        panelBienvenida.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 250, 230));
 
         jTabbedPanel.addTab("inicio", panelBienvenida);
 
@@ -1476,42 +1503,42 @@ public class Menu extends javax.swing.JFrame {
         labelEmpresaNombre.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaNombre.setForeground(new java.awt.Color(51, 51, 51));
         labelEmpresaNombre.setText("Nombre");
-        panelEmpresa.add(labelEmpresaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, 30));
+        panelEmpresa.add(labelEmpresaNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 220, -1, 30));
 
         labelEmpresaNit.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaNit.setForeground(new java.awt.Color(51, 51, 51));
         labelEmpresaNit.setText("NIT");
-        panelEmpresa.add(labelEmpresaNit, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, 30));
+        panelEmpresa.add(labelEmpresaNit, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, 30));
 
         textNitEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNitEmp.setForeground(new java.awt.Color(51, 51, 51));
         textNitEmp.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelEmpresa.add(textNitEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 240, -1));
+        panelEmpresa.add(textNitEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, 240, -1));
 
         labelEmpresaTelefono.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaTelefono.setForeground(new java.awt.Color(51, 51, 51));
-        labelEmpresaTelefono.setText("Telefono");
-        panelEmpresa.add(labelEmpresaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, -1, 30));
+        labelEmpresaTelefono.setText("Teléfono");
+        panelEmpresa.add(labelEmpresaTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, -1, 30));
 
         labelEmpresaDireccion.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         labelEmpresaDireccion.setForeground(new java.awt.Color(51, 51, 51));
-        labelEmpresaDireccion.setText("Direccion");
-        panelEmpresa.add(labelEmpresaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, 30));
+        labelEmpresaDireccion.setText("Dirección");
+        panelEmpresa.add(labelEmpresaDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 400, -1, 30));
 
         textDireccionEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textDireccionEmp.setForeground(new java.awt.Color(51, 51, 51));
         textDireccionEmp.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelEmpresa.add(textDireccionEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 240, -1));
+        panelEmpresa.add(textDireccionEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 440, 240, -1));
 
         textNombreEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreEmp.setForeground(new java.awt.Color(51, 51, 51));
         textNombreEmp.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelEmpresa.add(textNombreEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 120, 240, -1));
+        panelEmpresa.add(textNombreEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, 240, -1));
 
         textTelefonoEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textTelefonoEmp.setForeground(new java.awt.Color(51, 51, 51));
         textTelefonoEmp.setPreferredSize(new java.awt.Dimension(160, 30));
-        panelEmpresa.add(textTelefonoEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 160, 240, -1));
+        panelEmpresa.add(textTelefonoEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 240, -1));
 
         btn_modificarEmp.setBackground(new java.awt.Color(255, 255, 255));
         btn_modificarEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1519,7 +1546,93 @@ public class Menu extends javax.swing.JFrame {
         btn_modificarEmp.setText("Modificar");
         btn_modificarEmp.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(232, 158, 67), 2));
         btn_modificarEmp.setPreferredSize(new java.awt.Dimension(90, 30));
-        panelEmpresa.add(btn_modificarEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 270, 100, -1));
+        btn_modificarEmp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarEmpActionPerformed(evt);
+            }
+        });
+        panelEmpresa.add(btn_modificarEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 520, 180, 40));
+
+        tituloCambioPassword.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        tituloCambioPassword.setText("Actualizar Contraseña");
+        panelEmpresa.add(tituloCambioPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 40, -1, -1));
+
+        tituloConficuracionEmpresa.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        tituloConficuracionEmpresa.setText("Datos Empresa");
+        panelEmpresa.add(tituloConficuracionEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, -1, -1));
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jSeparator1.setPreferredSize(new java.awt.Dimension(50, 40));
+        panelEmpresa.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 10, 610));
+
+        txtPasswordNewConfirm.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtPasswordNewConfirm.setForeground(new java.awt.Color(51, 51, 51));
+        txtPasswordNewConfirm.setPreferredSize(new java.awt.Dimension(170, 30));
+        txtPasswordNewConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordNewConfirmActionPerformed(evt);
+            }
+        });
+        txtPasswordNewConfirm.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordNewConfirmKeyTyped(evt);
+            }
+        });
+        panelEmpresa.add(txtPasswordNewConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 390, 240, -1));
+
+        labelPasswordCurrent.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelPasswordCurrent.setForeground(new java.awt.Color(51, 51, 51));
+        labelPasswordCurrent.setText("Contraseña Actual");
+        panelEmpresa.add(labelPasswordCurrent, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 170, -1, 30));
+
+        labelPasswordNewConfirm.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelPasswordNewConfirm.setForeground(new java.awt.Color(51, 51, 51));
+        labelPasswordNewConfirm.setText("Confirmación de Nueva Contraseña");
+        panelEmpresa.add(labelPasswordNewConfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 350, -1, 30));
+
+        txtPasswordCurrent.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtPasswordCurrent.setForeground(new java.awt.Color(51, 51, 51));
+        txtPasswordCurrent.setPreferredSize(new java.awt.Dimension(170, 30));
+        txtPasswordCurrent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordCurrentActionPerformed(evt);
+            }
+        });
+        txtPasswordCurrent.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordCurrentKeyTyped(evt);
+            }
+        });
+        panelEmpresa.add(txtPasswordCurrent, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 210, 240, -1));
+
+        labelPasswordNew.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        labelPasswordNew.setForeground(new java.awt.Color(51, 51, 51));
+        labelPasswordNew.setText("Nueva Contraseña");
+        panelEmpresa.add(labelPasswordNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 260, -1, 30));
+
+        txtPasswordNew.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        txtPasswordNew.setForeground(new java.awt.Color(51, 51, 51));
+        txtPasswordNew.setPreferredSize(new java.awt.Dimension(170, 30));
+        txtPasswordNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordNewActionPerformed(evt);
+            }
+        });
+        txtPasswordNew.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPasswordNewKeyTyped(evt);
+            }
+        });
+        panelEmpresa.add(txtPasswordNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 300, 240, -1));
+
+        btn_modificarPassword.setBackground(new java.awt.Color(255, 255, 255));
+        btn_modificarPassword.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_modificarPassword.setForeground(new java.awt.Color(51, 51, 51));
+        btn_modificarPassword.setText("Actualizar");
+        btn_modificarPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(232, 158, 67), 2));
+        btn_modificarPassword.setPreferredSize(new java.awt.Dimension(90, 30));
+        panelEmpresa.add(btn_modificarPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 470, 180, 40));
 
         jTabbedPanel.addTab("empresa", panelEmpresa);
 
@@ -1929,7 +2042,7 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_textEfectivoVentaKeyTyped
 
     private void btn_InicioVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InicioVenderActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_btn_InicioVenderActionPerformed
 
     private void btn_InicioHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InicioHistorialActionPerformed
@@ -1947,6 +2060,34 @@ public class Menu extends javax.swing.JFrame {
                 this.dispose();
             }
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
+    private void txtPasswordNewConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordNewConfirmActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordNewConfirmActionPerformed
+
+    private void txtPasswordNewConfirmKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordNewConfirmKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordNewConfirmKeyTyped
+
+    private void txtPasswordCurrentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordCurrentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordCurrentActionPerformed
+
+    private void txtPasswordCurrentKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordCurrentKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordCurrentKeyTyped
+
+    private void txtPasswordNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordNewActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordNewActionPerformed
+
+    private void txtPasswordNewKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordNewKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordNewKeyTyped
+
+    private void btn_modificarEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarEmpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_modificarEmpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1990,6 +2131,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JButton btn_modificarCategoria;
     public javax.swing.JButton btn_modificarCliente;
     public javax.swing.JButton btn_modificarEmp;
+    public javax.swing.JButton btn_modificarPassword;
     public javax.swing.JButton btn_modificarProd;
     public javax.swing.JButton btn_modificarProv;
     public javax.swing.JButton btn_modificarUsuario;
@@ -2006,6 +2148,7 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JComboBox<Object> comboBoxProductos;
     public javax.swing.JComboBox<Object> comboBoxProductosVenta;
     public javax.swing.JComboBox<Object> comboBoxProveedorProd;
+    private javax.swing.JLabel copyright;
     public javax.swing.JButton generarVenta;
     public com.toedter.calendar.JDateChooser jDateFinal;
     public com.toedter.calendar.JDateChooser jDateInicial;
@@ -2030,12 +2173,15 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollCategoria;
     private javax.swing.JScrollPane jScrollCliente;
     private javax.swing.JScrollPane jScrollHistorial;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollProducto;
     private javax.swing.JScrollPane jScrollProductosVenta;
     private javax.swing.JScrollPane jScrollProveedor;
     private javax.swing.JScrollPane jScrollStock;
     private javax.swing.JScrollPane jScrollUsuario;
+    private javax.swing.JSeparator jSeparator1;
     public javax.swing.JTabbedPane jTabbedPanel;
+    private javax.swing.JTextPane jTextPaneInicio;
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelApellidoCliente;
     private javax.swing.JLabel labelApellidoProv;
@@ -2073,6 +2219,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel labelNombreProd;
     private javax.swing.JLabel labelNombreProdVenta;
     private javax.swing.JLabel labelNombreProv;
+    private javax.swing.JLabel labelPasswordCurrent;
+    private javax.swing.JLabel labelPasswordNew;
+    private javax.swing.JLabel labelPasswordNewConfirm;
     public javax.swing.JLabel labelPasswrord;
     private javax.swing.JLabel labelPrecioCProd;
     private javax.swing.JLabel labelPrecioCProd1;
@@ -2146,8 +2295,13 @@ public class Menu extends javax.swing.JFrame {
     public javax.swing.JTextField textTelefonoEmp;
     public javax.swing.JTextField textTelefonoProv;
     public javax.swing.JTextField textUsuario;
+    private javax.swing.JLabel tituloCambioPassword;
+    private javax.swing.JLabel tituloConficuracionEmpresa;
     public javax.swing.JLabel tituloPanel;
     public javax.swing.JPasswordField txtPassword;
+    public javax.swing.JPasswordField txtPasswordCurrent;
+    public javax.swing.JPasswordField txtPasswordNew;
+    public javax.swing.JPasswordField txtPasswordNewConfirm;
     public javax.swing.JLabel valorIva;
     public javax.swing.JLabel valorSubtotal;
     public javax.swing.JLabel valorTotalPago;

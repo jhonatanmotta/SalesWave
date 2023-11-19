@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import metodos.BotonesMenu;
+import metodos.Credenciales;
 import metodos.Validaciones;
 import modelo.Usuario;
 import modelo.UsuarioDAO;
@@ -202,6 +203,12 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
         }
     }
 
+     public String obtenerUsuario() {
+        Credenciales credenciales = Credenciales.getInstancia();
+        String userLogin = credenciales.getUsuario();
+        return userLogin;
+    }
+     
     public void agregarContenidoInput(int fila) {
         String estado = menu.tableUsuarios.getValueAt(fila, 5).toString();
         if (estado == "Habilitado") {
@@ -213,6 +220,13 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
         }
         menu.btn_registrarUsuario.setEnabled(false);
         menu.txtPassword.setEnabled(false);
+        
+        if (obtenerUsuario().equals(menu.tableUsuarios.getValueAt(fila, 3).toString())) {
+            menu.textUsuario.setEnabled(true);
+        } else {
+            menu.textUsuario.setEnabled(false);
+        }
+        
         int idUsuario = (int) menu.tableUsuarios.getValueAt(fila, 0);
         Usuario usuario = userDao.buscarCorreo(idUsuario);
         menu.textIdUsuario.setText(menu.tableUsuarios.getValueAt(fila, 0).toString());

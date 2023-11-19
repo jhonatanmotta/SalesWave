@@ -7,14 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class CategoriaDAO {
+    
     //se trae la conexion a la bd, se declara el PreparedStatement y el ResultSet
     private static Connection conexion = Conexion.conectar();
     private static PreparedStatement ps = null;
     private static ResultSet retorno;
-
+    
+    /**
+     * el metodo registroCategoria ejecuta una sentendia SQL con los datos a
+     * registrar de la tabla categoria
+     *
+     * @param cat Instancia de la clase Categoria que contiene la informacion
+     * que se desea guardar
+     * @return booolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean registroCategoria(Categoria cat) {
         String sql = "INSERT INTO categoria (nombre, estado) VALUES (?, ?)";
         try {
@@ -25,11 +35,19 @@ public class CategoriaDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al registrar la categoria");
             return false;
         }
     }
 
+    /**
+     * el metodo listaCategorias lista los datos de la tabla categoria en un
+     * ArrayList para luego mostrarlos en la tabla
+     *
+     * @param String el valor que se desea buscar coincidencias dentro de la
+     * columna nombre. Para luego mostrar los datos en la tabla
+     * @return List una lista de los datos recuperados de la consulta SQL
+     * @throws SQLException exception de SQL
+     */
     public List listaCategorias(String valorBusqueda) {
         List<Categoria> listaCats = new ArrayList();
         //consulta a la base de datos
@@ -52,11 +70,20 @@ public class CategoriaDAO {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al listar categorias");
         }
         return listaCats;
     }
     
+    /**
+     * el metodo modificarCategoria ejecuta una senticia SQL para actualizar los
+     * datos de la tabla categoria
+     *
+     * @param cat Instancia de la clase Categoria que contiene la informacion
+     * que se desea actualizar
+     * @return boolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean modificarCategoria(Categoria cat) {
         String sql = "UPDATE categoria SET nombre = ?, estado = ? WHERE idCategoria = ?";
         try {
@@ -68,11 +95,21 @@ public class CategoriaDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al modificar la categoria");
             return false;
         }
     }
 
+    /**
+     * el metodo estadoCategoria cambia la columna estado de la tabla categoria
+     *
+     * @param int estado valor que se le desea dar a la columna ya sea 1 =
+     * activo o 0 = desactiva
+     * @param int id para referenciar la fila a la que se desea cambiar el
+     * estado
+     * @return boolean true si la consulta se ejecuta, false si ocurre un error
+     * al ejecutar la consulta
+     * @throws SQLException exception de SQL
+     */
     public boolean estadoCategoria(int estado, int id) {
         String sql = "UPDATE categoria SET estado = ? WHERE idCategoria = ?";
         try {
@@ -83,7 +120,6 @@ public class CategoriaDAO {
             return true;
         } catch (SQLException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(null, "Error al cambiar de estado la categoria");
             return false;
         }
     }

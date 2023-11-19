@@ -13,8 +13,6 @@ public class Ctrl_inicio implements MouseListener{
     public Ctrl_inicio(Menu menu) {
         this.menu = menu;
         this.menu.btnInicio.addMouseListener(this);
-        this.menu.btn_InicioVender.addMouseListener(this);
-        this.menu.btn_InicioHistorial.addMouseListener(this);
         this.botones = new BotonesMenu(this.menu); 
         botones.cambiarPanel(0);
         botones.cambiarColor(menu.btnInicio);
@@ -27,17 +25,7 @@ public class Ctrl_inicio implements MouseListener{
             botones.cambiarPanel(0);
             botones.cambiarColor(menu.btnInicio);
             botones.cambiarTitulo("Bienvenido a SalesWave");
-        } else if (e.getSource() == menu.btn_InicioVender) {
-            botones.cambiarPanel(6);
-            botones.cambiarColor(menu.btnHistorial);
-            botones.cambiarTitulo("Historial de Facturas");
-            
-        } else if (e.getSource() == menu.btn_InicioHistorial) {
-            botones.cambiarPanel(7);
-            botones.cambiarColor(menu.btnVenta);
-            botones.cambiarTitulo("Venta");
-            
-        }
+        } 
     }
 
     @Override

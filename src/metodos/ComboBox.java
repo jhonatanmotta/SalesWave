@@ -5,39 +5,41 @@ import java.util.Objects;
 public class ComboBox {
 
     // Atributos de la clase
-    private int id;         // Identificador de la tabla 
+    private int id; // Identificador (id) de la tabla 
     private String nombre;  // Nombre de que se desea mostrar en las opciones del comboBox
 
-    // Metodo Constructor
+    // Metodo Constructor con parámetros
     public ComboBox(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+        this.id = id; //Asigna el id
+        this.nombre = nombre; //Asigna el nombre a mostrar en las opciones
     }
 
-    // Métodos para obtener y establecer el ID
+    // Método para obtener el ID
     public int getId() {
         return id;
-    }
+    }  
 
+    // Método para establecer el ID
     public void setId(int id) {
         this.id = id;
     }
 
-    // Métodos para obtener y establecer el nombre
+    // Método para obtener el nombre
     public String getNombre() {
         return nombre;
     }
 
+    // Método para establecer el nombre
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     // Método para representar el ComboBox como cadena (en este caso, el nombre)
     @Override
-    public String toString(){
+    public String toString() {
         return this.getNombre();
     }
-    
+
 //    // Método para verificar la igualdad de ComboBoxes basándose en su ID
 //    @Override
 //    public boolean equals(Object obj) {
@@ -56,6 +58,4 @@ public class ComboBox {
 //    public int hashCode() {
 //        return Objects.hash(id);
 //    }
-
 }
-

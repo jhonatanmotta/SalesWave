@@ -1,5 +1,6 @@
 package controlador;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,23 +11,31 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import metodos.BotonesMenu;
 import metodos.Credenciales;
+import metodos.Validaciones;
 import modelo.Empresa;
 import modelo.EmpresaDAO;
+import modelo.Usuario;
+import modelo.UsuarioDAO;
 import vista.Menu;
 
 public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener {
 
     // atributos del controlador empresa 
     private Empresa emp; // atributo de tipo Empresa para asignar una instancia de este
+    private Usuario user;
     private EmpresaDAO empDao; // atributo de tipo EmpresaDAO para asignar una instancia de este
+    private UsuarioDAO userDao;
     private Menu menu; // atributo de tipo Menu para asignar una instancia de este
 
     // metodo constructor de la clase pide 3 parametos que son instancias de Empresa, EmpresaDAO y de Menu(formulario)
-    public Ctrl_empresa(Empresa emp, EmpresaDAO empDao, Menu menu) {
+    public Ctrl_empresa(Empresa emp, Usuario user, EmpresaDAO empDao, UsuarioDAO userDao, Menu menu) {
         this.emp = emp; // Se le asigna al atributo this.emp la instancia que llega por parametro
+        this.user = user;
         this.empDao = empDao; // Se le asigna al atributo this.empDao la instancia que llega por parametro
+        this.userDao = userDao;
         this.menu = menu; // Se le asigna al atributo this.menu la instancia que llega por parametro
         this.menu.btn_modificarEmp.addActionListener(this); // se le añade el ActionListener al boton btn_modificarEmp
+        this.menu.btn_modificarPassword.addActionListener(this);
         this.menu.btnEmpresa.addMouseListener(this);
         styleEmpresa();
     }
@@ -36,6 +45,9 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
 //        this.menu.textNombreEmp.setEnabled(false);
 //        this.menu.textTelefonoEmp.setEnabled(false);
 //        this.menu.textDireccionEmp.setEnabled(false);
+        menu.txtPasswordCurrent.putClientProperty(FlatClientProperties.STYLE, "" + "showRevealButton:true");
+        menu.txtPasswordNew.putClientProperty(FlatClientProperties.STYLE, "" + "showRevealButton:true");
+        menu.txtPasswordNewConfirm.putClientProperty(FlatClientProperties.STYLE, "" + "showRevealButton:true");
     }
 
     public void llenarInformacion() {
@@ -46,12 +58,12 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
         menu.textDireccionEmp.setText(contenido.getDireccion());
     }
 
-//    public void estadoInputs (){
-//        menu.textNitEmp.setEnabled(false);
-//        menu.textNombreEmp.setEnabled(false);
-//        menu.textTelefonoEmp.setEnabled(false);
-//        menu.textDireccionEmp.setEnabled(false);
-//    }
+    public void limpiarCampos() {
+        menu.txtPasswordCurrent.setText("");
+        menu.txtPasswordNew.setText("");
+        menu.txtPasswordNewConfirm.setText("");
+    }
+
     public void modificarInformacion() {
         String nombre = menu.textNombreEmp.getText().trim();
         String nit = menu.textNitEmp.getText().trim();
@@ -82,6 +94,47 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
         }
     }
 
+    public void modificarPassword() {
+        String passwordCurrent = String.valueOf(menu.txtPasswordCurrent.getPassword()).trim();;
+        String passwordNew = String.valueOf(menu.txtPasswordNew.getPassword()).trim();;
+        String passwordNewConfirm = String.valueOf(menu.txtPasswordNewConfirm.getPassword()).trim();;
+        if (!Validaciones.validarNoVacios("Debes ingresar tu contraseña actual primero", passwordCurrent)) {
+            return;
+        } else {
+            if (!Validaciones.validarNoVacios("Ingresa la nueva contraseña", passwordNew)) {
+                return;
+            } else {
+                if (!Validaciones.validarNoVacios("Olvidaste confirmar la contraseña, es mejor estar seguro :)", passwordNewConfirm)) {
+                    return;
+                } else {
+                    if (!Validaciones.validarRangoCaracteres(passwordNew, 10, 30, "La nueva contraseña debe tener un minimo de 10 caracteres, es por seguridad")) {
+                        return;
+                    } else {
+                        if (!Validaciones.validarContrasena(passwordNew)) {
+                            JOptionPane.showMessageDialog(null, "La nueva contraseña debe tener minus, MAYUS, números y un caracter especial", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            if (!passwordNew.equals(passwordNewConfirm)) {
+                                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                            } else {
+                                if (validarContrasena(passwordCurrent)) {
+                                    user.setUsuario(obtenerUsuario());
+                                    user.setPassword(passwordNew);
+                                    if (userDao.modificarPassword(user)) {
+                                        JOptionPane.showMessageDialog(null, "La contraseña ha sido modificada con exito");
+                                        limpiarCampos();
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Contraseña actual es incorrecta");
+                                    limpiarCampos();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public boolean validarContrasena(String password) {
         // Obtener usuario y contraseña del usuario que se logeo al inicio
         Credenciales credenciales = Credenciales.getInstancia(); // Se obtiene la instancia de Credenciales
@@ -93,11 +146,19 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
         }
     }
 
+    public String obtenerUsuario() {
+        Credenciales credenciales = Credenciales.getInstancia();
+        String userLogin = credenciales.getUsuario();
+        return userLogin;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menu.btn_modificarEmp) {
             modificarInformacion();
             llenarInformacion();
+        } else if (e.getSource() == menu.btn_modificarPassword) {
+            modificarPassword();
         }
     }
 

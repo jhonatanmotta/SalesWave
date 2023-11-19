@@ -41,6 +41,7 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
         this.prodDao = prodDao;
         this.encabezado = encabezado;
         this.menu.btnHistorial.addMouseListener(this);
+        this.menu.btn_InicioHistorial.addMouseListener(this);
         this.menu.btn_buscarFactura.addActionListener(this);
         this.menu.btn_abrirFactura.addActionListener(this);
         this.menu.tableHistorial.addMouseListener(this);
@@ -177,6 +178,8 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
             String fecha = menu.tableHistorial.getValueAt(filaSeleccionada, 4).toString();
             File archivo = new File("src/facturas/Factura_" + id + "_" + nombreCliente + "_" + obtenerFecha(fecha) + ".pdf");
             Desktop.getDesktop().open(archivo);
+        } else if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Debes selecionar una factura primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }
         
@@ -221,6 +224,13 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
             listaFacturasInicial();
         } else if (e.getSource() == menu.tableHistorial) {
             filaSeleccionada = menu.tableHistorial.rowAtPoint(e.getPoint());
+        } else if (e.getSource() == menu.btn_InicioHistorial) {
+            BotonesMenu botones = new BotonesMenu(menu);
+            botones.cambiarPanel(7);
+            botones.cambiarColor(menu.btnHistorial);
+            botones.cambiarTitulo("Historial de Facturas");
+            limpiarTabla();
+            listaFacturasInicial();
         }
     }
 

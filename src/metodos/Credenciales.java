@@ -8,7 +8,7 @@ public class Credenciales {
 
     // Instancia de Singleton
     private static Credenciales instancia = null;
-    
+
     // Constructor privado para evitar la creación de instancias directas,
     // Se utiliza para controlar la creación de instancias y garantizar que solo exista una instancia de la clase en todo el programa.
     private Credenciales() {
@@ -25,19 +25,22 @@ public class Credenciales {
         return instancia;
     }
 
-    //getters y setters de la clase Credenciales
+    // Método para obtener el usuario
     public String getUsuario() {
         return usuario;
     }
 
+    // Método para establecer el usuario
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
 
+    // Método para obtener la contraseña
     public String getContrasena() {
         return contrasena;
     }
 
+    // Método para establecer la contraseña
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }

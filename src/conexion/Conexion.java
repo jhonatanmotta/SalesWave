@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
+    
     // Se definen las variables de acceso a la base de datos
     private static final String bd = "bdsistemaventas";
     private static final String url = "jdbc:mysql://localhost/";
@@ -12,30 +13,31 @@ public class Conexion {
     private static final String password = "";
     private static Connection cn;
     
-    //metodo de conexion a la base de datos
+    // Método para la conexión a la base de datos
     public static Connection conectar() {
         try {
-            // Cadena de coneccion se pasa la url, bd, el usuario y contraseña como parametros
+            // Se realiza la conexión utilizando la URL, la base de datos, el usuario y la contraseña
             cn = DriverManager.getConnection(url + bd, user, password);
-            // Mensaje de exito conectandose a la bd
-            System.out.println("La conexion a la base de datos " + bd + " fue existosa");
+            // Mensaje de éxito al conectarse a la base de datos
+            System.out.println("La conexión a la base de datos " + bd + " fue exitosa");
             return cn;
         } catch (SQLException ex) {
-            // Mensaje de error conectandose a la base de datos
-            System.out.println("No se conecto a la base de datos");
+            // Mensaje de error al no poder conectarse a la base de datos
+            System.out.println("No se pudo conectar a la base de datos");
         }
         return null;
     }
     
-    //metodo de validacion de conexion a la base de datos
+    // Método para validar la conexión a la base de datos
     public static boolean validarConexion() {
         try {
-           cn =  DriverManager.getConnection(url + bd, user, password);
-           return true;
+            cn =  DriverManager.getConnection(url + bd, user, password);
+            return true;
         } catch (SQLException e) {
             System.out.println("Error" + e);
         }
-            return false;
+        return false;
     }
 }
+
 

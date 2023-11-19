@@ -58,13 +58,6 @@ public class Ctrl_login implements ActionListener, KeyListener {
         }
     }
 
-//    public void cerrarSesion(){
-//        int confirmacion = JOptionPane.showConfirmDialog(null, "¿Estás seguro de cerrar sesion?", 
-//                "Pregunta", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-//        if (confirmacion == 0){
-//            System.exit(0);
-//        }
-//    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == log.btn_IniciarSesion) {

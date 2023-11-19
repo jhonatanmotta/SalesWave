@@ -31,11 +31,11 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
     // instancia de DefaultTableCellRenderer se utiliza para personalizar la apariencia de las celdas en una tabla
     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         
-    // metodo constructor de la clase pide 3 parametos que son instancias de Categoria, CategoriaDAO y de Menu(formulario)
+    // Constructor con parámetros
     public Ctrl_categoria(Categoria cat, CategoriaDAO catDao, Menu menu) {
-        this.cat = cat; // Se le asigna al atributo this.cat la instancia que llega por parametro
-        this.catDao = catDao; // Se le asigna al atributo this.catDao la instancia que llega por parametro
-        this.menu = menu; // Se le asigna al atributo this.menu la instancia que llega por parametro
+        this.cat = cat; // Se le asigna al atributo cat la instancia que llega por parametro
+        this.catDao = catDao; // Se le asigna al atributo catDao la instancia que llega por parametro
+        this.menu = menu; // Se le asigna al atributo menu la instancia que llega por parametro
         this.menu.btn_registrarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_registrarCategoria
         this.menu.btn_modificarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_modificarCategoria
         this.menu.btn_limpiarCategoria.addActionListener(this); // se le añade el ActionListener al boton btn_limpiarCategoria
@@ -47,102 +47,138 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
         styleCategoria(); // metodo para inicializar los estilos del JPanel
     }
 
-    // metedo de estilos
+    // metodo de estilos
     public void styleCategoria(){
         this.menu.textIdCategoria.setVisible(false); // el textField de id estara oculto
         // se le asigna un placeholder al textField textBuscarCategoria
         menu.textBuscarCategoria.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Buscar categoria");
     }
     
-    // metodo para registrar categorias en la base de datos
+    // metodo para registrar una nueva categoria
     public void registrarCategoria() {
-        // se obtiene el nombre de la categoria del tgextField
+        // se obtiene el nombre de la categoria del textField
         String nombre = menu.textNombreCategoria.getText().trim();
-        // valida si esta vacio
+        // valida si esta vacio, si lo esta arroja un cuadro de dialogo con una advertencia
         if (!Validaciones.validarNoVacios("El campo nombre categoria esta vacio",nombre) ||
                 !Validaciones.validarCantidadCaracteres(nombre, 30, "El campo nombre sobrepasa la cantidad de caracteres aceptados")) {
             return;
-//        if (nombre.isEmpty()) {
-            // mensaje de error por campo vacio
-//            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios");
         } else {
-            // se llama al objeto cat y el setter se le asigna su nombre
+            // se establece el nombre en el objeto cat
             cat.setNombre(nombre);
-            // metodo de insercion de datos en el modelo car
+            // metodo de insercion de datos
             if (catDao.registroCategoria(cat)) {
+                // limpia el contenido de la tabla
                 limpiarTabla();
+                // añade contenido a la tabla 
                 listarCategoria();
+                // limpia los campos
                 limpiarContenidoInput();
+                // mensaje informativo
                 JOptionPane.showMessageDialog(null, "Categoria registrada con exito");
             } else {
+                // mensaje de error
                 JOptionPane.showMessageDialog(null, "Error al registrar la categoria");
             }
         }
     }
-
+    
+    //metodo para modicar los datos de la categoria en la base de datos
     public void modificarCategoria() {
-        if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar el nombre de una categoria",menu.textIdCategoria.getText())) {
+    // valida si se ha seleccionado una fila para modificar
+    if (!Validaciones.validarNoVacios("Debes seleccionar una fila para modificar el nombre de una categoría", menu.textIdCategoria.getText())) {
+        return;
+    } else {
+        // obtiene el ID de la categoría y el nombre ingresado en el textField
+        int id = Integer.parseInt(menu.textIdCategoria.getText());
+        String nombre = menu.textNombreCategoria.getText().trim();
+        
+        // valida si el campo del nombre de la categoría está vacío
+        if (!Validaciones.validarNoVacios("El campo nombre categoría está vacío", nombre)) {
             return;
         } else {
-            int id = Integer.parseInt(menu.textIdCategoria.getText());
-            String nombre = menu.textNombreCategoria.getText().trim();
-            if (!Validaciones.validarNoVacios("El campo nombre categoria esta vacio",nombre)) {
-                return;
+            // establece el ID y nombre en el objeto cat
+            cat.setIdCategoria(id);
+            cat.setNombre(nombre);
+            
+            // metodo para modificar la categoría en la base de datos
+            if (catDao.modificarCategoria(cat)) {
+                // limpia el contenido de la tabla
+                limpiarTabla();
+                // añade contenido a la tabla 
+                listarCategoria();
+                // limpia los campos
+                limpiarContenidoInput();
+                // mensaje informativo
+                JOptionPane.showMessageDialog(null, "Categoría modificada con éxito");
             } else {
-                cat.setIdCategoria(id);
-                cat.setNombre(nombre);
-                if (catDao.modificarCategoria(cat)) {
-                    limpiarTabla();
-                    listarCategoria();
-                    limpiarContenidoInput();
-                    JOptionPane.showMessageDialog(null, "Categoria modificado con exito");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al modificar la categoria");
-                }
+                // mensaje de error
+                JOptionPane.showMessageDialog(null, "Error al modificar la categoría");
             }
         }
     }
-
+}
+    // metodo para eliminar la categoria, es decir cambiarla de estado
     public void eliminarCategoria() {
+        // valida que el usuario haya selecionado una fila
         if (!Validaciones.validarNoVacios("Debes seleccionar una fila para eliminar una categoria",menu.textIdCategoria.getText())) {
             return;
         } else {
+            // obtiene el id de textField
             int id = Integer.parseInt(menu.textIdCategoria.getText());
+            // metodo para modificar el estado de la categoria
             if (catDao.estadoCategoria(0, id)) {
+                // limpia el contenido de la tabla
                 limpiarTabla();
+                // añade contenido a la tabla
                 listarCategoria();
+                // limpia los campos
                 limpiarContenidoInput();
+                // mensaje informativo
                 JOptionPane.showMessageDialog(null, "Categoria eliminada");
             } else {
+                // mensaje de error
                 JOptionPane.showMessageDialog(null, "Error al eliminar categoria");
             }
         }
     }
 
+    // metodo para habilitar la categoria, es decir cambiarla de estado
     public void habilitarCategoria() {
+        // valida que el usuario haya selecionado una fila
         if (!Validaciones.validarNoVacios("Debes seleccionar una fila para habilitar una categoria",menu.textIdCategoria.getText())) {
             return;
         } else {
+            // obtiene el id de textField
             int id = Integer.parseInt(menu.textIdCategoria.getText());
+            // metodo para modificar el estado de la categoria
             if (catDao.estadoCategoria(1, id)) {
+                // limpia el contenido de la tabla
                 limpiarTabla();
+                // añade contenido a la tabla
                 listarCategoria();
+                // limpia los campos
                 limpiarContenidoInput();
+                // mensaje informativo
                 JOptionPane.showMessageDialog(null, "Categoria habilitada");
             } else {
+                // mensaje de error
                 JOptionPane.showMessageDialog(null, "Error al habilitar categoria");
             }
         }
     }
-
+    
+    // metodo para mostrar los datos en la tabla de la categoria
     public void listarCategoria() {
+        // lista con la informacion de la categoria
         List<Categoria> lista = catDao.listaCategorias(menu.textBuscarCategoria.getText().trim());
+        // obtiene el modelo de la tabla de la categoria
         modeloTablaCategoria = (DefaultTableModel) menu.tableCategoria.getModel();
+        // arreglo con la cantidad de columnas
         Object[] ob = new Object[3];
+        // for que recorre la lista y va agregando la informacion a las filas de la tabla
         for (int i = 0; i < lista.size(); i++) {
             ob[0] = lista.get(i).getIdCategoria();
             ob[1] = lista.get(i).getNombre();
-//            ob[2] = lista.get(i).getEstado();
             if (lista.get(i).getEstado() == 1) {
                 ob[2] = "Disponible";
             } else {
@@ -150,54 +186,66 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
             }
             modeloTablaCategoria.addRow(ob);
         }
+        // se le pone el nuevo modelo a la tabla
         menu.tableCategoria.setModel(modeloTablaCategoria);
-        
+        // se oculta la columna del id
         menu.tableCategoria.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableCategoria.getColumnModel().getColumn(0).setMaxWidth(0);
-        
+        // se centra la informacion de las columnas 1 y 2
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        
         menu.tableCategoria.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         menu.tableCategoria.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        
+        // se obtiene el header de la tabla
         JTableHeader header = menu.tableCategoria.getTableHeader();
+        // color del header
         Color headerColor = new Color(232, 158, 67);
+        // color del texto del header
         Color textColor = Color.WHITE;
+        // tipo de letra del header
         Font headerFont = new Font("Tahoma", Font.PLAIN, 14);
+        // se quita lo opaco del header, se estable el color de fondo, letra y color
         header.setOpaque(false);
         header.setBackground(headerColor);
         header.setFont(headerFont);
         header.setForeground(textColor);
     }
 
+    // metodo para limpiar la tabla
     public void limpiarTabla() {
         for (int i = 0; i < modeloTablaCategoria.getRowCount(); i++) {
             modeloTablaCategoria.removeRow(i);
             i -= 1;
         }
     }
-
+    
+    // metodo para agregar contenido a los inputs luego de dar click en un campo de la tabla
     public void agregarContenidoInput(int fila) {
         String estado = menu.tableCategoria.getValueAt(fila, 2).toString();
         if (estado == "Disponible"){
+            // pone visible el boton de eliminar categoria
             menu.jMenuEliminarCategoria.setVisible(true);
             menu.jMenuHabilitarCategoria.setVisible(false);
         } else {
+            // pone visible el boton de habilitar categoria
             menu.jMenuHabilitarCategoria.setVisible(true);
             menu.jMenuEliminarCategoria.setVisible(false);
         }
+        // inhabilita el boton de registrar y habilita el de modificar
         menu.btn_modificarCategoria.setEnabled(true);
         menu.btn_registrarCategoria.setEnabled(false);
+        // agrega contenido a los inputs
         menu.textIdCategoria.setText(menu.tableCategoria.getValueAt(fila, 0).toString());
         menu.textNombreCategoria.setText(menu.tableCategoria.getValueAt(fila, 1).toString());
     }
 
+    //metodo para limpiar el contenido de los inputs
     public void limpiarContenidoInput() {
-        menu.textNombreCategoria.setText("");
+        menu.textNombreCategoria.setText(""); 
         menu.textIdCategoria.setText("");
-        menu.btn_registrarCategoria.setEnabled(true);
+        menu.btn_registrarCategoria.setEnabled(true); // habilita el boton de registrar
     }
     
+    // actionPerformed que recibe todos los eventos de la vista y ejecuta metodos
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menu.btn_registrarCategoria) {
@@ -213,6 +261,7 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
         }
     }
 
+    // mouseClicked que recibe todos los clicks de la vista y ejecuta metodos
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == menu.tableCategoria) {
@@ -228,6 +277,7 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
         }
     }
 
+    // keyReleased que recibe los eventos al soltar una letra del teclado y ejecuta metodos
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getSource() == menu.textBuscarCategoria) {
