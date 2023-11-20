@@ -1364,7 +1364,6 @@ public class Menu extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        tableHistorial.setComponentPopupMenu(jPopupProducto);
         tableHistorial.setRowHeight(30);
         tableHistorial.setSelectionBackground(new java.awt.Color(191, 232, 241));
         tableHistorial.getTableHeader().setResizingAllowed(false);
@@ -2055,8 +2054,6 @@ public class Menu extends javax.swing.JFrame {
                 "Advertencia", JOptionPane.YES_NO_OPTION, 
                 JOptionPane.WARNING_MESSAGE, null, opciones, opciones[1]);
          if (alerta == JOptionPane.YES_OPTION) {
-                Login login = new Login();
-                login.setVisible(true);
                 this.dispose();
             }
     }//GEN-LAST:event_btnCerrarSesionActionPerformed

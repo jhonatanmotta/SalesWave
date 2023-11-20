@@ -271,7 +271,7 @@ public class Ctrl_categoria implements ActionListener, MouseListener, KeyListene
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(4);
             botones.cambiarColor(menu.btnCategoria);
-            botones.cambiarTitulo("Gestion de Categorias");
+            botones.cambiarTitulo("Gestion de Categorías");
             limpiarTabla();
             listarCategoria();
         }

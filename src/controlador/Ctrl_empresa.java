@@ -199,7 +199,7 @@ public class Ctrl_empresa implements ActionListener, MouseListener, KeyListener 
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(10);
             botones.cambiarColor(menu.btnEmpresa);
-            botones.cambiarTitulo("Datos de Empresa");
+            botones.cambiarTitulo("Configuracion");
             llenarInformacion();
         }
     }

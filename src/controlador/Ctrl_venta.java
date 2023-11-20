@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import vista.Menu;
 
 public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
-    
+
     // atributos del controlador venta
     private ProductoDAO prodDao; // atributo de tipo ProductoDAO para asignar una instancia de este
     private encabezadoVenta encabezado; // atributo de tipo encabezadoVenta para asignar una instancia de este
@@ -45,7 +46,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     DefaultTableModel modeloTabla = new DefaultTableModel();
     // lista de los productos en la cola de venta
     List<detalleVenta> listaProductosVenta = new ArrayList<>();
-    
+
     private detalleVenta producto; // instancia detalleVenta
     private int idProducto = 0; //id del Producto por defecto
     private int idDetalle = 1; //id del detalleVenta por defecto
@@ -64,7 +65,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     private double totalVenta = 0.0;  //totalVenta por defecto
 
     private int filaEliminar = -1;  //filaEliminar por defecto
-    
+
     // Constructor con parámetros
     public Ctrl_venta(ProductoDAO prodDao, encabezadoVenta encabezado, detalleVenta detalle, Menu menu) {
         this.menu = menu; // Se le asigna al atributo menu la instancia que llega por parametro
@@ -117,10 +118,9 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         // si el porcentaje de iva es 0 el valor del iva sera 0
         if (porcentajeIva == 0) {
             totalIva = 0.0;
-        // de lo contrario hace el calculo multiplica el precio por la cantidad
-        // luego multiplica el porcentaje del iva por cien para asi obtener el valor del iva
+            // de lo contrario hace el cálculo y redondea el resultado a 2 decimales
         } else {
-            totalIva = (precio * cantidad) * (porcentajeIva / 100.0);
+            totalIva = Math.round((precio * cantidad) * (porcentajeIva / 100.0) * 100.0) / 100.0;
         }
         // devuelve el iva
         return totalIva;
@@ -298,33 +298,46 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
             }
         }
     }
-    
-    // metodo para calcular las cantidades globales de la venta
+
+    // método para calcular las cantidades globales de la venta
     public void calcularCantidades() {
-        // se ponen las cantidad en 0
+        // se ponen las cantidades en 0
         subtotalVenta = 0.0;
         ivaVenta = 0.0;
         totalVenta = 0.0;
+
         // for que recorre la lista de productos en especifico los valores 
-       // subtotal, total e iva del detalle de la venta
+        // subtotal, total e iva del detalle de la venta
         for (detalleVenta valor : listaProductosVenta) {
             subtotalVenta += valor.getSubtotal();
             ivaVenta += valor.getIva();
             totalVenta += valor.getTotalPagar();
         }
-        // setea los nuevos datos en JLabel de la vista
+
+        // Formatear los valores a dos decimales
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setMaximumFractionDigits(2);
+        
+        //da el formato de dos decimales a las cantidades
+        df.format(subtotalVenta);
+        df.format(ivaVenta);
+        df.format(totalVenta);
+
+        // Establecer valores formateados en JLabel
         menu.valorSubtotal.setText(String.valueOf(subtotalVenta));
         menu.valorIva.setText(String.valueOf(ivaVenta));
         menu.valorTotalPago.setText(String.valueOf(totalVenta));
+
         // habilita los campos de efectivo y pago
         menu.textEfectivoVenta.setEnabled(true);
         menu.pagarVenta.setEnabled(true);
     }
-    
+
     // metodo para calcular el cambio de una venta
     public void calcularCambio() {
-        // obtiene el valor del efectivo ingresado
+        // obtiene el valor del efectivo ingresado y del total a pagar
         String efectivo = menu.textEfectivoVenta.getText();
+        String totalPagar = menu.valorTotalPago.getText();
         // valida que el valor no sea vacio
         if (!Validaciones.validarNoVacios("Debes ingresar un monto de dinero primero", efectivo)) {
             return;
@@ -340,15 +353,18 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                     // parsea el valor con el que se va pagar 
                     double montoPago = Double.parseDouble(efectivo);
                     // obtiene el valor total de la venta
-                    double totalPago = Double.parseDouble(menu.valorTotalPago.getText());
+                    double totalPago = Double.parseDouble(totalPagar);
                     // valida que el valor con el que se va pagar no sea menor al del pago
                     if (!Validaciones.valorMenor(totalPago, montoPago, "Parece que no te alcanza para pagar prueba con otra cantidad")) {
                         return;
                     } else {
                         // hace la operacion para obtener el cambio
                         double cambio = montoPago - totalPago;
+                        // Formatear los valores a dos decimales
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        df.setMaximumFractionDigits(2);
                         // setea el JLabel con el cambio a dar
-                        menu.cambioVenta.setText(String.valueOf(cambio));
+                        menu.cambioVenta.setText(String.valueOf(df.format(cambio)));
                     }
                 }
             }
@@ -356,7 +372,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     }
 
     // metodo para actualizar el stock una vez realizada una venta
-    public void actualizarStock (int idProducto, int cantidadVendida) {
+    public void actualizarStock(int idProducto, int cantidadVendida) {
         // busca la cantidad en stock del producto en ese momento
         Producto producto = prodDao.buscarCantidadProd(idProducto);
         // obtiene la cantidad del stock actual
@@ -366,7 +382,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
         // ejecuta el metodo para actualizar la cantidad en la base de datos
         prodDao.actualizarCantidad(nuevaCantidad, idProducto);
     }
-    
+
     // busca que el producto a ingresar a la cola no haya sido agregado antes
     public boolean buscarValorTabla(String productoBusqueda) {
         // variable de retorno
@@ -422,7 +438,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
             }
         }
     }
-    
+
     // metodo para llenar los comboBox de las vista de la venta
     public void llenarComboBox() {
         // Lista de productos
@@ -494,9 +510,8 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
             // accion de click en la tabla para luego eliminar la fila
         } else if (e.getSource() == menu.tableProductosVenta) {
             filaEliminar = menu.tableProductosVenta.rowAtPoint(e.getPoint());
-        } 
-        // accion de venta en el inicio del sistema
-         else if (e.getSource() == menu.btn_InicioVender) {
+        } // accion de venta en el inicio del sistema
+        else if (e.getSource() == menu.btn_InicioVender) {
             BotonesMenu botones = new BotonesMenu(menu);
             botones.cambiarPanel(6);
             botones.cambiarColor(menu.btnVenta);
@@ -534,5 +549,5 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
     }
-    
+
 }

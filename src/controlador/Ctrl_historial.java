@@ -63,7 +63,7 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
         menu.tableHistorial.getColumnModel().getColumn(0).setMinWidth(0);
         menu.tableHistorial.getColumnModel().getColumn(0).setMaxWidth(0);
          // se le asigna un placeholder al textField textBuscarClientHistorial
-        menu.textBuscarClientHistorial.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Documento Cliente");
+        menu.textBuscarClientHistorial.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Documento cliente");
     }
 
     // metodo para listar todas las ventas realizadas recien se ingresa a la vista
