@@ -71,7 +71,7 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
                     return;
                 } else {
                     // valida el rango de caracteres de la cedula 
-                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
+                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres") || !Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
                         return;
                     } else {
                         // se establece la informacion del cliente en el objeto client
@@ -120,7 +120,7 @@ public class Ctrl_cliente implements ActionListener, MouseListener, KeyListener 
                     return;
                 } else {
                     // valida el rango de caracteres de la cedula 
-                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres")) {
+                    if (!Validaciones.validarRangoCaracteres(cedula, 8, 15, "La cedula debe tener un minimo de 8 caracteres") || !Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
                         return;
                     } else {
                         // se establece la informacion del cliente en el objeto client

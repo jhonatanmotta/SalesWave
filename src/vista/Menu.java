@@ -10,6 +10,7 @@ import controlador.Ctrl_producto;
 import controlador.Ctrl_proveedor;
 import controlador.Ctrl_usuario;
 import controlador.Ctrl_venta;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import modelo.Categoria;
 import modelo.CategoriaDAO;
@@ -515,6 +516,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         textNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textNombreKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textNombreKeyTyped(evt);
             }
@@ -1216,6 +1220,11 @@ public class Menu extends javax.swing.JFrame {
         comboBoxProductosVenta.setEditable(true);
         comboBoxProductosVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         comboBoxProductosVenta.setPreferredSize(new java.awt.Dimension(160, 30));
+        comboBoxProductosVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                comboBoxProductosVentaKeyTyped(evt);
+            }
+        });
         panelVenta.add(comboBoxProductosVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 200, -1));
 
         labelIvaVenta.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1376,6 +1385,11 @@ public class Menu extends javax.swing.JFrame {
         textBuscarClientHistorial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textBuscarClientHistorial.setForeground(new java.awt.Color(51, 51, 51));
         textBuscarClientHistorial.setPreferredSize(new java.awt.Dimension(160, 30));
+        textBuscarClientHistorial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textBuscarClientHistorialKeyTyped(evt);
+            }
+        });
         panelHistorial.add(textBuscarClientHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 230, -1));
 
         labelFechaInicial.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -1902,6 +1916,9 @@ public class Menu extends javax.swing.JFrame {
         if (textNombreCliente.getText().length() >= 30) {
             evt.consume();
         }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textNombreClienteKeyTyped
 
     private void textNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textNombreActionPerformed
@@ -1912,10 +1929,16 @@ public class Menu extends javax.swing.JFrame {
         if (textNombre.getText().length() >= 30) {
             evt.consume();
         }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textNombreKeyTyped
 
     private void textApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoKeyTyped
         if (textApellido.getText().length() >= 30) {
+            evt.consume();
+        }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
             evt.consume();
         }
     }//GEN-LAST:event_textApellidoKeyTyped
@@ -1942,10 +1965,18 @@ public class Menu extends javax.swing.JFrame {
         if (textTelefono.getText().length() >= 15) {
             evt.consume();
         }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textTelefonoKeyTyped
 
     private void textApellidoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoClienteKeyTyped
         if (textApellidoCliente.getText().length() >= 30) {
+            evt.consume();
+        }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
             evt.consume();
         }
     }//GEN-LAST:event_textApellidoClienteKeyTyped
@@ -1960,10 +1991,18 @@ public class Menu extends javax.swing.JFrame {
         if (textTelefonoCliente.getText().length() >= 15) {
             evt.consume();
         }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textTelefonoClienteKeyTyped
 
     private void textNombreCategoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreCategoriaKeyTyped
         if (textNombreCategoria.getText().length() >= 30) {
+            evt.consume();
+        }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
             evt.consume();
         }
     }//GEN-LAST:event_textNombreCategoriaKeyTyped
@@ -1972,16 +2011,27 @@ public class Menu extends javax.swing.JFrame {
         if (textNombreProv.getText().length() >= 30) {
             evt.consume();
         }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textNombreProvKeyTyped
 
     private void textApellidoProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textApellidoProvKeyTyped
         if (textApellidoProv.getText().length() >= 30) {
             evt.consume();
         }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textApellidoProvKeyTyped
 
     private void textTelefonoProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoProvKeyTyped
         if (textTelefonoProv.getText().length() >= 15) {
+            evt.consume();
+        }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
             evt.consume();
         }
     }//GEN-LAST:event_textTelefonoProvKeyTyped
@@ -1996,6 +2046,9 @@ public class Menu extends javax.swing.JFrame {
         if (textNombreProd.getText().length() >= 100) {
             evt.consume();
         }
+        if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textNombreProdKeyTyped
 
     private void textDescripcionProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textDescripcionProdKeyTyped
@@ -2008,16 +2061,31 @@ public class Menu extends javax.swing.JFrame {
         if (textPrecioCProd.getText().length() >= 13) {
             evt.consume();
         }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textPrecioCProdKeyTyped
 
     private void textPrecioVProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textPrecioVProdKeyTyped
         if (textPrecioVProd.getText().length() >= 13) {
             evt.consume();
         }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textPrecioVProdKeyTyped
 
     private void textCantidadProdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textCantidadProdKeyTyped
         if (textCantidadProd.getText().length() >= 10) {
+            evt.consume();
+        }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
             evt.consume();
         }
     }//GEN-LAST:event_textCantidadProdKeyTyped
@@ -2085,6 +2153,25 @@ public class Menu extends javax.swing.JFrame {
     private void btn_modificarEmpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarEmpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_modificarEmpActionPerformed
+
+    private void textNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textNombreKeyPressed
+
+    private void textBuscarClientHistorialKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBuscarClientHistorialKeyTyped
+        if (textCedulaCliente.getText().length() >= 15) {
+            evt.consume();
+        }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textBuscarClientHistorialKeyTyped
+
+    private void comboBoxProductosVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboBoxProductosVentaKeyTyped
+
+    }//GEN-LAST:event_comboBoxProductosVentaKeyTyped
 
     /**
      * @param args the command line arguments

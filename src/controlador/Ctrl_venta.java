@@ -12,13 +12,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -58,12 +57,12 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
     private int porcentajeIva = 0;  //porcentajeIva por defecto
     private double iva = 0.0;  //iva por defecto
     private double total = 0.0;  //total por defecto
-
+    
     //calculos generales 
-    private double subtotalVenta = 0.0;  //subtotalVenta por defecto
-    private double ivaVenta = 0.0;  //ivaVenta por defecto
-    private double totalVenta = 0.0;  //totalVenta por defecto
-
+    BigDecimal subtotalVenta = BigDecimal.ZERO; //subtotalVenta por defecto
+    BigDecimal ivaVenta = BigDecimal.ZERO; //ivaVenta por defecto
+    BigDecimal totalVenta = BigDecimal.ZERO; //totalVenta por defecto
+    
     private int filaEliminar = -1;  //filaEliminar por defecto
 
     // Constructor con parámetros
@@ -243,7 +242,7 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                 encabezado.setIdCliente_fk(clienteSeleccionado.getId());
                 encabezado.setIdEmpresa_fk(1);
                 encabezado.setIdUsuario_fk(idUsuario);
-                encabezado.setValorPagar(totalVenta);
+                encabezado.setValorPagar(totalVenta.doubleValue());
                 encabezado.setFechaVenta(fechaActual);
                 // valida si el registro del encabezado de la venta fue existoso
                 if (prodDao.registroEncabezado(encabezado)) {
@@ -278,11 +277,11 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
                     factura.setNumVenta(lastIdEncabezadoVenta);
                     factura.setFechaFactura(fechaActual);
                     factura.setListaProductos(menu.tableProductosVenta);
-                    factura.setSubtotal(subtotalVenta);
-                    factura.setIva(ivaVenta);
-                    factura.setTotal(totalVenta);
+                    factura.setSubtotal(subtotalVenta.doubleValue());
+                    factura.setIva(ivaVenta.doubleValue());
+                    factura.setTotal(totalVenta.doubleValue());
                     factura.generarFactura();
-                    // se ponen los valores por defecto 
+                    // se ponen los valores por defecto
                     resetDatosVenta();
                     // se limpia la lista de la cola de venta
                     listaProductosVenta.clear();
@@ -301,29 +300,25 @@ public class Ctrl_venta implements ActionListener, MouseListener, KeyListener {
 
     // método para calcular las cantidades globales de la venta
     public void calcularCantidades() {
-        // se ponen las cantidades en 0
-        subtotalVenta = 0.0;
-        ivaVenta = 0.0;
-        totalVenta = 0.0;
-
+        // se ponen las cantidades en 0 de nuevo
+        subtotalVenta = BigDecimal.ZERO;
+        ivaVenta = BigDecimal.ZERO;
+        totalVenta = BigDecimal.ZERO;
+        
         // for que recorre la lista de productos en especifico los valores 
         // subtotal, total e iva del detalle de la venta
         for (detalleVenta valor : listaProductosVenta) {
-            subtotalVenta += valor.getSubtotal();
-            ivaVenta += valor.getIva();
-            totalVenta += valor.getTotalPagar();
+            subtotalVenta = subtotalVenta.add(BigDecimal.valueOf(valor.getSubtotal()));
+            ivaVenta = ivaVenta.add(BigDecimal.valueOf(valor.getIva()));
+            totalVenta = totalVenta.add(BigDecimal.valueOf(valor.getTotalPagar()));
         }
-
-        // Formatear los valores a dos decimales
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setMaximumFractionDigits(2);
         
-        //da el formato de dos decimales a las cantidades
-        df.format(subtotalVenta);
-        df.format(ivaVenta);
-        df.format(totalVenta);
-
-        // Establecer valores formateados en JLabel
+        // Redondeo a dos decimales con BigDecimal
+        subtotalVenta = subtotalVenta.setScale(2, BigDecimal.ROUND_HALF_UP);
+        ivaVenta = ivaVenta.setScale(2, BigDecimal.ROUND_HALF_UP);
+        totalVenta = totalVenta.setScale(2, BigDecimal.ROUND_HALF_UP);
+        
+        // Establecer valores formateados en el JLabel
         menu.valorSubtotal.setText(String.valueOf(subtotalVenta));
         menu.valorIva.setText(String.valueOf(ivaVenta));
         menu.valorTotalPago.setText(String.valueOf(totalVenta));

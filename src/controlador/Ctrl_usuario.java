@@ -88,27 +88,28 @@ public class Ctrl_usuario implements ActionListener, MouseListener, KeyListener 
                             if (!Validaciones.validarContrasena(password)) {
                                 JOptionPane.showMessageDialog(null, "La contraseña debe tener minus, MAYUS, números y un caracter especial", "Advertencia", JOptionPane.WARNING_MESSAGE);
                             } else {
-                                // se establece la informacion del usuario en el objeto user
-                                user.setNombre(nombre);
-                                user.setApellido(apellido);
-                                user.setCorreo(correo);
-                                user.setUsuario(usuario);
-                                user.setTelefono(telefono);
-                                user.setPassword(password);
-                                // metodo de insercion de datos
-                                if (userDao.registroUsuario(user)) {
-                                    // limpia el contenido de la tabla
-                                    limpiarTabla();
-                                    // añade contenido a la tabla 
-                                    listarUsuario();
-                                    // limpia los campos
-                                    limpiarContenidoInput();
-                                    // mensaje informativo
-                                    JOptionPane.showMessageDialog(null, "Usuario registrado con exito");
-                                } else {
-                                    // mensaje de error
-                                    JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
-                                }
+                                    // se establece la informacion del usuario en el objeto user
+                                    user.setNombre(nombre);
+                                    user.setApellido(apellido);
+                                    user.setCorreo(correo);
+                                    user.setUsuario(usuario);
+                                    user.setTelefono(telefono);
+                                    user.setPassword(password);
+                                    // metodo de insercion de datos
+                                    if (userDao.registroUsuario(user)) {
+                                        // limpia el contenido de la tabla
+                                        limpiarTabla();
+                                        // añade contenido a la tabla 
+                                        listarUsuario();
+                                        // limpia los campos
+                                        limpiarContenidoInput();
+                                        // mensaje informativo
+                                        JOptionPane.showMessageDialog(null, "Usuario registrado con exito");
+                                    } else {
+                                        // mensaje de error
+                                        JOptionPane.showMessageDialog(null, "Error al registrar el usuario");
+                                    }
+                                
                             }
                         }
                     }

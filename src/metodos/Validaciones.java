@@ -39,6 +39,21 @@ public class Validaciones {
         }
     }
 
+    // Método para validar si un String se puede parsear a un long
+    public static boolean validarParseoLong(String MensajeError, String... numeros) {
+        boolean validacion = false;
+        for (String num : numeros) {// for que itera todos los strings del array
+            try {
+                Long.parseLong(num);
+                validacion = true;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, MensajeError, "Advertencia", JOptionPane.WARNING_MESSAGE);
+                validacion = false; // Si falla, la cadena no es un número long válido
+            }
+        }
+        return validacion;
+    }
+
     // Método para validar si un String se puede parsear a un double
     public static boolean validarParseoADouble(String str, String MensajeError) {
         try {
@@ -120,4 +135,21 @@ public class Validaciones {
         // Devolver true si coincide con el formato de contraseña
         return matcher.matches();
     }
+
+    public static boolean validarSinNumeros(String MensajeError, String... cadena) {
+        // Compilar la expresión regular para encontrar dígitos
+        Pattern patron = Pattern.compile("\\d"); // "\\d" encuentra cualquier dígito
+
+        for (String str : cadena) {// for que itera todos los strings del array
+            Matcher matcher = patron.matcher(str); // Crear un matcher para la cadena dada
+            patron.matcher(str);
+            if (matcher.find()) { // validacion si el elemento contiene numeros
+                // aroja un mensaje de dialogo si el string es vacio
+                JOptionPane.showMessageDialog(null, MensajeError, "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return false; // Al menos uno está vacío, devuelve false
+            }
+        }
+        return true;
+    }
+
 }

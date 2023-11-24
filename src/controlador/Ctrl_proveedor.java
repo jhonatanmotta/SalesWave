@@ -59,27 +59,32 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
         String direccion = menu.textDireccionProv.getText().trim();
         String telefono = menu.textTelefonoProv.getText().trim();
         // valida los campos vacios y arroja un cuadro de dialogo con una advertencia
-        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, direccion, telefono)) {
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, direccion, telefono)) {
             return;
         } else {
-            // se establece la informacion del proveedor  en el objeto prov
-            prov.setNombre(nombre);
-            prov.setApellido(apellido);
-            prov.setDireccion(direccion);
-            prov.setTelefono(telefono);
-            // metodo de insercion de datos
-            if (provDao.registroProv(prov)) {
-                // limpia el contenido de la tabla
-                limpiarTabla();
-                // añade contenido a la tabla 
-                listarProv();
-                // limpia los campos
-                limpiarContenidoInput();
-                // mensaje informativo
-                JOptionPane.showMessageDialog(null, "Proveedor registrado con exito");
+            // valida que el telefono tenga minimo 10 numeros
+            if (!Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
+                return;
             } else {
-                // mensaje de error
-                JOptionPane.showMessageDialog(null, "Error al registrar el proveedor");
+                // se establece la informacion del proveedor  en el objeto prov
+                prov.setNombre(nombre);
+                prov.setApellido(apellido);
+                prov.setDireccion(direccion);
+                prov.setTelefono(telefono);
+                // metodo de insercion de datos
+                if (provDao.registroProv(prov)) {
+                    // limpia el contenido de la tabla
+                    limpiarTabla();
+                    // añade contenido a la tabla 
+                    listarProv();
+                    // limpia los campos
+                    limpiarContenidoInput();
+                    // mensaje informativo
+                    JOptionPane.showMessageDialog(null, "Proveedor registrado con exito");
+                } else {
+                    // mensaje de error
+                    JOptionPane.showMessageDialog(null, "Error al registrar el proveedor");
+                }
             }
         }
     }
@@ -97,28 +102,34 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             String direccion = menu.textDireccionProv.getText().trim();
             String telefono = menu.textTelefonoProv.getText().trim();
             // valida los campos vacios y arroja un cuadro de dialogo con una advertencia
-            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, apellido, direccion, telefono)) {
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, direccion, telefono)) {
                 return;
             } else {
-                // se establece la informacion del proveedor en el objeto prov
-                prov.setIdProveedor(id);
-                prov.setNombre(nombre);
-                prov.setApellido(apellido);
-                prov.setDireccion(direccion);
-                prov.setTelefono(telefono);
-                // metodo para modificar el proveedor en la base de datos
-                if (provDao.modificarProv(prov)) {
-                    // limpia el contenido de la tabla
-                    limpiarTabla();
-                    // añade contenido a la tabla 
-                    listarProv();
-                    // limpia los campos
-                    limpiarContenidoInput();
-                    // mensaje informativo
-                    JOptionPane.showMessageDialog(null, "Proveedor modificado con exito");
-                } else {
-                    // mensaje de error
-                    JOptionPane.showMessageDialog(null, "Error al modificar el proveedor");
+                // valida que el telefono tenga minimo 10 numeros
+                if (!Validaciones.validarRangoCaracteres(telefono, 10, 15, "El número de telefono debe tener un minimo de 10 caracteres")) {
+                return;
+                }
+                else {
+                    // se establece la informacion del proveedor en el objeto prov
+                    prov.setIdProveedor(id);
+                    prov.setNombre(nombre);
+                    prov.setApellido(apellido);
+                    prov.setDireccion(direccion);
+                    prov.setTelefono(telefono);
+                    // metodo para modificar el proveedor en la base de datos
+                    if (provDao.modificarProv(prov)) {
+                        // limpia el contenido de la tabla
+                        limpiarTabla();
+                        // añade contenido a la tabla 
+                        listarProv();
+                        // limpia los campos
+                        limpiarContenidoInput();
+                        // mensaje informativo
+                        JOptionPane.showMessageDialog(null, "Proveedor modificado con exito");
+                    } else {
+                        // mensaje de error
+                        JOptionPane.showMessageDialog(null, "Error al modificar el proveedor");
+                    }
                 }
             }
         }

@@ -637,6 +637,7 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textNombreActionPerformed"/>
+                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textNombreKeyPressed"/>
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textNombreKeyTyped"/>
               </Events>
               <AuxValues>
@@ -2753,6 +2754,9 @@
                   <Dimension value="[160, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="comboBoxProductosVentaKeyTyped"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Object&gt;"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -3263,6 +3267,9 @@
                   <Dimension value="[160, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textBuscarClientHistorialKeyTyped"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
               </AuxValues>

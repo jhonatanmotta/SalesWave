@@ -302,7 +302,7 @@ public class ProductoDAO {
      */
     public Producto buscarProducto(int idProducto) {
         String sql = "SELECT prod.*, cat.idCategoria, cat.nombre as categoria, prov.idProveedor, prov.nombre "
-                + "as proveedor FROM producto prod INNER JOIN categoria cat ON prod.idCategoria_fk = cat.idCategoria "
+                + "as proveedor, prov.apellido as proveedorApellido FROM producto prod INNER JOIN categoria cat ON prod.idCategoria_fk = cat.idCategoria "
                 + "INNER JOIN proveedor prov ON prod.idProveedor_fk = prov.idProveedor WHERE prod.idProducto = ?";
         Producto prod = new Producto();
         try {
@@ -319,7 +319,7 @@ public class ProductoDAO {
                 prod.setIdCategoria_fk(retorno.getInt("idCategoria_fk"));
                 prod.setIdProveedor_fk(retorno.getInt("idProveedor_fk"));
                 prod.setCategoria(retorno.getString("categoria"));
-                prod.setProveedor(retorno.getString("proveedor"));
+                prod.setProveedor(retorno.getString("proveedor") + " " + retorno.getString("proveedorApellido"));
             }
         } catch (SQLException e) {
             System.out.println(e);
