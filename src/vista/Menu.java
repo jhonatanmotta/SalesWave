@@ -93,8 +93,6 @@ public class Menu extends javax.swing.JFrame {
         jMenuHabilitarProv = new javax.swing.JMenuItem();
         jPopupVenta = new javax.swing.JPopupMenu();
         jMenuEliminarVentaProd = new javax.swing.JMenuItem();
-        panelHeader = new javax.swing.JPanel();
-        tituloPanel = new javax.swing.JLabel();
         jTabbedPanel = new javax.swing.JTabbedPane();
         panelBienvenida = new javax.swing.JPanel();
         TituloInicio = new javax.swing.JLabel();
@@ -277,6 +275,8 @@ public class Menu extends javax.swing.JFrame {
         btnCategoria = new javax.swing.JButton();
         btnInicio = new javax.swing.JButton();
         btnHistorial = new javax.swing.JButton();
+        panelHeader = new javax.swing.JPanel();
+        tituloPanel = new javax.swing.JLabel();
 
         jMenuEliminarUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
         jMenuEliminarUsuario.setText("Eliminar");
@@ -391,31 +391,6 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1080, 700));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
-        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
-
-        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
-        tituloPanel.setText("Titulo de Panel");
-
-        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
-        panelHeader.setLayout(panelHeaderLayout);
-        panelHeaderLayout.setHorizontalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addComponent(tituloPanel)
-                .addGap(0, 769, Short.MAX_VALUE))
-        );
-        panelHeaderLayout.setVerticalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         jTabbedPanel.setMinimumSize(new java.awt.Dimension(880, 700));
         jTabbedPanel.setPreferredSize(new java.awt.Dimension(880, 700));
@@ -1571,11 +1546,21 @@ public class Menu extends javax.swing.JFrame {
         textNombreEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textNombreEmp.setForeground(new java.awt.Color(51, 51, 51));
         textNombreEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        textNombreEmp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textNombreEmpKeyTyped(evt);
+            }
+        });
         panelEmpresa.add(textNombreEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, 240, -1));
 
         textTelefonoEmp.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         textTelefonoEmp.setForeground(new java.awt.Color(51, 51, 51));
         textTelefonoEmp.setPreferredSize(new java.awt.Dimension(160, 30));
+        textTelefonoEmp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textTelefonoEmpKeyTyped(evt);
+            }
+        });
         panelEmpresa.add(textTelefonoEmp, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 240, -1));
 
         btn_modificarEmp.setBackground(new java.awt.Color(255, 255, 255));
@@ -1836,6 +1821,31 @@ public class Menu extends javax.swing.JFrame {
         panelMenu.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 435, -1, -1));
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        panelHeader.setBackground(new java.awt.Color(0, 161, 199));
+        panelHeader.setPreferredSize(new java.awt.Dimension(880, 40));
+
+        tituloPanel.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        tituloPanel.setForeground(new java.awt.Color(255, 255, 255));
+        tituloPanel.setText("Titulo de Panel");
+
+        javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
+        panelHeader.setLayout(panelHeaderLayout);
+        panelHeaderLayout.setHorizontalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addComponent(tituloPanel)
+                .addGap(0, 769, Short.MAX_VALUE))
+        );
+        panelHeaderLayout.setVerticalGroup(
+            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tituloPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(panelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -2100,10 +2110,20 @@ public class Menu extends javax.swing.JFrame {
         if (textCantidadProdVenta.getText().length() >= 10) {
             evt.consume();
         }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
     }//GEN-LAST:event_textCantidadProdVentaKeyTyped
 
     private void textEfectivoVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textEfectivoVentaKeyTyped
         if (textEfectivoVenta.getText().length() >= 15) {
+            evt.consume();
+        }
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
             evt.consume();
         }
     }//GEN-LAST:event_textEfectivoVentaKeyTyped
@@ -2172,6 +2192,20 @@ public class Menu extends javax.swing.JFrame {
     private void comboBoxProductosVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboBoxProductosVentaKeyTyped
 
     }//GEN-LAST:event_comboBoxProductosVentaKeyTyped
+
+    private void textTelefonoEmpKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoEmpKeyTyped
+        int key = evt.getKeyChar();
+        boolean numero = key >= 48 && key <= 57;
+        if (!numero) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textTelefonoEmpKeyTyped
+
+    private void textNombreEmpKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreEmpKeyTyped
+       if (!(Character.isLetter(evt.getKeyChar())) && !(evt.getKeyChar() == KeyEvent.VK_SPACE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_textNombreEmpKeyTyped
 
     /**
      * @param args the command line arguments

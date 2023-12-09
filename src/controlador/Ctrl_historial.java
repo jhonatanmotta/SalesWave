@@ -141,7 +141,7 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
 
         // se verifica el estado de los JDate y si son diferentes de null se le asigna la fecha a las varibles fechaInicialValidacion, 
         //fechaFinalValidacion
-        if (menu.jDateInicial.getDate() != null && menu.jDateInicial.getDate() != null) {
+        if (menu.jDateInicial.getDate() != null && menu.jDateFinal.getDate() != null) {
             String fechaInicialValidacion = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateInicial.getDate());
             String fechaFinalValidacion = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateFinal.getDate());
             // se valida que hayan ventas en el rango de fechas
@@ -164,7 +164,7 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
         if (!cedula.isEmpty()) {
             // se verifica el estado de los JDate y si son diferentes de null se le asigna la fecha a las varibles fechaInicialValidacion, 
             //fechaFinalValidacion
-            if (menu.jDateInicial.getDate() != null && menu.jDateInicial.getDate() != null) {
+            if (menu.jDateInicial.getDate() != null && menu.jDateFinal.getDate() != null) {
                 String fechaInicialValidacion = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateInicial.getDate());
                 String fechaFinalValidacion = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateFinal.getDate());
                 // se valida que hayan ventas de un cliente en el rango de fechas especificado
@@ -177,7 +177,7 @@ public class Ctrl_historial implements ActionListener, MouseListener, KeyListene
         
         // se verifica el estado de los JDate y si son diferentes de null se le asigna la fecha a las varibles fechaInicio, 
         //fechaFinal
-        if (menu.jDateInicial.getDate() != null && menu.jDateInicial.getDate() != null) {
+        if (menu.jDateInicial.getDate() != null && menu.jDateFinal.getDate() != null) {
                 fechaInicio = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateInicial.getDate());
                 fechaFinal = new SimpleDateFormat("yyyy-MM-dd").format(menu.jDateFinal.getDate());
         }

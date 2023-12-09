@@ -59,7 +59,7 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
         String direccion = menu.textDireccionProv.getText().trim();
         String telefono = menu.textTelefonoProv.getText().trim();
         // valida los campos vacios y arroja un cuadro de dialogo con una advertencia
-        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, direccion, telefono)) {
+        if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios, excepto el apellido", nombre, direccion, telefono)) {
             return;
         } else {
             // valida que el telefono tenga minimo 10 numeros
@@ -102,7 +102,7 @@ public class Ctrl_proveedor implements ActionListener, MouseListener, KeyListene
             String direccion = menu.textDireccionProv.getText().trim();
             String telefono = menu.textTelefonoProv.getText().trim();
             // valida los campos vacios y arroja un cuadro de dialogo con una advertencia
-            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios", nombre, direccion, telefono)) {
+            if (!Validaciones.validarNoVacios("Recuerda que todos los campos son obligatorios, excepto el apellido", nombre, direccion, telefono)) {
                 return;
             } else {
                 // valida que el telefono tenga minimo 10 numeros
